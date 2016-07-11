@@ -6,6 +6,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="200" prefWidth="320" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.kana.reor.controller.HomeController">
+<AnchorPane prefHeight="500" prefWidth="600" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.kana.reor.controller.HomeController">
 
 </AnchorPane>

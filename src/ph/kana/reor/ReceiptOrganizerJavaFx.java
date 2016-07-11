@@ -8,11 +8,24 @@ import javafx.stage.Stage;
 
 public class ReceiptOrganizerJavaFx extends Application {
 
+	private static final double APP_WIDTH = 600.00;
+	private static final double APP_HEIGHT = 500.0;
+
 	@Override
 	public void start(Stage stage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("/ph/kana/reor/fxml/Home.fxml"));
 
 		Scene scene = new Scene(root);
+
+		setUserAgentStylesheet(STYLESHEET_MODENA);
+
+		stage.setWidth(APP_WIDTH);
+		stage.setMinWidth(APP_WIDTH);
+
+		stage.setHeight(APP_HEIGHT);
+		stage.setMinHeight(APP_HEIGHT);
+
+		stage.setTitle("kana0011/receipt-organizer");
 
 		stage.setScene(scene);
 		stage.show();
