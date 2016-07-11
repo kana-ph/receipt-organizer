@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="500" prefWidth="600" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.kana.reor.controller.HomeController">
-
+<AnchorPane prefHeight="500" prefWidth="600" stylesheets="@home.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.kana.reor.controller.HomeController">
+   <children>
+      <Accordion layoutX="27.0" layoutY="101.0" prefHeight="500.0" prefWidth="175.0" styleClass="toolbox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <panes>
+          <TitledPane text="Add Record">
+               <content>
+                  <VBox prefHeight="200.0" prefWidth="100.0" styleClass="toolbox-vbox">
+                     <children>
+                        <Button mnemonicParsing="false" styleClass="toolbox-button" text="Add Receipt" />
+                     </children>
+                  </VBox>
+               </content>
+            </TitledPane>
+          <TitledPane text="Search" />
+        </panes>
+      </Accordion>
+      <Pane fx:id="viewPane" layoutX="175.0" layoutY="50.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="175.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+   </children>
 </AnchorPane>

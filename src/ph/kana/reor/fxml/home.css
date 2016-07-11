@@ -1,0 +1,12 @@
+.toolbox {
+	-fx-border-color: #808080;
+}
+
+.toolbox-button {
+	-fx-pref-width: 150px;
+	-fx-pref-height: 75px;
+}
+
+.toolbox-vbox {
+	-fx-alignment: CENTER;
+}
