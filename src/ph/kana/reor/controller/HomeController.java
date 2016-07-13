@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import ph.kana.reor.util.DialogsUtil;
 
 public class HomeController implements Initializable {
 
@@ -14,7 +15,7 @@ public class HomeController implements Initializable {
 
 	@FXML
 	public void addReceiptButtonClick() {
-
+		DialogsUtil.openDialog(null, "Add Receipt", "ReceiptDetailDialog");
 	}
 
 }
