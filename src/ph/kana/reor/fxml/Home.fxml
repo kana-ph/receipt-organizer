@@ -13,9 +13,11 @@
         <panes>
           <TitledPane text="Add Record">
                <content>
-                  <VBox prefHeight="200.0" prefWidth="100.0" styleClass="toolbox-vbox">
+                  <VBox spacing="15.0" styleClass="toolbox-vbox">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#addReceiptButtonClick" styleClass="toolbox-button" text="Add Receipt" />
+                        <Button mnemonicParsing="false" onAction="#addReceiptButtonClick" styleClass="toolbox-button" text="Add Receipt" textAlignment="CENTER" />
+                        <Button disable="true" mnemonicParsing="false" styleClass="toolbox-button" text="Add Legal Document" textAlignment="CENTER" wrapText="true" />
+                        <Button disable="true" mnemonicParsing="false" styleClass="toolbox-button" text="Add Pay Slip" textAlignment="CENTER" />
                      </children>
                   </VBox>
                </content>
