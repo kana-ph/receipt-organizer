@@ -1,7 +1,11 @@
 package ph.kana.reor.controller;
 
+import javafx.animation.FadeTransition;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import ph.kana.reor.type.MessageType;
 
 public abstract class AbstractWindowController {
 
@@ -9,5 +13,17 @@ public abstract class AbstractWindowController {
 
 	protected Stage getWindow() {
 		return (Stage) getRootPane().getScene().getWindow();
+	}
+
+	protected void showMessage(Label messageLabel, String message, MessageType type) {
+		messageLabel.setText(message);
+		messageLabel.setTextFill(type.getPaint());
+
+		FadeTransition fadeTransition = new FadeTransition(Duration.millis(300), messageLabel);
+		fadeTransition.setFromValue(0.0);
+		fadeTransition.setToValue(1.0);
+		fadeTransition.setCycleCount(1);
+		fadeTransition.setAutoReverse(false);
+		fadeTransition.play();
 	}
 }

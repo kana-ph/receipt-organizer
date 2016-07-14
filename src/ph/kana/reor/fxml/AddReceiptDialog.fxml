@@ -43,7 +43,7 @@
                   <String fx:value="form-control-s" />
                </styleClass>
                <children>
-                  <Label text="Date" />
+                  <Label text="Receipt Date" />
                   <DatePicker fx:id="receiptDatePicker" />
                </children>
             </VBox>
@@ -114,6 +114,11 @@
                   <String fx:value="form-control-buttons" />
                </styleClass>
                <children>
+                  <Label fx:id="messageLabel" textAlignment="RIGHT" wrapText="true">
+                     <padding>
+                        <Insets right="15.0" />
+                     </padding>
+                  </Label>
                   <Button mnemonicParsing="false" onAction="#cancelButtonClick" text="Cancel" />
                   <Button mnemonicParsing="false" onAction="#saveButtonClick" text="Save" />
                </children>

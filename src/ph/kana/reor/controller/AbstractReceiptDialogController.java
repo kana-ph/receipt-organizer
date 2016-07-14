@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -16,7 +17,10 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.util.converter.BigDecimalStringConverter;
+import ph.kana.reor.exception.ValidationException;
+import ph.kana.reor.type.MessageType;
 import ph.kana.reor.util.DialogsUtil;
+import ph.kana.reor.util.ValidationUtil;
 
 public abstract class AbstractReceiptDialogController extends AbstractWindowController implements Initializable {
 
@@ -29,6 +33,7 @@ public abstract class AbstractReceiptDialogController extends AbstractWindowCont
 	@FXML protected CheckBox lifetimeWarrantyCheckbox;
 	@FXML protected DatePicker warrantyDatePicker;
 	@FXML protected TextField tagsTextField;
+	@FXML protected Label messageLabel;
 
 	@FXML protected AnchorPane rootPane;
 	@FXML protected HBox warrantyBox;
@@ -62,6 +67,22 @@ public abstract class AbstractReceiptDialogController extends AbstractWindowCont
 	@FXML
 	public void cancelButtonClick() {
 		getWindow().close();
+	}
+
+	protected void performSave(Runnable runnable) {
+		try {
+			ValidationUtil.validateRequiredValue("Title", titleTextField.getText());
+			ValidationUtil.validateRequiredValue("Amount", amountTextField.getText());
+			ValidationUtil.validateRequiredValue("Receipt Date", receiptDatePicker.getValue());
+
+			if (warrantyCheckbox.isSelected() && !lifetimeWarrantyCheckbox.isSelected()) {
+				ValidationUtil.validateRequiredValue("Warranty Date", warrantyDatePicker.getValue());
+			}
+
+			runnable.run();
+		} catch (ValidationException e) {
+			showMessage(messageLabel, e.getMessage(), MessageType.ERROR);
+		}
 	}
 
 	private TextFormatter<BigDecimal> getBigDecimalTextFormatter() {
