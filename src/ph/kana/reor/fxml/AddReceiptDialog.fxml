@@ -115,7 +115,7 @@
                </styleClass>
                <children>
                   <Button mnemonicParsing="false" onAction="#cancelButtonClick" text="Cancel" />
-                  <Button mnemonicParsing="false" text="Save" />
+                  <Button mnemonicParsing="false" onAction="#saveButtonClick" text="Save" />
                </children>
             </HBox>
          </children>
