@@ -11,12 +11,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="600.0" prefWidth="460.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.kana.reor.controller.AddReceiptDialogController">
    <children>
-      <VBox layoutX="140.0" layoutY="140.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="60.0">
+      <VBox layoutX="140.0" layoutY="140.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="60.0">
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
@@ -51,7 +50,7 @@
             <VBox prefHeight="200.0" prefWidth="100.0">
                <styleClass>
                   <String fx:value="form-row" />
-                  <String fx:value="form-control-m" />
+                  <String fx:value="form-control-l" />
                </styleClass>
                <children>
                   <Label text="Attachments" />
@@ -84,7 +83,16 @@
                </styleClass>
                <children>
                   <CheckBox mnemonicParsing="false" text="Warranty" />
-                  <DatePicker disable="true" />
+                  <HBox alignment="CENTER_LEFT" disable="true">
+                     <children>
+                        <DatePicker>
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </DatePicker>
+                        <CheckBox mnemonicParsing="false" text="Lifetime Warranty" />
+                     </children>
+                  </HBox>
                </children>
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0">
@@ -97,12 +105,17 @@
                   <TextField />
                </children>
             </VBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <styleClass>
+                  <String fx:value="form-row" />
+                  <String fx:value="form-control-buttons" />
+               </styleClass>
+               <children>
+                  <Button mnemonicParsing="false" text="Cancel" />
+                  <Button mnemonicParsing="false" text="Save" />
+               </children>
+            </HBox>
          </children>
       </VBox>
-      <TilePane alignment="CENTER_RIGHT" layoutX="130.0" layoutY="451.0" prefHeight="100.0" prefWidth="400.0" tileAlignment="CENTER_RIGHT" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="500.0">
-         <children>
-            <Button mnemonicParsing="false" text="Cancel" />
-            <Button mnemonicParsing="false" text="Save" />
-         </children></TilePane>
    </children>
 </AnchorPane>

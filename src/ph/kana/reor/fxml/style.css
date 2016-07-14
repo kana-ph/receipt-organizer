@@ -1,3 +1,15 @@
+.form-control-buttons {
+	-fx-pref-height: 80px;
+	-fx-alignment: CENTER_RIGHT;
+	-fx-spacing: 15px;
+	-fx-padding: 10px 0px 0px 0px !important;
+}
+
+.form-control-buttons .button {
+	-fx-pref-height: 40px;
+	-fx-pref-width: 80px;
+}
+
 .form-control-s {
 	-fx-pref-height: 40px;
 }
@@ -6,8 +18,13 @@
 	-fx-pref-height: 100px;
 }
 
+.form-control-l {
+	-fx-pref-height: 140px;
+}
+
 .form-row {
 	-fx-padding: 3px 0px 9px 0px;
+	-fx-spacing: 3px;
 }
 
 .toolbox {
