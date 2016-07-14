@@ -16,11 +16,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
+import javafx.scene.layout.Pane;
 import javafx.util.converter.BigDecimalStringConverter;
 import ph.kana.reor.util.DialogsUtil;
 
-public class AddReceiptDialogController implements Initializable {
+public class AddReceiptDialogController extends AbstractWindowController implements Initializable {
 
 	@FXML private TextField titleTextField;
 	@FXML private TextField amountTextField;
@@ -41,9 +41,14 @@ public class AddReceiptDialogController implements Initializable {
 		amountTextField.setTextFormatter(getBigDecimalTextFormatter());
 	}
 
+	@Override
+	protected Pane getRootPane() {
+		return rootPane;
+	}
+
 	@FXML
 	public void addFileButtonClick() {
-		List<File> attachments = DialogsUtil.showAttachmentsFileChooser(getStage());
+		List<File> attachments = DialogsUtil.showAttachmentsFileChooser(getWindow());
 		addAttachments(attachments);
 	}
 
@@ -64,15 +69,11 @@ public class AddReceiptDialogController implements Initializable {
 
 	@FXML
 	public void cancelButtonClick() {
-		getStage().close();
-	}
-
-	private Stage getStage() {
-		return (Stage) rootPane.getScene().getWindow();
+		getWindow().close();
 	}
 
 	private TextFormatter<BigDecimal> getBigDecimalTextFormatter() {
-		return new TextFormatter<BigDecimal>(new BigDecimalStringConverter(), BigDecimal.ZERO);
+		return new TextFormatter(new BigDecimalStringConverter(), BigDecimal.ZERO);
 	}
 
 	private void addAttachments(List<File> attachments) {

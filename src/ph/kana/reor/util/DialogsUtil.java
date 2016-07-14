@@ -16,14 +16,6 @@ import javafx.stage.StageStyle;
 
 public class DialogsUtil {
 
-	private static Stage primaryStage = null;
-
-	public static void setPrimaryStage(Stage stage) {
-		if (primaryStage == null) {
-			primaryStage = stage;
-		}
-	}
-
 	public static void openDialog(Stage parent, String title, String fxmlName) {
 		String fxmlLocation = String.format("/ph/kana/reor/fxml/%s.fxml", fxmlName);
 
@@ -35,7 +27,7 @@ public class DialogsUtil {
 			Stage dialog = new Stage();
 			dialog.initStyle(StageStyle.UNIFIED);
 			dialog.initModality(Modality.APPLICATION_MODAL);
-			dialog.initOwner(nullSafeParent(parent));
+			dialog.initOwner(parent);
 
 			dialog.setTitle(title);
 			dialog.setScene(scene);
@@ -54,12 +46,8 @@ public class DialogsUtil {
 		fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 		fileChooser.getExtensionFilters().addAll(fetchValidAttachmentFilter());
 
-		List<File> files = fileChooser.showOpenMultipleDialog(nullSafeParent(parent));
+		List<File> files = fileChooser.showOpenMultipleDialog(parent);
 		return (files != null)? files : Collections.EMPTY_LIST;
-	}
-
-	private static Stage nullSafeParent(Stage parent) {
-		return (parent != null)? parent : primaryStage;
 	}
 
 	private static List<FileChooser.ExtensionFilter> fetchValidAttachmentFilter() {

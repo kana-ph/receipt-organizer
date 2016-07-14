@@ -5,20 +5,28 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import ph.kana.reor.util.DialogsUtil;
 
-public class HomeController implements Initializable {
+public class HomeController extends AbstractWindowController implements Initializable {
 
 	@FXML private Accordion toolbox;
+	@FXML private AnchorPane rootPane;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		toolbox.setExpandedPane(toolbox.getPanes().get(0));
 	}
 
+	@Override
+	protected Pane getRootPane() {
+		return rootPane;
+	}
+
 	@FXML
 	public void addReceiptButtonClick() {
-		DialogsUtil.openDialog(null, "Add Receipt", "AddReceiptDialog");
+		DialogsUtil.openDialog(getWindow(), "Add Receipt", "AddReceiptDialog");
 	}
 
 }
