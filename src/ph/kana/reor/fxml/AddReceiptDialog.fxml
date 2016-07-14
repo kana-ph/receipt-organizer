@@ -3,6 +3,7 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -59,7 +60,7 @@
                         <ListView prefHeight="100.0" prefWidth="310.0" />
                         <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="78.0" text="Add File" textAlignment="CENTER" wrapText="true">
                            <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                              <Insets left="5.0" right="5.0" />
                            </HBox.margin>
                         </Button>
                      </children>
@@ -74,6 +75,16 @@
                <children>
                   <Label text="Description" />
                   <TextArea prefHeight="200.0" prefWidth="200.0" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <styleClass>
+                  <String fx:value="form-row" />
+                  <String fx:value="form-control-s" />
+               </styleClass>
+               <children>
+                  <CheckBox mnemonicParsing="false" text="Warranty" />
+                  <DatePicker disable="true" />
                </children>
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0">
