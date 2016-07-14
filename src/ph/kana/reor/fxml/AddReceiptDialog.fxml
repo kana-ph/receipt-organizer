@@ -13,14 +13,14 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="600.0" prefWidth="460.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.kana.reor.controller.AddReceiptDialogController">
+<AnchorPane fx:id="rootPane" prefHeight="600.0" prefWidth="460.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ph.kana.reor.controller.AddReceiptDialogController">
    <children>
-      <VBox layoutX="140.0" layoutY="140.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="60.0">
+      <VBox layoutX="140.0" layoutY="140.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="40.0">
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
                   <Label text="Title" />
-                  <TextField />
+                  <TextField fx:id="titleTextField" />
                </children>
                <styleClass>
                   <String fx:value="form-row" />
@@ -30,7 +30,7 @@
             <VBox fillWidth="false" prefHeight="200.0" prefWidth="100.0">
                <children>
                   <Label text="Amount" />
-                  <TextField />
+                  <TextField fx:id="amountTextField" />
                </children>
                <styleClass>
                   <String fx:value="form-row" />
@@ -44,7 +44,7 @@
                </styleClass>
                <children>
                   <Label text="Date" />
-                  <DatePicker />
+                  <DatePicker fx:id="receiptDatePicker" />
                </children>
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0">
@@ -56,11 +56,11 @@
                   <Label text="Attachments" />
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <ListView prefHeight="100.0" prefWidth="310.0">
+                        <ListView fx:id="attachmentList" prefHeight="100.0" prefWidth="310.0">
                            <HBox.margin>
                               <Insets right="5.0" />
                            </HBox.margin></ListView>
-                        <Button mnemonicParsing="false" prefHeight="100.0" prefWidth="78.0" text="Add File" textAlignment="CENTER" wrapText="true">
+                        <Button mnemonicParsing="false" onAction="#addFileButtonClick" prefHeight="100.0" prefWidth="78.0" text="Add File" textAlignment="CENTER" wrapText="true">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -76,7 +76,7 @@
                </styleClass>
                <children>
                   <Label text="Description" />
-                  <TextArea prefHeight="200.0" prefWidth="200.0" />
+                  <TextArea fx:id="desciptionTextArea" prefHeight="200.0" prefWidth="200.0" />
                </children>
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0">
@@ -85,15 +85,15 @@
                   <String fx:value="form-control-s" />
                </styleClass>
                <children>
-                  <CheckBox mnemonicParsing="false" text="Warranty" />
-                  <HBox alignment="CENTER_LEFT" disable="true">
+                  <CheckBox fx:id="warrantyCheckbox" mnemonicParsing="false" onAction="#warrantyToggleClick" text="Warranty" />
+                  <HBox fx:id="warrantyBox" alignment="CENTER_LEFT" disable="true">
                      <children>
-                        <DatePicker>
+                        <DatePicker fx:id="warrantyDatePicker">
                            <HBox.margin>
                               <Insets right="5.0" />
                            </HBox.margin>
                         </DatePicker>
-                        <CheckBox mnemonicParsing="false" text="Lifetime Warranty" />
+                        <CheckBox fx:id="lifetimeWarrantyCheckbox" mnemonicParsing="false" onAction="#lifetimeWarrantyToggleClick" text="Lifetime Warranty" />
                      </children>
                   </HBox>
                </children>
@@ -105,7 +105,7 @@
                </styleClass>
                <children>
                   <Label text="Tags" />
-                  <TextField />
+                  <TextField fx:id="tagsTextField" />
                </children>
             </VBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
@@ -114,7 +114,7 @@
                   <String fx:value="form-control-buttons" />
                </styleClass>
                <children>
-                  <Button mnemonicParsing="false" text="Cancel" />
+                  <Button mnemonicParsing="false" onAction="#cancelButtonClick" text="Cancel" />
                   <Button mnemonicParsing="false" text="Save" />
                </children>
             </HBox>

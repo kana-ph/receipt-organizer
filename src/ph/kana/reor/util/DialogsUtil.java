@@ -1,10 +1,15 @@
 package ph.kana.reor.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -30,7 +35,7 @@ public class DialogsUtil {
 			Stage dialog = new Stage();
 			dialog.initStyle(StageStyle.UNIFIED);
 			dialog.initModality(Modality.APPLICATION_MODAL);
-			dialog.initOwner((parent != null)? parent : primaryStage);
+			dialog.initOwner(nullSafeParent(parent));
 
 			dialog.setTitle(title);
 			dialog.setScene(scene);
@@ -41,5 +46,28 @@ public class DialogsUtil {
 		} catch (IOException e) {
 			e.printStackTrace(System.err);
 		}
+	}
+
+	public static List<File> showAttachmentsFileChooser(Stage parent) {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open Attachments");
+		fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+		fileChooser.getExtensionFilters().addAll(fetchValidAttachmentFilter());
+
+		List<File> files = fileChooser.showOpenMultipleDialog(nullSafeParent(parent));
+		return (files != null)? files : Collections.EMPTY_LIST;
+	}
+
+	private static Stage nullSafeParent(Stage parent) {
+		return (parent != null)? parent : primaryStage;
+	}
+
+	private static List<FileChooser.ExtensionFilter> fetchValidAttachmentFilter() {
+		FileChooser.ExtensionFilter[] filters = {
+			new FileChooser.ExtensionFilter("All Accepted Types", "*.jpg", "*.jpeg", "*.png", "*.gif", "*.bmp","*.pdf", "*.doc", "*.docx", "*.xls", "*.xlsx", "*.odt", "*.rtf" ),
+			new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.jpeg", "*.png", "*.gif", "*.bmp"),
+			new FileChooser.ExtensionFilter("Document Files", "*.pdf", "*.doc", "*.docx", "*.xls", "*.xlsx", "*.odt", "*.rtf")
+		};
+		return Arrays.asList(filters);
 	}
 }
