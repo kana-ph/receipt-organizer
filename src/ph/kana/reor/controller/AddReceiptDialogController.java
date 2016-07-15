@@ -1,5 +1,6 @@
 package ph.kana.reor.controller;
 
+import ph.kana.reor.controller.common.AbstractReceiptDialogController;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-package ph.kana.reor.controller;
+package ph.kana.reor.controller.common;
 
 import java.io.File;
 import java.math.BigDecimal;

@@ -1,5 +1,6 @@
 package ph.kana.reor.controller;
 
+import ph.kana.reor.controller.common.AbstractWindowController;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;

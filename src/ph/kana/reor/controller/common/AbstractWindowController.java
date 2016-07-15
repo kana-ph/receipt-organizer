@@ -1,4 +1,4 @@
-package ph.kana.reor.controller;
+package ph.kana.reor.controller.common;
 
 import javafx.animation.FadeTransition;
 import javafx.scene.control.Label;
