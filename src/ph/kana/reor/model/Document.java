@@ -5,12 +5,21 @@ import java.util.HashSet;
 import java.util.Set;
 
 public abstract class Document {
+	private Long id;
 	private String title;
 	private LocalDate date;
 	private String description;
 
-	private Set tags;
-	private Set attachments;
+	private Set<Tag> tags;
+	private Set<Attachment> attachments;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getTitle() {
 		return title;
