@@ -2,7 +2,7 @@
 	-fx-pref-height: 80px;
 	-fx-alignment: CENTER_RIGHT;
 	-fx-spacing: 15px;
-	-fx-padding: 10px 0px 0px 0px !important;
+	-fx-padding: 5px 0px 0px 0px !important;
 }
 
 .form-control-buttons .button {

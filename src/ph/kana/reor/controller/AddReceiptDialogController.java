@@ -1,11 +1,12 @@
 package ph.kana.reor.controller;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
-import ph.kana.reor.type.MessageType;
+import ph.kana.reor.model.Receipt;
 
 public class AddReceiptDialogController extends AbstractReceiptDialogController {
 
@@ -23,8 +24,10 @@ public class AddReceiptDialogController extends AbstractReceiptDialogController 
 	@FXML
 	public void saveButtonClick() {
 		performSave(() -> {
-			showMessage(messageLabel, "Successfully Saved!", MessageType.SUCCESS);
 			clearForm();
+			Receipt receipt = new Receipt();
+			receipt.setAmount(new BigDecimal(1.00));
+			return receipt;
 		});
 	}
 
