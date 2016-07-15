@@ -17,7 +17,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.util.converter.BigDecimalStringConverter;
@@ -79,7 +78,6 @@ public abstract class AbstractReceiptDialogController extends AbstractWindowCont
 
 	protected void performSave(Supplier<Receipt> save) {
 		try {
-			messageLabel.setTooltip(null);
 			validateRequiredValue("Title", titleTextField.getText());
 			validateRequiredValue("Amount", amountTextField.getText());
 			validatePositiveNumber("Amount", new BigDecimal(amountTextField.getText()), true);
@@ -117,7 +115,7 @@ public abstract class AbstractReceiptDialogController extends AbstractWindowCont
 		List<String> warnings = new ArrayList();
 
 		if (amount.equals(BigDecimal.ZERO)) {
-			warnings.add("Amount is 0.00");
+			warnings.add("No amount set");
 		}
 		if (tags.isEmpty()) {
 			warnings.add("No tags added");
@@ -131,10 +129,9 @@ public abstract class AbstractReceiptDialogController extends AbstractWindowCont
 		if (warnings.isEmpty()) {
 			showMessage(messageLabel, "Receipt successfully saved!", MessageType.SUCCESS);
 		} else {
-			String warningDetails = String.join("\n", warnings);
-			String warningMessage = "Receipt successfully saved with warnings!";
+			String warningDetails = String.join(" | ", warnings);
+			String warningMessage = String.format("%s\nReceipt successfully saved with warnings!", warningDetails);
 			showMessage(messageLabel, warningMessage, MessageType.WARNING);
-			messageLabel.setTooltip(new Tooltip(warningDetails));
 		}
 	}
 }

@@ -26,7 +26,7 @@ public class AddReceiptDialogController extends AbstractReceiptDialogController 
 		performSave(() -> {
 			clearForm();
 			Receipt receipt = new Receipt();
-			receipt.setAmount(new BigDecimal(1.00));
+			receipt.setAmount(new BigDecimal(0.00));
 			return receipt;
 		});
 	}
