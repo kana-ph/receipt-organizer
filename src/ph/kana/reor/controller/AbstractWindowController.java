@@ -19,7 +19,7 @@ public abstract class AbstractWindowController {
 		messageLabel.setText(message);
 		messageLabel.setTextFill(type.getPaint());
 
-		FadeTransition fadeTransition = new FadeTransition(Duration.millis(300), messageLabel);
+		FadeTransition fadeTransition = new FadeTransition(Duration.millis(200), messageLabel);
 		fadeTransition.setFromValue(0.0);
 		fadeTransition.setToValue(1.0);
 		fadeTransition.setCycleCount(1);
