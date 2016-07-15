@@ -16,7 +16,8 @@ public abstract class AbstractWindowController {
 	}
 
 	protected void showMessage(Label messageLabel, String message, MessageType type) {
-		messageLabel.setText(message);
+		String formattedMessage = String.format("%c  %s", type.getIcon(), message);
+		messageLabel.setText(formattedMessage);
 		messageLabel.setTextFill(type.getPaint());
 
 		FadeTransition fadeTransition = new FadeTransition(Duration.millis(200), messageLabel);
