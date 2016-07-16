@@ -3,31 +3,26 @@ package ph.kana.reor.util;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.Collection;
-import ph.kana.reor.exception.EmptyAttachmentException;
-import ph.kana.reor.exception.ValidationException;
 
 public class ValidationUtil {
 
-	public static void validateRequiredValue(String field, Object value) throws ValidationException {
+	public static boolean validateRequiredValue(Object value) {
 		if (value == null) {
-			throw new ValidationException(field + " is required.");
+			return false;
 		}
-		if ((value instanceof String) && ((String) value).isEmpty()) {
-			throw new ValidationException(field + " is required.");
-		}
+		return !((value instanceof String) && ((String) value).isEmpty());
 	}
 
-	public static void validatePositiveNumber(String field, BigDecimal value, boolean zeroAllowed) throws ValidationException {
+	public static boolean validatePositiveNumber(BigDecimal value, boolean zeroAllowed) {
 		if (zeroAllowed && (value.compareTo(BigDecimal.ZERO) < 0)) {
-			throw new ValidationException(field + " cannot be lower than 0.");
+			return false;
 		} else if (!zeroAllowed && (value.compareTo(BigDecimal.ZERO) <= 0)) {
-			throw new ValidationException(field + " must be greater than 0.");
+			return false;
 		}
+		return true;
 	}
 
-	public static void validateHasAttachments(Collection<File> attachments) throws EmptyAttachmentException {
-		if (attachments.isEmpty()) {
-			throw new EmptyAttachmentException();
-		}
+	public static boolean validateHasAttachments(Collection<File> attachments) {
+		return  !attachments.isEmpty();
 	}
 }
