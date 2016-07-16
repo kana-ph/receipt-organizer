@@ -23,8 +23,11 @@
 }
 
 .form-row {
-	-fx-padding: 3px 0px 9px 0px;
 	-fx-spacing: 3px;
+}
+
+.message-label {
+	-fx-font-size: 10px;
 }
 
 .toolbox {

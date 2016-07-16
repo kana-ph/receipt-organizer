@@ -13,13 +13,8 @@ public class ValidationUtil {
 		return !((value instanceof String) && ((String) value).isEmpty());
 	}
 
-	public static boolean validatePositiveNumber(BigDecimal value, boolean zeroAllowed) {
-		if (zeroAllowed && (value.compareTo(BigDecimal.ZERO) < 0)) {
-			return false;
-		} else if (!zeroAllowed && (value.compareTo(BigDecimal.ZERO) <= 0)) {
-			return false;
-		}
-		return true;
+	public static boolean validatePositiveNumber(BigDecimal value) {
+		return (value.compareTo(BigDecimal.ZERO) >= 0);
 	}
 
 	public static boolean validateHasAttachments(Collection<File> attachments) {

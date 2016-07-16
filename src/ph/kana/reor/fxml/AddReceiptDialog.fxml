@@ -10,7 +10,6 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
@@ -22,6 +21,7 @@
                <children>
                   <Label text="Title" />
                   <TextField fx:id="titleTextField" />
+                  <Label fx:id="titleMessageLabel" styleClass="message-label" />
                </children>
                <styleClass>
                   <String fx:value="form-row" />
@@ -32,6 +32,7 @@
                <children>
                   <Label text="Amount" />
                   <TextField fx:id="amountTextField" />
+                  <Label fx:id="amountMessageLabel" styleClass="message-label" />
                </children>
                <styleClass>
                   <String fx:value="form-row" />
@@ -46,6 +47,7 @@
                <children>
                   <Label text="Receipt Date" />
                   <DatePicker fx:id="receiptDatePicker" />
+                  <Label fx:id="receiptDateMessageLabel" styleClass="message-label" />
                </children>
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0">
@@ -68,6 +70,7 @@
                         </Button>
                      </children>
                   </HBox>
+                  <Label fx:id="attachmentsMessageLabel" styleClass="message-label" />
                </children>
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0">
@@ -78,6 +81,7 @@
                <children>
                   <Label text="Description" />
                   <TextArea fx:id="desciptionTextArea" prefHeight="200.0" prefWidth="200.0" />
+                  <Label fx:id="descriptionMessageLabel" styleClass="message-label" />
                </children>
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0">
@@ -97,6 +101,7 @@
                         <CheckBox fx:id="lifetimeWarrantyCheckbox" mnemonicParsing="false" onAction="#lifetimeWarrantyToggleClick" text="Lifetime Warranty" />
                      </children>
                   </HBox>
+                  <Label fx:id="warrantyMessageLabel" styleClass="message-label" />
                </children>
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0">
@@ -107,29 +112,18 @@
                <children>
                   <Label text="Tags" />
                   <TextField fx:id="tagsTextField" />
+                  <Label fx:id="tagsMessageLabel" styleClass="message-label" />
                </children>
             </VBox>
-            <FlowPane alignment="CENTER" rowValignment="TOP">
-               <children>
-                  <Label fx:id="messageLabel" wrapText="true">
-                     <padding>
-                        <Insets right="15.0" />
-                     </padding>
-                  </Label>
-               </children>
-               <styleClass>
-                  <String fx:value="form-row" />
-                  <String fx:value="form-control-s" />
-               </styleClass>
-            </FlowPane>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <styleClass>
                   <String fx:value="form-row" />
                   <String fx:value="form-control-buttons" />
                </styleClass>
                <children>
-                  <Button mnemonicParsing="false" onAction="#cancelButtonClick" text="Cancel" />
-                  <Button mnemonicParsing="false" onAction="#saveButtonClick" text="Save" />
+                  <Label fx:id="formMessageLabel" styleClass="message-label" textAlignment="RIGHT" />
+                  <Button cancelButton="true" mnemonicParsing="false" onAction="#cancelButtonClick" text="Cancel" />
+                  <Button defaultButton="true" mnemonicParsing="false" onAction="#saveButtonClick" text="Save" />
                </children>
             </HBox>
          </children>
