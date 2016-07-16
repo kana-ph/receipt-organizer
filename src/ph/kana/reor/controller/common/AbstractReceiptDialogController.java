@@ -3,9 +3,10 @@ package ph.kana.reor.controller.common;
 import java.io.File;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.function.Supplier;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -21,7 +22,7 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.util.converter.BigDecimalStringConverter;
-import ph.kana.reor.model.Receipt;
+import ph.kana.reor.type.MessageType;
 import ph.kana.reor.util.DialogsUtil;
 
 public abstract class AbstractReceiptDialogController extends AbstractWindowController implements Initializable {
@@ -47,6 +48,8 @@ public abstract class AbstractReceiptDialogController extends AbstractWindowCont
 
 	@FXML protected AnchorPane rootPane;
 	@FXML protected HBox warrantyBox;
+
+	protected Map<Control, Boolean> fieldValidity = new HashMap();
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -88,7 +91,13 @@ public abstract class AbstractReceiptDialogController extends AbstractWindowCont
 		getWindow().close();
 	}
 
-	protected void performSave(Supplier<Receipt> save) {
+	protected void performSave(Runnable save) {
+		if (formValid()) {
+			save.run();
+			showMessage(formMessageLabel, "Receipt Saved!", MessageType.SUCCESS);
+		} else {
+			formMessageLabel.setText("");
+		}
 	}
 
 	private TextFormatter<BigDecimal> getBigDecimalTextFormatter() {
@@ -112,14 +121,17 @@ public abstract class AbstractReceiptDialogController extends AbstractWindowCont
 		field.disabledProperty().addListener(listener);
 	}
 
-	private void checkRequiredFieldOnDefocus(boolean focused, String fieldName, Control field, Label messageLabel) {
+	private boolean checkRequiredFieldOnDefocus(boolean focused, String fieldName, Control field, Label messageLabel) {
 		if (!focused) {
-			validateRequiredField(fieldName, field, messageLabel);
+			return validateRequiredField(fieldName, field, messageLabel);
+		} else {
+			return fieldValidity.get(field);
 		}
 	}
 
 	private void titleTextFieldFocusChanged(ObservableValue<? extends Boolean> focus, boolean oldFocus, boolean newFocus) {
-		checkRequiredFieldOnDefocus(focus.getValue(), "Title", titleTextField, titleMessageLabel);
+		boolean valid = checkRequiredFieldOnDefocus(focus.getValue(), "Title", titleTextField, titleMessageLabel);
+		fieldValidity.put(titleTextField, valid);
 	}
 
 	private void amountTextFieldFocusChanged(ObservableValue<? extends Boolean> focus, boolean oldFocus, boolean newFocus) {
@@ -134,11 +146,13 @@ public abstract class AbstractReceiptDialogController extends AbstractWindowCont
 			if (valid) {
 				warnZeroNumberValue(fieldName, amountTextField, amountMessageLabel);
 			}
+			fieldValidity.put(amountTextField, valid);
 		}
 	}
 
 	private void receiptDatePickerFocusChanged(ObservableValue<? extends Boolean> focus, boolean oldFocus, boolean newFocus) {
-		checkRequiredFieldOnDefocus(focus.getValue(), "Receipt Date", receiptDatePicker, receiptDateMessageLabel);
+		boolean valid = checkRequiredFieldOnDefocus(focus.getValue(), "Receipt Date", receiptDatePicker, receiptDateMessageLabel);
+		fieldValidity.put(receiptDatePicker, valid);
 	}
 
 	private void attachmentListFocusChanged(ObservableValue<? extends Boolean> focus, boolean oldFocus, boolean newFocus) {
@@ -146,14 +160,26 @@ public abstract class AbstractReceiptDialogController extends AbstractWindowCont
 	}
 
 	private void warrantyDateFocusChanged(ObservableValue<? extends Boolean> focus, boolean oldFocus, boolean newFocus) {
-		checkRequiredFieldOnDefocus(focus.getValue(), "Warranty Date", warrantyDatePicker, warrantyMessageLabel);
+		boolean valid = checkRequiredFieldOnDefocus(focus.getValue(), "Warranty Date", warrantyDatePicker, warrantyMessageLabel);
+		fieldValidity.put(warrantyDatePicker, valid);
 	}
 
 	private void warrantyDateDisableChanged(ObservableValue<? extends Boolean> disable, boolean oldDisable, boolean newDisable) {
 		warrantyMessageLabel.setText("");
+		fieldValidity.put(warrantyDatePicker, true);
 	}
 
 	private void tagsTextFieldFocusChanged(ObservableValue<? extends Boolean> focus, boolean oldFocus, boolean newFocus) {
 		warnEmptyField("Tags", tagsTextField, tagsMessageLabel);
+	}
+
+	private boolean formValid() {
+		boolean valid = true;
+		valid = fieldValidity.keySet()
+			.stream()
+			.map((field) ->  fieldValidity.get(field))
+			.reduce(valid, (accumulator, _item) -> accumulator & _item);
+
+		return valid;
 	}
 }

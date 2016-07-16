@@ -1,20 +1,18 @@
 package ph.kana.reor.controller;
 
-import ph.kana.reor.controller.common.AbstractReceiptDialogController;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
-import ph.kana.reor.model.Receipt;
+import ph.kana.reor.controller.common.AbstractReceiptDialogController;
 
 public class AddReceiptDialogController extends AbstractReceiptDialogController {
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		super.initialize(url, resourceBundle);
-		receiptDatePicker.setValue(LocalDate.now());
+		clearForm();
 	}
 
 	@Override
@@ -26,16 +24,13 @@ public class AddReceiptDialogController extends AbstractReceiptDialogController 
 	public void saveButtonClick() {
 		performSave(() -> {
 			clearForm();
-			Receipt receipt = new Receipt();
-			receipt.setAmount(new BigDecimal(0.00));
-			return receipt;
 		});
 	}
 
 	private void clearForm() {
 		titleTextField.setText("");
 		amountTextField.setText("0");
-		receiptDatePicker.setValue(null);
+		receiptDatePicker.setValue(LocalDate.now());
 		attachmentList.getItems().clear();
 		desciptionTextArea.setText("");
 		warrantyCheckbox.setSelected(false);
@@ -43,5 +38,10 @@ public class AddReceiptDialogController extends AbstractReceiptDialogController 
 		warrantyDatePicker.setValue(null);
 		lifetimeWarrantyCheckbox.setSelected(false);
 		tagsTextField.setText("");
+
+		fieldValidity.put(titleTextField, false);
+		fieldValidity.put(amountTextField, true);
+		fieldValidity.put(receiptDatePicker, true);
+		fieldValidity.put(warrantyDatePicker, true);
 	}
 }

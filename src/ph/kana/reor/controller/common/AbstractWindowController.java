@@ -64,14 +64,13 @@ public abstract class AbstractWindowController {
 
 	protected void warnEmptyField(String fieldName, Control field, Label messageLabel) {
 		Object value = getControlValue(field);
-		boolean valid = validateRequiredValue(value);
 
 		if (!validateRequiredValue(value)) {
 			showMessage(messageLabel, fieldName + " has no value.", MessageType.WARNING);
 		}
 	}
 
-	private void showMessage(Label messageLabel, String message, MessageType type) {
+	protected void showMessage(Label messageLabel, String message, MessageType type) {
 		String formattedMessage = String.format("%c  %s", type.getIcon(), message);
 		messageLabel.setText(formattedMessage);
 		messageLabel.setTextFill(type.getPaint());
