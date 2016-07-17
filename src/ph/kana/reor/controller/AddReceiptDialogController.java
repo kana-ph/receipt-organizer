@@ -38,10 +38,5 @@ public class AddReceiptDialogController extends AbstractReceiptDialogController 
 		warrantyDatePicker.setValue(null);
 		lifetimeWarrantyCheckbox.setSelected(false);
 		tagsTextField.setText("");
-
-		fieldValidity.put(titleTextField, false);
-		fieldValidity.put(amountTextField, true);
-		fieldValidity.put(receiptDatePicker, true);
-		fieldValidity.put(warrantyDatePicker, true);
 	}
 }
