@@ -1,26 +1,20 @@
 package ph.kana.reor.controller.common;
 
 import java.io.File;
-import java.math.BigDecimal;
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.util.converter.BigDecimalStringConverter;
-import ph.kana.reor.type.MessageType;
 import ph.kana.reor.util.DialogsUtil;
+import ph.kana.reor.validator.ValidationRule;
 
-public abstract class AbstractReceiptDialogController extends AbstractWindowController implements Initializable {
+public abstract class AbstractReceiptDialogController extends AbstractFormController {
 
 	@FXML protected TextField titleTextField;
 	@FXML protected TextField amountTextField;
@@ -45,7 +39,7 @@ public abstract class AbstractReceiptDialogController extends AbstractWindowCont
 	@FXML protected HBox warrantyBox;
 
 	@Override
-	public void initialize(URL url, ResourceBundle resourceBundle) {
+	protected void initializeForm() {
 		amountTextField.setTextFormatter(getBigDecimalTextFormatter());
 	}
 
@@ -75,13 +69,14 @@ public abstract class AbstractReceiptDialogController extends AbstractWindowCont
 		getWindow().close();
 	}
 
-	protected void performSave(Runnable save) {
-		save.run();
-		showMessage(formMessageLabel, "Receipt Saved!", MessageType.SUCCESS);
+	@Override
+	protected List<ValidationRule> addErrorValidations() {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
-	private TextFormatter<BigDecimal> getBigDecimalTextFormatter() {
-		return new TextFormatter(new BigDecimalStringConverter(), BigDecimal.ZERO);
+	@Override
+	protected List<ValidationRule> addWarningValidations() {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	private void addAttachments(List<File> attachments) {

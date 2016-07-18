@@ -1,8 +1,6 @@
 package ph.kana.reor.controller;
 
-import java.net.URL;
 import java.time.LocalDate;
-import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import ph.kana.reor.controller.common.AbstractReceiptDialogController;
@@ -10,8 +8,7 @@ import ph.kana.reor.controller.common.AbstractReceiptDialogController;
 public class AddReceiptDialogController extends AbstractReceiptDialogController {
 
 	@Override
-	public void initialize(URL url, ResourceBundle resourceBundle) {
-		super.initialize(url, resourceBundle);
+	public void initializeForm() {
 		clearForm();
 	}
 
@@ -22,7 +19,7 @@ public class AddReceiptDialogController extends AbstractReceiptDialogController 
 
 	@FXML
 	public void saveButtonClick() {
-		performSave(() -> {
+		submit(() -> {
 			clearForm();
 		});
 	}
