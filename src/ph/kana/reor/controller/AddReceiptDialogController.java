@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import ph.kana.reor.controller.common.AbstractReceiptDialogController;
+import ph.kana.reor.type.MessageType;
 
 public class AddReceiptDialogController extends AbstractReceiptDialogController {
 
@@ -21,6 +22,8 @@ public class AddReceiptDialogController extends AbstractReceiptDialogController 
 	public void saveButtonClick() {
 		submit(() -> {
 			clearForm();
+			clearMessages();
+			showMessage(formMessageLabel, "Successfully Saved!", MessageType.SUCCESS);
 		});
 	}
 

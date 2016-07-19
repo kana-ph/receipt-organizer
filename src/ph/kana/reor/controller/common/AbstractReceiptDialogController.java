@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
@@ -16,7 +17,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import ph.kana.reor.type.MessageType;
 import ph.kana.reor.util.DialogsUtil;
-import ph.kana.reor.validator.ValidationRule;
 
 public abstract class AbstractReceiptDialogController extends AbstractFormController {
 
@@ -74,24 +74,35 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 	}
 
 	@Override
-	protected List<ValidationRule> addErrorValidations() {
-		List<ValidationRule> errorRules = new ArrayList();
-		errorRules.add(new ValidationRule<TextField>(titleTextField, this::validateTitleError));
-		errorRules.add(new ValidationRule<TextField>(amountTextField, this::validateAmountError));
-		errorRules.add(new ValidationRule<DatePicker>(receiptDatePicker, this::validateReceiptDateError));
-		errorRules.add(new ValidationRule<DatePicker>(warrantyDatePicker, this::validateWarrantyDateError));
+	protected List<BooleanSupplier> addErrorValidations() {
+		List<BooleanSupplier> errorRules = new ArrayList();
+		errorRules.add(this::validateTitleError);
+		errorRules.add(this::validateAmountError);
+		errorRules.add(this::validateReceiptDateError);
+		errorRules.add(this::validateWarrantyDateError);
 
 		return errorRules;
 	}
 
 	@Override
-	protected List<ValidationRule> addWarningValidations() {
-		List<ValidationRule> warningRules = new ArrayList();
-		warningRules.add(new ValidationRule<TextField>(amountTextField, this::validateAmountWarning));
-		warningRules.add(new ValidationRule<ListView>(attachmentList, this::validateAttachmentsWarning));
-		warningRules.add(new ValidationRule<TextField>(tagsTextField, this::validateTagsWarning));
+	protected List<Runnable> addWarningValidations() {
+		List<Runnable> warningRules = new ArrayList();
+		warningRules.add(this::validateAmountWarning);
+		warningRules.add(this::validateAttachmentsWarning);
+		warningRules.add(this::validateTagsWarning);
 
 		return warningRules;
+	}
+
+	@Override
+	protected void clearMessages() {
+		titleMessageLabel.setText("");
+		amountMessageLabel.setText("");
+		receiptDateMessageLabel.setText("");
+		attachmentsMessageLabel.setText("");
+		descriptionMessageLabel.setText("");
+		warrantyMessageLabel.setText("");
+		tagsMessageLabel.setText("");
 	}
 
 	private void addAttachments(List<File> attachments) {
@@ -103,8 +114,8 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 		});
 	}
 
-	private boolean validateTitleError(TextField textField) {
-		String title = textField.getText();
+	private boolean validateTitleError() {
+		String title = titleTextField.getText();
 		if ((title != null) && !title.isEmpty()) {
 			titleMessageLabel.setText("");
 			return true;
@@ -114,8 +125,8 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 		}
 	}
 
-	private boolean validateAmountError(TextField textField) {
-		String amount = textField.getText();
+	private boolean validateAmountError() {
+		String amount = amountTextField.getText();
 
 		if ((amount != null) && !amount.isEmpty()) {
 			BigDecimal numericAmount = new BigDecimal(amount);
@@ -132,17 +143,16 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 		}
 	}
 
-	private boolean validateAmountWarning(TextField textField) {
-		BigDecimal amount = new BigDecimal(textField.getText());
+	private void validateAmountWarning() {
+		String textValue = amountTextField.getText();
+		BigDecimal amount = new BigDecimal(textValue);
 		if (amount.equals(BigDecimal.ZERO)) {
 			showMessage(amountMessageLabel, "Amount is zero?", MessageType.WARNING);
-			return false;
 		}
-		return true;
 	}
 
-	private boolean validateReceiptDateError(DatePicker datePicker) {
-		LocalDate date = datePicker.getValue();
+	private boolean validateReceiptDateError() {
+		LocalDate date = receiptDatePicker.getValue();
 		if (date == null) {
 			showMessage(receiptDateMessageLabel, "Receipt date is required!", MessageType.ERROR);
 			return false;
@@ -150,33 +160,32 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 		return true;
 	}
 
-	private boolean validateAttachmentsWarning(ListView listView) {
-		List items = listView.getItems();
+	private void validateAttachmentsWarning() {
+		List items = attachmentList.getItems();
 		if (items.isEmpty()) {
 			showMessage(attachmentsMessageLabel, "No attached file?", MessageType.WARNING);
+		}
+	}
+
+	private boolean validateWarrantyDateError() {
+		if (warrantyDatePicker.isDisabled()) {
+			warrantyMessageLabel.setText("");
+			return true;
+		}
+		LocalDate warrantyDate = warrantyDatePicker.getValue();
+		if (warrantyDate == null) {
+			showMessage(warrantyMessageLabel, "Warranty is required!", MessageType.ERROR);
 			return false;
 		}
 		return true;
 	}
 
-	private boolean validateWarrantyDateError(DatePicker datePicker) {
-		if (datePicker.isDisabled()) {
-			warrantyMessageLabel.setText("");
-			return true;
-		} else {
-			showMessage(warrantyMessageLabel, "Warranty is required!", MessageType.ERROR);
-			return false;
-		}
-	}
-
-	private boolean validateTagsWarning(TextField textField) {
-		String title = textField.getText();
+	private void validateTagsWarning() {
+		String title = tagsTextField.getText();
 		if ((title != null) && !title.isEmpty()) {
 			tagsMessageLabel.setText("");
-			return true;
 		} else {
 			showMessage(tagsMessageLabel, "No tags?", MessageType.WARNING);
-			return false;
 		}
 	}
 }

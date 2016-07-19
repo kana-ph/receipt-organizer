@@ -4,19 +4,20 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.BooleanSupplier;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextFormatter;
 import javafx.util.converter.BigDecimalStringConverter;
-import ph.kana.reor.validator.ValidationRule;
 
 public abstract class AbstractFormController extends AbstractWindowController implements Initializable {
 
-	private List<ValidationRule> errorValidationRules;
-	private List<ValidationRule> warningValidationRules;
+	private List<BooleanSupplier> errorValidationRules;
+	private List<Runnable> warningValidationRules;
 
-	protected abstract List<ValidationRule> addErrorValidations();
-	protected abstract List<ValidationRule> addWarningValidations();
+	protected abstract List<BooleanSupplier> addErrorValidations();
+	protected abstract List<Runnable> addWarningValidations();
 	protected abstract void initializeForm();
+	protected abstract void clearMessages();
 
 	@Override
 	public final void initialize(URL url, ResourceBundle resourceBundle) {
@@ -28,6 +29,7 @@ public abstract class AbstractFormController extends AbstractWindowController im
 	protected final void submit(Runnable save) {
 		if (validateForm()) {
 			save.run();
+			clearMessages();
 		}
 	}
 
@@ -36,16 +38,21 @@ public abstract class AbstractFormController extends AbstractWindowController im
 	}
 
 	private final boolean validateForm() {
-		boolean formValid = testValidityByRules(errorValidationRules);
-		testValidityByRules(warningValidationRules);
+		boolean formValid = testFormValidity();
+		showWarnings();
 
 		return formValid;
 	}
 
-	protected boolean testValidityByRules(List<ValidationRule> rules) {
+	protected boolean testFormValidity() {
 		boolean valid = true;
-		return rules.stream()
-			.map((ValidationRule rule) -> rule.test())
+		return errorValidationRules.stream()
+			.map((rule) -> rule.getAsBoolean())
 			.reduce(valid, Boolean::logicalAnd);
+	}
+
+	private void showWarnings() {
+		warningValidationRules.stream()
+			.forEach((rule) -> rule.run());
 	}
 }
