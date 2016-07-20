@@ -52,7 +52,7 @@ public abstract class AbstractFormController extends AbstractWindowController im
 	}
 
 	private void showWarnings() {
-		warningValidationRules.stream()
+		warningValidationRules
 			.forEach((rule) -> rule.run());
 	}
 }
