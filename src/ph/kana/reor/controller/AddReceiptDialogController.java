@@ -20,7 +20,7 @@ public class AddReceiptDialogController extends AbstractReceiptDialogController 
 
 	@FXML
 	public void saveButtonClick() {
-		submit(() -> {
+		save(() -> {
 			clearForm();
 			clearMessages();
 			showMessage(formMessageLabel, "Successfully Saved!", MessageType.SUCCESS);

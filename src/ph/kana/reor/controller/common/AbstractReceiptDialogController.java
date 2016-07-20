@@ -15,8 +15,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import ph.kana.reor.exception.ServiceException;
+import ph.kana.reor.service.DefaultReceiptService;
+import ph.kana.reor.service.ReceiptService;
 import ph.kana.reor.type.MessageType;
 import ph.kana.reor.util.DialogsUtil;
+import ph.kana.reor.util.function.ThrowingRunnable;
 
 public abstract class AbstractReceiptDialogController extends AbstractFormController {
 
@@ -41,6 +45,8 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 
 	@FXML protected AnchorPane rootPane;
 	@FXML protected HBox warrantyBox;
+
+	protected ReceiptService receiptService = new DefaultReceiptService();
 
 	@Override
 	protected void initializeForm() {
@@ -103,6 +109,13 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 		descriptionMessageLabel.setText("");
 		warrantyMessageLabel.setText("");
 		tagsMessageLabel.setText("");
+	}
+
+	protected void save(ThrowingRunnable<ServiceException> saveLogic) {
+		submit(saveLogic, (ServiceException e) -> {
+			showMessage(formMessageLabel, "Unable to save receipt: " + e.getMessage(), MessageType.ERROR);
+			// add logging
+		});
 	}
 
 	private void addAttachments(List<File> attachments) {

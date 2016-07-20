@@ -5,9 +5,11 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextFormatter;
 import javafx.util.converter.BigDecimalStringConverter;
+import ph.kana.reor.util.function.ThrowingRunnable;
 
 public abstract class AbstractFormController extends AbstractWindowController implements Initializable {
 
@@ -26,10 +28,12 @@ public abstract class AbstractFormController extends AbstractWindowController im
 		warningValidationRules = addWarningValidations();
 	}
 
-	protected final void submit(Runnable save) {
-		if (validateForm()) {
-			save.run();
+	protected <T extends Throwable> void submit(ThrowingRunnable<T> submit, Consumer<T> handleException) {
+		try {
+			submit.runWithThrowable();
 			clearMessages();
+		} catch(Throwable t) {
+			handleException.accept((T) t);
 		}
 	}
 
