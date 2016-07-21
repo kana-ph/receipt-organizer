@@ -32,7 +32,7 @@ public class AddReceiptDialogController extends AbstractReceiptDialogController 
 		amountTextField.setText("0");
 		receiptDatePicker.setValue(LocalDate.now());
 		attachmentList.getItems().clear();
-		desciptionTextArea.setText("");
+		descriptionTextArea.setText("");
 		warrantyCheckbox.setSelected(false);
 		warrantyBox.setDisable(true);
 		warrantyDatePicker.setValue(null);

@@ -4,7 +4,10 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.BooleanSupplier;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -28,7 +31,7 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 	@FXML protected TextField amountTextField;
 	@FXML protected DatePicker receiptDatePicker;
 	@FXML protected ListView<File> attachmentList;
-	@FXML protected TextArea desciptionTextArea;
+	@FXML protected TextArea descriptionTextArea;
 	@FXML protected CheckBox warrantyCheckbox;
 	@FXML protected CheckBox lifetimeWarrantyCheckbox;
 	@FXML protected DatePicker warrantyDatePicker;
@@ -50,7 +53,8 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 
 	@Override
 	protected void initializeForm() {
-		amountTextField.setTextFormatter(getBigDecimalTextFormatter());
+		amountTextField.setTextFormatter(fetchBigDecimalTextFormatter());
+		tagsTextField.setTextFormatter(fetchTagsTexFormatter());
 	}
 
 	@FXML
@@ -116,6 +120,11 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 			showMessage(formMessageLabel, "Unable to save receipt: " + e.getMessage(), MessageType.ERROR);
 			// add logging
 		});
+	}
+
+	protected Set<String> fetchTags() {
+		String tagsText = tagsTextField.getText();
+		return new HashSet(Arrays.asList(tagsText.split("; ")));
 	}
 
 	private void addAttachments(List<File> attachments) {

@@ -80,7 +80,7 @@
                </styleClass>
                <children>
                   <Label text="Description" />
-                  <TextArea fx:id="desciptionTextArea" prefHeight="200.0" prefWidth="200.0" />
+                  <TextArea fx:id="descriptionTextArea" prefHeight="200.0" prefWidth="200.0" />
                   <Label fx:id="descriptionMessageLabel" styleClass="message-label" />
                </children>
             </VBox>
