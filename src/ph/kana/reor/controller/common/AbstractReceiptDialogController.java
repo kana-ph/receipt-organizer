@@ -4,8 +4,6 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
@@ -123,8 +121,7 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 	}
 
 	protected Set<String> fetchTags() {
-		String tagsText = tagsTextField.getText();
-		return new HashSet(Arrays.asList(tagsText.split("; ")));
+		return (Set) tagsTextField.getTextFormatter().getValue();
 	}
 
 	private void addAttachments(List<File> attachments) {

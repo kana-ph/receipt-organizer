@@ -10,6 +10,7 @@ public class AddReceiptDialogController extends AbstractReceiptDialogController 
 
 	@Override
 	public void initializeForm() {
+		super.initializeForm();
 		clearForm();
 	}
 

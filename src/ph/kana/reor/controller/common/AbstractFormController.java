@@ -32,11 +32,13 @@ public abstract class AbstractFormController extends AbstractWindowController im
 	}
 
 	protected <T extends Throwable> void submit(ThrowingRunnable<T> submit, Consumer<T> handleException) {
-		try {
-			submit.runWithThrowable();
-			clearMessages();
-		} catch(Throwable t) {
-			handleException.accept((T) t);
+		if (validateForm()) {
+			try {
+				submit.runWithThrowable();
+				clearMessages();
+			} catch(Throwable t) {
+				handleException.accept((T) t);
+			}
 		}
 	}
 
@@ -48,7 +50,7 @@ public abstract class AbstractFormController extends AbstractWindowController im
 		return new TextFormatter(new TagSetStringConverter(), new HashSet());
 	}
 
-	private final boolean validateForm() {
+	private boolean validateForm() {
 		boolean formValid = testFormValidity();
 		showWarnings();
 
