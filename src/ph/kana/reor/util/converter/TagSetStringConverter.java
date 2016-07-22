@@ -15,7 +15,8 @@ public class TagSetStringConverter extends StringConverter<Set<String>> {
 		if (tags == null || tags.isEmpty()) {
 			return "";
 		}
-		return String.join(DELIMITER, tags);
+		return String.join(DELIMITER, tags)
+			.toLowerCase();
 	}
 
 	@Override
@@ -23,7 +24,9 @@ public class TagSetStringConverter extends StringConverter<Set<String>> {
 		if (string == null) {
 			return Collections.EMPTY_SET;
 		}
-		string = string.trim();
+		string = string
+			.toLowerCase()
+			.trim();
 
 		if (string.isEmpty()) {
 			return Collections.EMPTY_SET;
