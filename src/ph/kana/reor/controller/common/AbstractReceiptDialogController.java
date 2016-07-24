@@ -5,10 +5,10 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.function.BooleanSupplier;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -33,7 +33,7 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 	@FXML protected CheckBox warrantyCheckbox;
 	@FXML protected CheckBox lifetimeWarrantyCheckbox;
 	@FXML protected DatePicker warrantyDatePicker;
-	@FXML protected TextField tagsTextField;
+	@FXML protected ComboBox<String> categoryComboBox;
 
 	@FXML protected Label titleMessageLabel;
 	@FXML protected Label amountMessageLabel;
@@ -41,7 +41,7 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 	@FXML protected Label attachmentsMessageLabel;
 	@FXML protected Label descriptionMessageLabel;
 	@FXML protected Label warrantyMessageLabel;
-	@FXML protected Label tagsMessageLabel;
+	@FXML protected Label categoryMessageLabel;
 	@FXML protected Label formMessageLabel;
 
 	@FXML protected AnchorPane rootPane;
@@ -52,7 +52,6 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 	@Override
 	protected void initializeForm() {
 		amountTextField.setTextFormatter(fetchBigDecimalTextFormatter());
-		tagsTextField.setTextFormatter(fetchTagsTexFormatter());
 	}
 
 	@FXML
@@ -97,7 +96,7 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 		List<Runnable> warningRules = new ArrayList();
 		warningRules.add(this::validateAmountWarning);
 		warningRules.add(this::validateAttachmentsWarning);
-		warningRules.add(this::validateTagsWarning);
+		warningRules.add(this::validateCategoryWarning);
 
 		return warningRules;
 	}
@@ -110,7 +109,7 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 		attachmentsMessageLabel.setText("");
 		descriptionMessageLabel.setText("");
 		warrantyMessageLabel.setText("");
-		tagsMessageLabel.setText("");
+		categoryMessageLabel.setText("");
 	}
 
 	protected void save(ThrowingRunnable<ServiceException> saveLogic) {
@@ -118,10 +117,6 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 			showMessage(formMessageLabel, "Unable to save receipt: " + e.getMessage(), MessageType.ERROR);
 			// add logging
 		});
-	}
-
-	protected Set<String> fetchTags() {
-		return (Set) tagsTextField.getTextFormatter().getValue();
 	}
 
 	private void addAttachments(List<File> attachments) {
@@ -199,12 +194,12 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 		return true;
 	}
 
-	private void validateTagsWarning() {
-		String title = tagsTextField.getText();
-		if ((title != null) && !title.isEmpty()) {
-			tagsMessageLabel.setText("");
+	private void validateCategoryWarning() {
+		String category = categoryComboBox.getValue();
+		if ((category != null) && !category.isEmpty()) {
+			categoryMessageLabel.setText("");
 		} else {
-			showMessage(tagsMessageLabel, "No tags?", MessageType.WARNING);
+			showMessage(categoryMessageLabel, "No category?", MessageType.WARNING);
 		}
 	}
 }

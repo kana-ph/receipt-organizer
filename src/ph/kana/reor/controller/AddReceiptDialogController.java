@@ -38,6 +38,6 @@ public class AddReceiptDialogController extends AbstractReceiptDialogController 
 		warrantyBox.setDisable(true);
 		warrantyDatePicker.setValue(null);
 		lifetimeWarrantyCheckbox.setSelected(false);
-		tagsTextField.setText("");
+		categoryComboBox.setValue(null);
 	}
 }
