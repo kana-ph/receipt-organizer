@@ -10,7 +10,6 @@ public abstract class Document {
 	private LocalDate date;
 	private String description;
 
-	private Set<Tag> tags;
 	private Set<Attachment> attachments;
 
 	public Long getId() {
@@ -43,14 +42,6 @@ public abstract class Document {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public Set getTags() {
-		return (tags == null)? (new HashSet()) : tags;
-	}
-
-	public void setTags(Set tags) {
-		this.tags = tags;
 	}
 
 	public Set getAttachments() {

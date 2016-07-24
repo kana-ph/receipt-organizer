@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 public class Receipt extends Document {
 	private BigDecimal amount;
 	private Warranty warranty;
+	private Category category;
 
 	public BigDecimal getAmount() {
 		return amount;
@@ -20,5 +21,13 @@ public class Receipt extends Document {
 
 	public void setWarranty(Warranty warranty) {
 		this.warranty = warranty;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 }

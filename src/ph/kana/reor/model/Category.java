@@ -1,6 +1,6 @@
 package ph.kana.reor.model;
 
-public class Tag {
+public class Category {
 	private Long id;
 	private String value;
 
@@ -17,6 +17,6 @@ public class Tag {
 	}
 
 	public void setValue(String value) {
-		this.value = value;
+		this.value = value.toUpperCase();
 	}
 }
