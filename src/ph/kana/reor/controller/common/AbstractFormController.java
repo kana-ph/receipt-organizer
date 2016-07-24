@@ -2,16 +2,13 @@ package ph.kana.reor.controller.common;
 
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextFormatter;
 import javafx.util.converter.BigDecimalStringConverter;
-import ph.kana.reor.util.converter.TagSetStringConverter;
 import ph.kana.reor.util.function.ThrowingRunnable;
 
 public abstract class AbstractFormController extends AbstractWindowController implements Initializable {
@@ -44,10 +41,6 @@ public abstract class AbstractFormController extends AbstractWindowController im
 
 	protected final TextFormatter<BigDecimal> fetchBigDecimalTextFormatter() {
 		return new TextFormatter(new BigDecimalStringConverter(), BigDecimal.ZERO);
-	}
-
-	protected final TextFormatter<Set<String>> fetchTagsTexFormatter() {
-		return new TextFormatter(new TagSetStringConverter(), new HashSet());
 	}
 
 	private boolean validateForm() {
