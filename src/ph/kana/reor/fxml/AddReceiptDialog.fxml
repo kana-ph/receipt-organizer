@@ -123,8 +123,8 @@
                </styleClass>
                <children>
                   <Label fx:id="formMessageLabel" styleClass="message-label" textAlignment="RIGHT" />
-                  <Button cancelButton="true" mnemonicParsing="false" onAction="#cancelButtonClick" text="Cancel" />
-                  <Button defaultButton="true" mnemonicParsing="false" onAction="#saveButtonClick" text="Save" />
+                  <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#cancelButtonClick" text="Cancel" />
+                  <Button fx:id="saveButton" defaultButton="true" mnemonicParsing="false" onAction="#saveButtonClick" text="Save" />
                </children>
             </HBox>
          </children>
