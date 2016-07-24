@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -43,6 +44,9 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 	@FXML protected Label warrantyMessageLabel;
 	@FXML protected Label categoryMessageLabel;
 	@FXML protected Label formMessageLabel;
+
+	@FXML protected Button saveButton;
+	@FXML protected Button cancelButton;
 
 	@FXML protected AnchorPane rootPane;
 	@FXML protected HBox warrantyBox;
@@ -113,10 +117,12 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 	}
 
 	protected void save(ThrowingRunnable<ServiceException> saveLogic) {
+		lockButtons(true);
 		submit(saveLogic, (ServiceException e) -> {
 			showMessage(formMessageLabel, "Unable to save receipt: " + e.getMessage(), MessageType.ERROR);
 			// add logging
 		});
+		lockButtons(false);
 	}
 
 	private void addAttachments(List<File> attachments) {
@@ -201,5 +207,10 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 		} else {
 			showMessage(categoryMessageLabel, "No category?", MessageType.WARNING);
 		}
+	}
+
+	private void lockButtons(boolean lock) {
+		saveButton.setDisable(lock);
+		cancelButton.setDisable(lock);
 	}
 }
