@@ -3,7 +3,8 @@ package ph.kana.reor.controller;
 import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import ph.kana.reor.controller.common.AbstractReceiptDialogController;
@@ -39,7 +40,7 @@ public class AddReceiptDialogController extends AbstractReceiptDialogController 
 		String title = titleTextField.getText();
 		BigDecimal amount = (BigDecimal) amountTextField.getTextFormatter().getValue();
 		LocalDate receiptDate = receiptDatePicker.getValue();
-		List<File> attachments = attachmentList.getItems();
+		Set<File> attachments = new HashSet(attachmentList.getItems());
 		String description = descriptionTextArea.getText();
 		Warranty warranty = fetchWarranty();
 		String category = categoryComboBox.getValue();

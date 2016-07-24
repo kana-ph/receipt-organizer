@@ -3,15 +3,49 @@ package ph.kana.reor.service;
 import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import ph.kana.reor.exception.ServiceException;
+import ph.kana.reor.model.Attachment;
+import ph.kana.reor.model.Category;
+import ph.kana.reor.model.Document;
+import ph.kana.reor.model.Receipt;
 import ph.kana.reor.model.Warranty;
 
 public class DefaultReceiptService implements ReceiptService {
 
 	@Override
-	public void createReceipt(String title, BigDecimal amount, LocalDate receiptDate, List<File> attachments, String description, Warranty warranty, String category) throws ServiceException {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public Receipt createReceipt(String title, BigDecimal amount, LocalDate receiptDate, Set<File> attachments, String description, Warranty warranty, String category) throws ServiceException {
+		Receipt receipt = new Receipt();
+		receipt.setTitle(title);
+		receipt.setAmount(amount);
+		receipt.setDate(receiptDate);
+		receipt.setAttachments(transformFilesToAttachments(receipt, attachments));
+		receipt.setDescription(description);
+		receipt.setWarranty(warranty);
+		receipt.setCategory(fetchCategory(category));
+
+		// TODO persist
+
+		return receipt;
+	}
+
+	private Set<Attachment> transformFilesToAttachments(Document document, Set<File> files) {
+		Set<Attachment> attachments = new HashSet();
+		files.stream()
+			.map((file) -> {
+				Attachment attachment = new Attachment();
+				attachment.setDocument(document);
+				attachment.setPath(file.getPath()); // TODO change to actual upload
+				return attachment;
+			})
+			.forEach(attachments::add);
+
+		return attachments;
+	}
+
+	private Category fetchCategory(String value) {
+		return null;
 	}
 
 }
