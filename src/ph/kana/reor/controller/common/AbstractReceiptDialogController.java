@@ -18,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import ph.kana.reor.exception.ServiceException;
+import ph.kana.reor.model.Warranty;
 import ph.kana.reor.service.DefaultReceiptService;
 import ph.kana.reor.service.ReceiptService;
 import ph.kana.reor.type.MessageType;
@@ -123,6 +124,18 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 			// add logging
 		});
 		lockButtons(false);
+	}
+
+	protected Warranty fetchWarranty() {
+		if (warrantyCheckbox.isSelected()) {
+			Warranty warranty = new Warranty();
+			if (!lifetimeWarrantyCheckbox.isSelected()) {
+				warranty.setExpiration(warrantyDatePicker.getValue());
+			}
+			return warranty;
+		} else {
+			return null;
+		}
 	}
 
 	private void addAttachments(List<File> attachments) {

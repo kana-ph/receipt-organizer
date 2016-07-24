@@ -1,9 +1,14 @@
 package ph.kana.reor.controller;
 
+import java.io.File;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import ph.kana.reor.controller.common.AbstractReceiptDialogController;
+import ph.kana.reor.exception.ServiceException;
+import ph.kana.reor.model.Warranty;
 import ph.kana.reor.type.MessageType;
 
 public class AddReceiptDialogController extends AbstractReceiptDialogController {
@@ -22,10 +27,24 @@ public class AddReceiptDialogController extends AbstractReceiptDialogController 
 	@FXML
 	public void saveButtonClick() {
 		save(() -> {
+			saveNewReceipt();
+
 			clearForm();
 			clearMessages();
 			showMessage(formMessageLabel, "Successfully Saved!", MessageType.SUCCESS);
 		});
+	}
+
+	private void saveNewReceipt() throws ServiceException {
+		String title = titleTextField.getText();
+		BigDecimal amount = (BigDecimal) amountTextField.getTextFormatter().getValue();
+		LocalDate receiptDate = receiptDatePicker.getValue();
+		List<File> attachments = attachmentList.getItems();
+		String description = descriptionTextArea.getText();
+		Warranty warranty = fetchWarranty();
+		String category = categoryComboBox.getValue();
+
+		receiptService.createReceipt(title, amount, receiptDate, attachments, description, warranty, category);
 	}
 
 	private void clearForm() {
