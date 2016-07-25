@@ -1,4 +1,4 @@
-package ph.kana.reor.util.helperinterface;
+package ph.kana.reor.util.function;
 
 @FunctionalInterface
 public interface ThrowingRunnable<T extends Throwable> {
