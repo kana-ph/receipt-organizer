@@ -1,4 +1,4 @@
-package ph.kana.reor.transaction;
+package ph.kana.reor.dao.transaction;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

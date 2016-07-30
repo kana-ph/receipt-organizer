@@ -7,12 +7,13 @@ import java.util.HashSet;
 import java.util.Set;
 import ph.kana.reor.exception.ServiceException;
 import ph.kana.reor.model.Attachment;
-import ph.kana.reor.model.Category;
 import ph.kana.reor.model.Document;
 import ph.kana.reor.model.Receipt;
 import ph.kana.reor.model.Warranty;
 
 public class DefaultReceiptService implements ReceiptService {
+
+	private final CategoryService categoryService = new DefaultCategoryService();
 
 	@Override
 	public Receipt createReceipt(String title, BigDecimal amount, LocalDate receiptDate, Set<File> attachments, String description, Warranty warranty, String category) throws ServiceException {
@@ -23,7 +24,7 @@ public class DefaultReceiptService implements ReceiptService {
 		receipt.setAttachments(transformFilesToAttachments(receipt, attachments));
 		receipt.setDescription(description);
 		receipt.setWarranty(warranty);
-		receipt.setCategory(fetchCategory(category));
+		receipt.setCategory(categoryService.fetchCategory(category));
 
 		// TODO persist
 
@@ -43,9 +44,4 @@ public class DefaultReceiptService implements ReceiptService {
 
 		return attachments;
 	}
-
-	private Category fetchCategory(String value) {
-		return null;
-	}
-
 }

@@ -1,22 +1,27 @@
-package ph.kana.reor.transaction;
+package ph.kana.reor.dao.transaction;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import ph.kana.reor.exception.DataAccessException;
 import ph.kana.reor.util.function.DatabaseAction;
 import ph.kana.reor.util.function.ThrowingRunnable;
 
-public final class Transaction {
+public abstract class Transaction<T> {
 
-	private Transaction() {}
+	protected abstract T map(ResultSet resultSet) throws SQLException;
 
-	public static void execute(DatabaseAction action) throws DataAccessException {
+	public List<T> execute(DatabaseAction action) throws DataAccessException {
 		Connection connection = null;
 		try {
 			connection = ConnectionFactory.openConnection();
 			if (connection != null) {
-				action.run(connection);
+				ResultSet resultSet = action.run(connection);
 				connection.commit();
+
+				return mapToEntityList(resultSet);
 			} else {
 				throw new DataAccessException("Unable to open connection");
 			}
@@ -28,7 +33,7 @@ public final class Transaction {
 		}
 	}
 
-	private static void safeExecute(Connection connection, ThrowingRunnable<SQLException> runnable) throws DataAccessException {
+	private void safeExecute(Connection connection, ThrowingRunnable<SQLException> runnable) throws DataAccessException {
 		try {
 			if (connection != null) {
 				runnable.runWithThrowable();
@@ -36,5 +41,15 @@ public final class Transaction {
 		} catch (SQLException e) {
 			throw new DataAccessException(e);
 		}
+	}
+
+	private List<T> mapToEntityList(ResultSet resultSet) throws SQLException {
+		List<T> mappedResult = new ArrayList();
+
+		while (resultSet.next()) {
+			mappedResult.add(map(resultSet));
+		}
+
+		return mappedResult;
 	}
 }
