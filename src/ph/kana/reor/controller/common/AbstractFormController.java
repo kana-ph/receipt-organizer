@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextFormatter;
 import javafx.util.converter.BigDecimalStringConverter;
-import ph.kana.reor.util.function.ThrowingRunnable;
+import ph.kana.reor.util.function.CheckedRunnable;
 
 public abstract class AbstractFormController extends AbstractWindowController implements Initializable {
 
@@ -28,13 +28,13 @@ public abstract class AbstractFormController extends AbstractWindowController im
 		warningValidationRules = addWarningValidations();
 	}
 
-	protected <T extends Throwable> void submit(ThrowingRunnable<T> submit, Consumer<T> handleException) {
+	protected void submit(CheckedRunnable submit, Consumer<Exception> handleException) {
 		if (validateForm()) {
 			try {
-				submit.runWithThrowable();
+				submit.run();
 				clearMessages();
 			} catch(Throwable t) {
-				handleException.accept((T) t);
+				handleException.accept((Exception) t);
 			}
 		}
 	}

@@ -17,13 +17,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import ph.kana.reor.exception.ServiceException;
 import ph.kana.reor.model.Warranty;
 import ph.kana.reor.service.DefaultReceiptService;
 import ph.kana.reor.service.ReceiptService;
 import ph.kana.reor.type.MessageType;
 import ph.kana.reor.util.DialogsUtil;
-import ph.kana.reor.util.function.ThrowingRunnable;
+import ph.kana.reor.util.function.CheckedRunnable;
 
 public abstract class AbstractReceiptDialogController extends AbstractFormController {
 
@@ -117,9 +116,9 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 		categoryMessageLabel.setText("");
 	}
 
-	protected void save(ThrowingRunnable<ServiceException> saveLogic) {
+	protected void save(CheckedRunnable saveLogic) {
 		lockButtons(true);
-		submit(saveLogic, (ServiceException e) -> {
+		submit(saveLogic, (Exception e) -> {
 			showMessage(formMessageLabel, "Unable to save receipt: " + e.getMessage(), MessageType.ERROR);
 			// add logging
 		});
