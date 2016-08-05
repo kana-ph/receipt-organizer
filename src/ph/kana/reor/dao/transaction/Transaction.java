@@ -6,26 +6,41 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import ph.kana.reor.exception.DataAccessException;
-import ph.kana.reor.util.function.DatabaseAction;
-import ph.kana.reor.util.function.ThrowingRunnable;
+import ph.kana.reor.model.Model;
+import ph.kana.reor.util.function.CheckedFunction;
+import ph.kana.reor.util.function.CheckedRunnable;
 
-public abstract class Transaction<T> {
+public abstract class Transaction<T extends Model> {
 
 	protected abstract T map(ResultSet resultSet) throws SQLException;
 
-	public List<T> executeQuery(DatabaseAction action) throws DataAccessException {
+	public List<T> executeQuery(CheckedFunction<Connection, ResultSet> action) throws DataAccessException {
+		return executeSqlStatement(connection -> {
+			ResultSet resultSet = action.apply(connection);
+			return mapToEntityList(resultSet);
+		});
+	}
+
+	public T execute(T model, CheckedFunction<Connection, Long> action) throws DataAccessException {
+		return executeSqlStatement(connection -> {
+			Long id = action.apply(connection);
+			model.setId(id);
+			return model;
+		});
+	}
+
+	private <R> R executeSqlStatement(CheckedFunction<Connection, R> sqlFunction) throws DataAccessException {
 		Connection connection = null;
 		try {
 			connection = ConnectionFactory.openConnection();
 			if (connection != null) {
-				ResultSet resultSet = action.run(connection);
+				R rv = sqlFunction.apply(connection);
 				connection.commit();
-
-				return mapToEntityList(resultSet);
+				return rv;
 			} else {
 				throw new DataAccessException("Unable to open connection");
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			safeExecute(connection, connection::rollback);
 			throw new DataAccessException(e);
 		} finally {
@@ -33,29 +48,12 @@ public abstract class Transaction<T> {
 		}
 	}
 
-	public T execute(T entity, DatabaseAction action) throws DataAccessException {
-		Connection connection = null;
-		try {
-			connection = ConnectionFactory.openConnection();
-			if (connection != null) {
-
-			} else {
-				throw new DataAccessException("Unable to open connection");
-			}
-		} catch (SQLException e) {
-			safeExecute(connection, connection::rollback);
-			throw new DataAccessException(e);
-		} finally {
-			safeExecute(connection, connection::close);
-		}
-	}
-
-	private void safeExecute(Connection connection, ThrowingRunnable<SQLException> runnable) throws DataAccessException {
+	private void safeExecute(Connection connection, CheckedRunnable runnable) throws DataAccessException {
 		try {
 			if (connection != null) {
-				runnable.runWithThrowable();
+				runnable.run();
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			throw new DataAccessException(e);
 		}
 	}
