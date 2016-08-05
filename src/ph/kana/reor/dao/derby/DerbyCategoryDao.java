@@ -15,7 +15,7 @@ public class DerbyCategoryDao extends Transaction<Category> implements CategoryD
 	public Category findByValue(String value) throws DataAccessException {
 		String sql = "SELECT id, value FROM category WHERE value = ?";
 
-		List<Category> results = execute(connection -> {
+		List<Category> results = executeQuery(connection -> {
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, value);
 
@@ -33,7 +33,7 @@ public class DerbyCategoryDao extends Transaction<Category> implements CategoryD
 	public Category save(Category category) throws DataAccessException {
 		String sql = "INSERT INTO category(value) VALUES ?";
 
-		List<Category> results = execute(connection -> {
+		List<Category> results = executeQuery(connection -> {
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, category.getValue());
 

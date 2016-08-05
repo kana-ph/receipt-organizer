@@ -13,7 +13,7 @@ public abstract class Transaction<T> {
 
 	protected abstract T map(ResultSet resultSet) throws SQLException;
 
-	public List<T> execute(DatabaseAction action) throws DataAccessException {
+	public List<T> executeQuery(DatabaseAction action) throws DataAccessException {
 		Connection connection = null;
 		try {
 			connection = ConnectionFactory.openConnection();
@@ -22,6 +22,23 @@ public abstract class Transaction<T> {
 				connection.commit();
 
 				return mapToEntityList(resultSet);
+			} else {
+				throw new DataAccessException("Unable to open connection");
+			}
+		} catch (SQLException e) {
+			safeExecute(connection, connection::rollback);
+			throw new DataAccessException(e);
+		} finally {
+			safeExecute(connection, connection::close);
+		}
+	}
+
+	public T execute(T entity, DatabaseAction action) throws DataAccessException {
+		Connection connection = null;
+		try {
+			connection = ConnectionFactory.openConnection();
+			if (connection != null) {
+
 			} else {
 				throw new DataAccessException("Unable to open connection");
 			}
