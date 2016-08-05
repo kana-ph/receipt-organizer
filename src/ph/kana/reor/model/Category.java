@@ -1,16 +1,7 @@
 package ph.kana.reor.model;
 
-public class Category {
-	private Long id;
+public class Category extends Model {
 	private String value;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getValue() {
 		return value;
