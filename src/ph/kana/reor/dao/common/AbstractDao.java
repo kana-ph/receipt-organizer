@@ -1,4 +1,4 @@
-package ph.kana.reor.dao.transaction;
+package ph.kana.reor.dao.common;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -10,7 +10,7 @@ import ph.kana.reor.model.Model;
 import ph.kana.reor.util.function.CheckedFunction;
 import ph.kana.reor.util.function.CheckedRunnable;
 
-public abstract class Transaction<T extends Model> {
+public abstract class AbstractDao<T extends Model> {
 
 	protected abstract T map(ResultSet resultSet) throws DataAccessException;
 

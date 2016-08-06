@@ -7,12 +7,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import ph.kana.reor.dao.AttachmentDao;
-import ph.kana.reor.dao.transaction.Transaction;
+import ph.kana.reor.dao.common.AbstractDao;
 import ph.kana.reor.exception.DataAccessException;
 import ph.kana.reor.model.Attachment;
 import ph.kana.reor.model.Document;
 
-public class DerbyAttachmentDao extends Transaction<Attachment> implements AttachmentDao {
+public class DerbyAttachmentDao extends AbstractDao<Attachment> implements AttachmentDao {
 
 	@Override
 	public Set<Attachment> findAllByDocument(Document document) throws DataAccessException {

@@ -1,10 +1,10 @@
-package ph.kana.reor.dao.transaction;
+package ph.kana.reor.dao.common;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public final class ConnectionFactory {
+final class ConnectionFactory {
 	private ConnectionFactory() {}
 
 	public static Connection openConnection() throws SQLException {

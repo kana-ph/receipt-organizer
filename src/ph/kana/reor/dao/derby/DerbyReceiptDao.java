@@ -7,14 +7,14 @@ import ph.kana.reor.dao.AttachmentDao;
 import ph.kana.reor.dao.CategoryDao;
 import ph.kana.reor.dao.ReceiptDao;
 import ph.kana.reor.dao.WarrantyDao;
-import ph.kana.reor.dao.transaction.Transaction;
+import ph.kana.reor.dao.common.AbstractDao;
 import ph.kana.reor.exception.DataAccessException;
 import ph.kana.reor.model.Attachment;
 import ph.kana.reor.model.Category;
 import ph.kana.reor.model.Receipt;
 import ph.kana.reor.model.Warranty;
 
-public class DerbyReceiptDao extends Transaction<Receipt> implements ReceiptDao {
+public class DerbyReceiptDao extends AbstractDao<Receipt> implements ReceiptDao {
 	private final AttachmentDao attachmentDao = new DerbyAttachmentDao();
 	private final CategoryDao categoryDao = new DerbyCategoryDao();
 	private final WarrantyDao warrantyDao = new DerbyWarrantyDao();

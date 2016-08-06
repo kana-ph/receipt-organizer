@@ -5,12 +5,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import ph.kana.reor.dao.WarrantyDao;
-import ph.kana.reor.dao.transaction.Transaction;
+import ph.kana.reor.dao.common.AbstractDao;
 import ph.kana.reor.exception.DataAccessException;
 import ph.kana.reor.model.Document;
 import ph.kana.reor.model.Warranty;
 
-public class DerbyWarrantyDao extends Transaction<Warranty> implements WarrantyDao {
+public class DerbyWarrantyDao extends AbstractDao<Warranty> implements WarrantyDao {
 
 	@Override
 	public Warranty findByIdAndDocument(Long id, Document document) throws DataAccessException {
