@@ -67,11 +67,6 @@ public class DerbyCategoryDao extends Transaction<Category> implements CategoryD
 
 	private Category findCategory(CheckedFunction<Connection, ResultSet> function) throws DataAccessException {
 		List<Category> results = executeQuery(function);
-
-		if (results.isEmpty()) {
-			return null;
-		} else {
-			return results.get(0);
-		}
+		return results.isEmpty()? null : results.get(0);
 	}
 }
