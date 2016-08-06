@@ -40,17 +40,15 @@ public class DerbyCategoryDao extends AbstractDao<Category> implements CategoryD
 	public Category save(Category category) throws DataAccessException {
 		String sql = "INSERT INTO category(value) VALUES ?";
 
-		final String value = category.getValue();
-		category = execute(category, connection -> {
+		return execute(category, connection -> {
 			PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			statement.setString(1, value);
+			statement.setString(1, category.getValue());
 
 			statement.executeUpdate();
 
 			ResultSet idResultSet = statement.getGeneratedKeys();
 			return idResultSet.getLong(1);
 		});
-		return category;
 	}
 
 	@Override
