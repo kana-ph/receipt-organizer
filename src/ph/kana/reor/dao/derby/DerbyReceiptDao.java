@@ -3,6 +3,7 @@ package ph.kana.reor.dao.derby;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
+import ph.kana.reor.dao.AttachmentDao;
 import ph.kana.reor.dao.CategoryDao;
 import ph.kana.reor.dao.ReceiptDao;
 import ph.kana.reor.dao.WarrantyDao;
@@ -14,7 +15,7 @@ import ph.kana.reor.model.Receipt;
 import ph.kana.reor.model.Warranty;
 
 public class DerbyReceiptDao extends Transaction<Receipt> implements ReceiptDao {
-
+	private final AttachmentDao attachmentDao = new DerbyAttachmentDao();
 	private final CategoryDao categoryDao = new DerbyCategoryDao();
 	private final WarrantyDao warrantyDao = new DerbyWarrantyDao();
 
@@ -37,8 +38,11 @@ public class DerbyReceiptDao extends Transaction<Receipt> implements ReceiptDao 
 		}
 	}
 
-	private Set<Attachment> fetchAttachments(Receipt receipt) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	private Set<Attachment> fetchAttachments(Receipt receipt) throws DataAccessException {
+		Set<Attachment> attachments = attachmentDao.findAllByDocument(receipt);
+		attachments.stream()
+			.forEach(attachment -> attachment.setDocument(receipt));
+		return attachments;
 	}
 
 	private Warranty fetchWarranty(Receipt receipt, Long warrantyId) throws DataAccessException {

@@ -1,18 +1,9 @@
 package ph.kana.reor.model;
 
-public class Attachment {
-	private Long id;
+public class Attachment extends Model {
 	private String path;
 
 	private Document document;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getPath() {
 		return path;
