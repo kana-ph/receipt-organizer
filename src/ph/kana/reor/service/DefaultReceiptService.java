@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import ph.kana.reor.dao.ReceiptDao;
+import ph.kana.reor.dao.derby.DerbyReceiptDao;
 import ph.kana.reor.exception.ServiceException;
 import ph.kana.reor.model.Attachment;
 import ph.kana.reor.model.Document;
@@ -13,6 +15,7 @@ import ph.kana.reor.model.Warranty;
 
 public class DefaultReceiptService implements ReceiptService {
 
+	private final ReceiptDao receiptDao = new DerbyReceiptDao();
 	private final CategoryService categoryService = new DefaultCategoryService();
 
 	@Override
