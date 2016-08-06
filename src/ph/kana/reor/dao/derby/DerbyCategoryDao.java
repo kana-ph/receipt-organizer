@@ -1,5 +1,6 @@
 package ph.kana.reor.dao.derby;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,25 +10,30 @@ import ph.kana.reor.dao.CategoryDao;
 import ph.kana.reor.dao.transaction.Transaction;
 import ph.kana.reor.exception.DataAccessException;
 import ph.kana.reor.model.Category;
+import ph.kana.reor.util.function.CheckedFunction;
 
 public class DerbyCategoryDao extends Transaction<Category> implements CategoryDao {
+
+	@Override
+	public Category findById(Long id) throws DataAccessException {
+		String sql = "SELECT id, value FROM category WHERE id = ?";
+
+		return findCategory(connection -> {
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setLong(1, id);
+			return statement.executeQuery();
+		});
+	}
 
 	@Override
 	public Category findByValue(String value) throws DataAccessException {
 		String sql = "SELECT id, value FROM category WHERE value = ?";
 
-		List<Category> results = executeQuery(connection -> {
+		return findCategory(connection -> {
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, value);
-
 			return statement.executeQuery();
 		});
-
-		if (results.isEmpty()) {
-			return null;
-		} else {
-			return results.get(0);
-		}
 	}
 
 	@Override
@@ -56,6 +62,16 @@ public class DerbyCategoryDao extends Transaction<Category> implements CategoryD
 			return category;
 		} catch (SQLException e) {
 			throw new DataAccessException(e);
+		}
+	}
+
+	private Category findCategory(CheckedFunction<Connection, ResultSet> function) throws DataAccessException {
+		List<Category> results = executeQuery(function);
+
+		if (results.isEmpty()) {
+			return null;
+		} else {
+			return results.get(0);
 		}
 	}
 }
