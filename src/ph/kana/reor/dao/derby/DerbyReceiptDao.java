@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Set;
 import ph.kana.reor.dao.CategoryDao;
 import ph.kana.reor.dao.ReceiptDao;
+import ph.kana.reor.dao.WarrantyDao;
 import ph.kana.reor.dao.transaction.Transaction;
 import ph.kana.reor.exception.DataAccessException;
 import ph.kana.reor.model.Attachment;
@@ -15,6 +16,7 @@ import ph.kana.reor.model.Warranty;
 public class DerbyReceiptDao extends Transaction<Receipt> implements ReceiptDao {
 
 	private final CategoryDao categoryDao = new DerbyCategoryDao();
+	private final WarrantyDao warrantyDao = new DerbyWarrantyDao();
 
 	@Override
 	public Receipt map(ResultSet resultSet) throws DataAccessException {
@@ -26,7 +28,7 @@ public class DerbyReceiptDao extends Transaction<Receipt> implements ReceiptDao 
 			receipt.setDate(resultSet.getDate("receipt_date").toLocalDate());
 			receipt.setAttachments(fetchAttachments(receipt));
 			receipt.setDescription(resultSet.getString("description"));
-			receipt.setWarranty(fetchWarranty(resultSet.getLong("warranty_id")));
+			receipt.setWarranty(fetchWarranty(receipt, resultSet.getLong("warranty_id")));
 			receipt.setCategory(fetchCategory(resultSet.getLong("category_id")));
 
 			return receipt;
@@ -39,11 +41,15 @@ public class DerbyReceiptDao extends Transaction<Receipt> implements ReceiptDao 
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
-	private Warranty fetchWarranty(Long warrantyId) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	private Warranty fetchWarranty(Receipt receipt, Long warrantyId) throws DataAccessException {
+		if (warrantyId !=  null) {
+			Warranty warranty = warrantyDao.findByIdAndDocument(warrantyId, receipt);
+			warranty.setDocument(receipt);
+		}
+		return null;
 	}
 
 	private Category fetchCategory(Long categoryId) throws DataAccessException {
-		return categoryDao.findById(categoryId);
+		return (categoryId == null)? null : categoryDao.findById(categoryId);
 	}
 }

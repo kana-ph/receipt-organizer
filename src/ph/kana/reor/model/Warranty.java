@@ -2,19 +2,10 @@ package ph.kana.reor.model;
 
 import java.time.LocalDate;
 
-public class Warranty {
-	private Long id;
+public class Warranty extends Model {
 	private LocalDate expiration;
 
 	private Document document;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public LocalDate getExpiration() {
 		return expiration;
