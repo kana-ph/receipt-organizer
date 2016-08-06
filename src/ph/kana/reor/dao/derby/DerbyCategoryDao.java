@@ -48,11 +48,14 @@ public class DerbyCategoryDao extends Transaction<Category> implements CategoryD
 	}
 
 	@Override
-	public Category map(ResultSet resultSet) throws SQLException {
-		Category category = new Category();
-		category.setId(resultSet.getLong("id"));
-		category.setValue(resultSet.getString("value"));
-		return category;
+	public Category map(ResultSet resultSet) throws DataAccessException {
+		try {
+			Category category = new Category();
+			category.setId(resultSet.getLong("id"));
+			category.setValue(resultSet.getString("value"));
+			return category;
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}
 	}
-
 }

@@ -12,7 +12,7 @@ import ph.kana.reor.util.function.CheckedRunnable;
 
 public abstract class Transaction<T extends Model> {
 
-	protected abstract T map(ResultSet resultSet) throws SQLException;
+	protected abstract T map(ResultSet resultSet) throws DataAccessException;
 
 	public List<T> executeQuery(CheckedFunction<Connection, ResultSet> action) throws DataAccessException {
 		return executeSqlStatement(connection -> {
@@ -58,13 +58,17 @@ public abstract class Transaction<T extends Model> {
 		}
 	}
 
-	private List<T> mapToEntityList(ResultSet resultSet) throws SQLException {
+	private List<T> mapToEntityList(ResultSet resultSet) throws DataAccessException {
 		List<T> mappedResult = new ArrayList();
 
-		while (resultSet.next()) {
-			mappedResult.add(map(resultSet));
-		}
+		try {
+			while (resultSet.next()) {
+				mappedResult.add(map(resultSet));
+			}
 
-		return mappedResult;
+			return mappedResult;
+		} catch (SQLException e) {
+			throw new DataAccessException(e);
+		}
 	}
 }
