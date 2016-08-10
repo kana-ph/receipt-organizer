@@ -48,7 +48,7 @@ public class DerbyCategoryDao extends AbstractDao<Category> implements CategoryD
 
 			ResultSet idResultSet = statement.getGeneratedKeys();
 			return idResultSet.next()? idResultSet.getLong(1) : null;
-		});
+		}, true);
 	}
 
 	@Override

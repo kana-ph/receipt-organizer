@@ -1,8 +1,11 @@
 package ph.kana.reor.dao.derby;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.List;
 import ph.kana.reor.dao.WarrantyDao;
 import ph.kana.reor.dao.common.AbstractDao;
@@ -26,6 +29,22 @@ public class DerbyWarrantyDao extends AbstractDao<Warranty> implements WarrantyD
 			});
 			return results.isEmpty()? null : results.get(0);
 		}
+	}
+
+	@Override
+	public Warranty save(Warranty warranty) throws DataAccessException { // add Connection param?
+		String sql = "INSERT INTO warranty(expiration, document_id) VALUES (?, ?)";
+		return execute(warranty, connection -> {
+			PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			LocalDate expiration = warranty.getExpiration();
+
+			statement.setDate(1, (expiration == null)? null : Date.valueOf(expiration));
+			statement.setLong(2, warranty.getDocument().getId());
+			statement.executeUpdate();
+
+			ResultSet idResultSet = statement.getGeneratedKeys();
+			return idResultSet.next()? idResultSet.getLong(1) : null;
+		}, false);
 	}
 
 	@Override

@@ -6,4 +6,6 @@ import ph.kana.reor.model.Warranty;
 
 public interface WarrantyDao {
 	Warranty findByIdAndDocument(Long id, Document document) throws DataAccessException;
+
+	Warranty save(Warranty warranty) throws DataAccessException;
 }

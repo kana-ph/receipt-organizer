@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import ph.kana.reor.dao.ReceiptDao;
 import ph.kana.reor.dao.derby.DerbyReceiptDao;
+import ph.kana.reor.exception.DataAccessException;
 import ph.kana.reor.exception.ServiceException;
 import ph.kana.reor.model.Attachment;
 import ph.kana.reor.model.Document;
@@ -20,18 +21,20 @@ public class DefaultReceiptService implements ReceiptService {
 
 	@Override
 	public Receipt createReceipt(String title, BigDecimal amount, LocalDate receiptDate, Set<File> attachments, String description, Warranty warranty, String category) throws ServiceException {
-		Receipt receipt = new Receipt();
-		receipt.setTitle(title);
-		receipt.setAmount(amount);
-		receipt.setDate(receiptDate);
-		receipt.setAttachments(transformFilesToAttachments(receipt, attachments));
-		receipt.setDescription(description);
-		receipt.setWarranty(warranty);
-		receipt.setCategory(categoryService.fetchCategory(category));
+		try {
+			Receipt receipt = new Receipt();
+			receipt.setTitle(title);
+			receipt.setAmount(amount);
+			receipt.setDate(receiptDate);
+			receipt.setAttachments(transformFilesToAttachments(receipt, attachments));
+			receipt.setDescription(description);
+			receipt.setWarranty(warranty);
+			receipt.setCategory(categoryService.fetchCategory(category));
 
-		// TODO persist
-
-		return receipt;
+			return receiptDao.save(receipt);
+		} catch (DataAccessException e) {
+			throw new ServiceException(e);
+		}
 	}
 
 	private Set<Attachment> transformFilesToAttachments(Document document, Set<File> files) {
