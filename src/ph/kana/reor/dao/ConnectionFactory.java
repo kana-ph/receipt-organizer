@@ -1,4 +1,4 @@
-package ph.kana.reor.dao.common;
+package ph.kana.reor.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,9 +9,6 @@ final class ConnectionFactory {
 
 	public static Connection openConnection() throws SQLException {
 		String connectionString = "jdbc:derby:db/organizer;create=true"; // TODO externalize
-		Connection connection = DriverManager.getConnection(connectionString);
-		connection.setAutoCommit(false);
-
-		return connection;
+		return DriverManager.getConnection(connectionString);
 	}
 }
