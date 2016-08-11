@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import java.util.Set;
 import ph.kana.reor.dao.AttachmentDao;
 import ph.kana.reor.dao.CategoryDao;
@@ -27,8 +28,12 @@ public class DerbyReceiptDao extends ReceiptDao {
 	public Receipt save(Receipt receipt) throws DataAccessException {
 		return execute(receipt, connection -> {
 			Long documentId = saveDocument(receipt, connection);
-			Long warrantyId = saveWarranty(receipt); // TODO move after-save receipt
-			return null;
+			Long receiptId = saveReceipt(receipt, documentId, connection);
+
+			Long warrantyId = saveWarranty(receipt);
+			attachWarrantyToReceipt(receipt, warrantyId, connection);
+
+			return receiptId;
 		});
 	}
 
@@ -72,15 +77,26 @@ public class DerbyReceiptDao extends ReceiptDao {
 
 	private Long saveDocument(Document document, Connection connection) throws SQLException {
 		String sql = "INSERT INTO document(title, date, description) VALUES (?, ?, ?)";
-		PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		PreparedStatement statement = connection.prepareStatement(sql, RETURN_GENERATED_KEYS);
 
 		statement.setString(1, document.getTitle());
 		statement.setDate(2, Date.valueOf(document.getDate()));
 		statement.setString(3, document.getDescription());
 		statement.executeUpdate();
 
-		ResultSet idResultSet = statement.getGeneratedKeys();
-		return idResultSet.next()? idResultSet.getLong(1) : null;
+		return fetchInsertId(statement);
+	}
+
+	private Long saveReceipt(Receipt receipt, Long documentId, Connection connection) throws SQLException {
+		String sql = "INSERT INTO receipt(id, amount, category) VALUES (?, ?, ?)";
+		PreparedStatement statement = connection.prepareStatement(sql, RETURN_GENERATED_KEYS);
+
+		statement.setLong(1, documentId);
+		statement.setBigDecimal(2, receipt.getAmount());
+		statement.setLong(3, receipt.getCategory().getId());
+		statement.executeUpdate();
+
+		return fetchInsertId(statement);
 	}
 
 	private Long saveWarranty(Receipt receipt) throws DataAccessException {
@@ -91,5 +107,21 @@ public class DerbyReceiptDao extends ReceiptDao {
 			return warranty.getId();
 		}
 		return null;
+	}
+
+	private Long fetchInsertId(Statement statement) throws SQLException {
+		ResultSet idResultSet = statement.getGeneratedKeys();
+		return idResultSet.next()? idResultSet.getLong(1) : null;
+	}
+
+	private void attachWarrantyToReceipt(Receipt receipt, Long warrantyId, Connection connection) throws SQLException {
+		if (warrantyId != null) {
+			String sql = "UPDATE receipt SET warranty_id = ? WHERE id = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+
+			statement.setLong(1, warrantyId);
+			statement.setLong(2, receipt.getId());
+			statement.executeUpdate();
+		}
 	}
 }
