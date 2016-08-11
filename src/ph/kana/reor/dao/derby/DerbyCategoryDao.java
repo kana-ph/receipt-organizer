@@ -7,12 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import ph.kana.reor.dao.CategoryDao;
-import ph.kana.reor.dao.common.AbstractDao;
 import ph.kana.reor.exception.DataAccessException;
 import ph.kana.reor.model.Category;
 import ph.kana.reor.util.function.CheckedFunction;
 
-public class DerbyCategoryDao extends AbstractDao<Category> implements CategoryDao {
+public class DerbyCategoryDao extends CategoryDao {
 
 	@Override
 	public Category findById(Long id) throws DataAccessException {
@@ -48,7 +47,7 @@ public class DerbyCategoryDao extends AbstractDao<Category> implements CategoryD
 
 			ResultSet idResultSet = statement.getGeneratedKeys();
 			return idResultSet.next()? idResultSet.getLong(1) : null;
-		}, true);
+		});
 	}
 
 	@Override

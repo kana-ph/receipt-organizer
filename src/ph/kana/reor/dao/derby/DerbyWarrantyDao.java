@@ -8,12 +8,11 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.List;
 import ph.kana.reor.dao.WarrantyDao;
-import ph.kana.reor.dao.common.AbstractDao;
 import ph.kana.reor.exception.DataAccessException;
 import ph.kana.reor.model.Document;
 import ph.kana.reor.model.Warranty;
 
-public class DerbyWarrantyDao extends AbstractDao<Warranty> implements WarrantyDao {
+public class DerbyWarrantyDao extends WarrantyDao {
 
 	@Override
 	public Warranty findByIdAndDocument(Long id, Document document) throws DataAccessException {
@@ -32,7 +31,7 @@ public class DerbyWarrantyDao extends AbstractDao<Warranty> implements WarrantyD
 	}
 
 	@Override
-	public Warranty save(Warranty warranty) throws DataAccessException { // add Connection param?
+	public Warranty save(Warranty warranty) throws DataAccessException {
 		String sql = "INSERT INTO warranty(expiration, document_id) VALUES (?, ?)";
 		return execute(warranty, connection -> {
 			PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -44,7 +43,7 @@ public class DerbyWarrantyDao extends AbstractDao<Warranty> implements WarrantyD
 
 			ResultSet idResultSet = statement.getGeneratedKeys();
 			return idResultSet.next()? idResultSet.getLong(1) : null;
-		}, false);
+		});
 	}
 
 	@Override

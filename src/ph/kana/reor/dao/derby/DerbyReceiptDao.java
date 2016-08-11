@@ -11,7 +11,6 @@ import ph.kana.reor.dao.AttachmentDao;
 import ph.kana.reor.dao.CategoryDao;
 import ph.kana.reor.dao.ReceiptDao;
 import ph.kana.reor.dao.WarrantyDao;
-import ph.kana.reor.dao.common.AbstractDao;
 import ph.kana.reor.exception.DataAccessException;
 import ph.kana.reor.model.Attachment;
 import ph.kana.reor.model.Category;
@@ -19,16 +18,17 @@ import ph.kana.reor.model.Document;
 import ph.kana.reor.model.Receipt;
 import ph.kana.reor.model.Warranty;
 
-public class DerbyReceiptDao extends AbstractDao<Receipt> implements ReceiptDao {
+public class DerbyReceiptDao extends ReceiptDao {
 	private final AttachmentDao attachmentDao = new DerbyAttachmentDao();
 	private final CategoryDao categoryDao = new DerbyCategoryDao();
 	private final WarrantyDao warrantyDao = new DerbyWarrantyDao();
 
 	@Override
-	public Receipt save(Receipt receipt) {
+	public Receipt save(Receipt receipt) throws DataAccessException {
 		return execute(receipt, connection -> {
 			Long documentId = saveDocument(receipt, connection);
 			Long warrantyId = saveWarranty(receipt); // TODO move after-save receipt
+			return null;
 		});
 	}
 
