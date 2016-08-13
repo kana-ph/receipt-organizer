@@ -1,13 +1,13 @@
 package ph.kana.reor.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import ph.kana.reor.exception.DataAccessException;
 import ph.kana.reor.model.Model;
+import ph.kana.reor.util.ConnectionManager;
 import ph.kana.reor.util.function.CheckedFunction;
 import ph.kana.reor.util.function.CheckedRunnable;
 
@@ -33,7 +33,7 @@ abstract class AbstractDao<T extends Model> {
 	private <R> R executeSqlStatement(CheckedFunction<Connection, R> sqlFunction) throws DataAccessException {
 		Connection connection = null;
 		try {
-			connection = openConnection();
+			connection = ConnectionManager.openConnection();
 			if (connection != null) {
 				R rv = sqlFunction.apply(connection);
 
@@ -72,10 +72,5 @@ abstract class AbstractDao<T extends Model> {
 		} catch (SQLException e) {
 			throw new DataAccessException(e);
 		}
-	}
-
-	private Connection openConnection() throws SQLException {
-		String connectionString = "jdbc:derby:db/organizer;create=true"; // TODO externalize
-		return DriverManager.getConnection(connectionString);
 	}
 }
