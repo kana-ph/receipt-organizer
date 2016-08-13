@@ -8,8 +8,9 @@ public final class ConnectionManager {
 
 	private ConnectionManager() {}
 
+	private static final String CONNECTION_STRING = "jdbc:derby:db/organizer;create=true"; // TODO externalize
+
 	public static Connection openConnection() throws SQLException {
-		String connectionString = "jdbc:derby:db/organizer;create=true"; // TODO externalize
-		return DriverManager.getConnection(connectionString);
+		return DriverManager.getConnection(CONNECTION_STRING);
 	}
 }
