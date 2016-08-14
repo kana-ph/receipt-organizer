@@ -116,17 +116,24 @@
                   <Label fx:id="categoryMessageLabel" styleClass="message-label" />
                </children>
             </VBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+             <VBox prefHeight="200.0" prefWidth="100.0">
                <styleClass>
                   <String fx:value="form-row" />
-                  <String fx:value="form-control-buttons" />
+                  <String fx:value="form-control-m" />
                </styleClass>
                <children>
-                  <Label fx:id="formMessageLabel" styleClass="message-label" textAlignment="RIGHT" />
-                  <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#cancelButtonClick" text="Cancel" />
-                  <Button fx:id="saveButton" defaultButton="true" mnemonicParsing="false" onAction="#saveButtonClick" text="Save" />
+                  <Label fx:id="formMessageLabel" styleClass="message-label" textAlignment="CENTER" />
+                  <HBox>
+					  <styleClass>
+						<String fx:value="form-control-buttons" />
+					 </styleClass>
+                     <children>
+                        <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#cancelButtonClick" text="Cancel" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="90.0" AnchorPane.topAnchor="0.0" />
+                        <Button fx:id="saveButton" defaultButton="true" layoutY="29.0" mnemonicParsing="false" onAction="#saveButtonClick" text="Save" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </HBox>
                </children>
-            </HBox>
+            </VBox>
          </children>
       </VBox>
    </children>
