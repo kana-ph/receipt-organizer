@@ -44,7 +44,7 @@ public class DerbyReceiptDao extends ReceiptDao {
 			receipt.setId(resultSet.getLong("id"));
 			receipt.setTitle(resultSet.getString("title"));
 			receipt.setAmount(resultSet.getBigDecimal("amount"));
-			receipt.setDate(resultSet.getDate("receipt_date").toLocalDate());
+			receipt.setDate(resultSet.getDate("document_date").toLocalDate());
 			receipt.setAttachments(fetchAttachments(receipt));
 			receipt.setDescription(resultSet.getString("description"));
 			receipt.setWarranty(fetchWarranty(receipt, resultSet.getLong("warranty_id")));
@@ -76,7 +76,7 @@ public class DerbyReceiptDao extends ReceiptDao {
 	}
 
 	private Long saveDocument(Document document, Connection connection) throws SQLException {
-		String sql = "INSERT INTO document(title, date, description) VALUES (?, ?, ?)";
+		String sql = "INSERT INTO document(title, document_date, description) VALUES (?, ?, ?)";
 		PreparedStatement statement = connection.prepareStatement(sql, RETURN_GENERATED_KEYS);
 
 		statement.setString(1, document.getTitle());
