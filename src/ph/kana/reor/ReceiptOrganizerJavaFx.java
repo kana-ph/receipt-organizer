@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ph.kana.reor.util.ConnectionManager;
 
 public class ReceiptOrganizerJavaFx extends Application {
 
@@ -32,6 +33,7 @@ public class ReceiptOrganizerJavaFx extends Application {
 	}
 
 	public static void main(String[] args) {
+		ConnectionManager.prepareDatabase();
 		launch(args);
 	}
 
