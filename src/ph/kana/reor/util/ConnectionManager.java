@@ -15,7 +15,7 @@ public final class ConnectionManager {
 
 	private ConnectionManager() {}
 
-	private static final String CONNECTION_STRING = "jdbc:derby:db/organizer;create=true"; // TODO externalize
+	private static final String CONNECTION_STRING = "jdbc:derby:db/reor;create=true"; // TODO externalize
 
 	public static Connection openConnection() throws SQLException {
 		return DriverManager.getConnection(CONNECTION_STRING);
@@ -49,20 +49,28 @@ public final class ConnectionManager {
 		}
 	}
 
-	private static void initializeTables(Connection connection) throws SQLException {
+	private static void initializeTables(Connection connection) {
 		InputStream stream = ConnectionManager.class
 			.getResourceAsStream("/ph/kana/reor/dao/derby/schema/schema.sql");
-		StringBuffer fileContents = new StringBuffer();
 
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
+			StringBuilder fileContents = new StringBuilder();
 			reader.lines()
 				.forEachOrdered(fileContents::append);
-			System.out.println(fileContents);
 
-			Statement statement = connection.createStatement();
-			statement.executeUpdate(fileContents.toString());
-
+			List<String> sqlStatements = Arrays.asList(fileContents.toString().split(";"));
+			sqlStatements.stream()
+				.forEachOrdered(sql -> executeSql(connection, sql));
 		} catch (IOException e) {
+			e.printStackTrace(System.err);
+		}
+	}
+
+	private static void executeSql(Connection connection, String sql) {
+		try {
+			Statement statement = connection.createStatement();
+			statement.execute(sql);
+		} catch (SQLException e) {
 			e.printStackTrace(System.err);
 		}
 	}
