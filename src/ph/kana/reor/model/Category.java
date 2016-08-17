@@ -8,6 +8,8 @@ public class Category extends Model {
 	}
 
 	public void setValue(String value) {
-		this.value = value.toUpperCase();
+		if (value != null) {
+			this.value = value.toUpperCase();
+		}
 	}
 }

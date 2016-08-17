@@ -12,6 +12,10 @@ public class DefaultCategoryService implements CategoryService {
 
 	@Override
 	public Category fetchCategory(String value) throws ServiceException {
+		if (value == null) {
+			return null;
+		}
+
 		try {
 			Category category = categoryDao.findByValue(value);
 

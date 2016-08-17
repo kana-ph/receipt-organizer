@@ -120,7 +120,7 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 		lockButtons(true);
 		submit(saveLogic, (Exception e) -> {
 			showMessage(formMessageLabel, "Unable to save receipt: " + e.getMessage(), MessageType.ERROR);
-			// add logging
+			e.printStackTrace(System.err);
 		});
 		lockButtons(false);
 	}

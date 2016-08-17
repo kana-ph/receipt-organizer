@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
+import java.sql.Types;
 import java.util.Set;
 import ph.kana.reor.dao.AttachmentDao;
 import ph.kana.reor.dao.CategoryDao;
@@ -88,12 +89,19 @@ public class DerbyReceiptDao extends ReceiptDao {
 	}
 
 	private Long saveReceipt(Receipt receipt, Long documentId, Connection connection) throws SQLException {
-		String sql = "INSERT INTO receipt(id, amount, category) VALUES (?, ?, ?)";
+		String sql = "INSERT INTO receipt(id, amount, category_id) VALUES (?, ?, ?)";
 		PreparedStatement statement = connection.prepareStatement(sql, RETURN_GENERATED_KEYS);
 
 		statement.setLong(1, documentId);
 		statement.setBigDecimal(2, receipt.getAmount());
-		statement.setLong(3, receipt.getCategory().getId());
+
+		Category category = receipt.getCategory();
+		if (category == null) {
+			statement.setNull(3, Types.BIGINT);
+		} else {
+			statement.setLong(3, category.getId());
+		}
+
 		statement.executeUpdate();
 
 		return fetchInsertId(statement);
