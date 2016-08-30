@@ -18,7 +18,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import ph.kana.reor.model.Warranty;
-import ph.kana.reor.service.DefaultReceiptService;
 import ph.kana.reor.service.ReceiptService;
 import ph.kana.reor.type.MessageType;
 import ph.kana.reor.util.DialogsUtil;
@@ -51,7 +50,7 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 	@FXML protected AnchorPane rootPane;
 	@FXML protected HBox warrantyBox;
 
-	protected ReceiptService receiptService = new DefaultReceiptService();
+	protected ReceiptService receiptService = new ReceiptService();
 
 	@Override
 	protected void initializeForm() {
