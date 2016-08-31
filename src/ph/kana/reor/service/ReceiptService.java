@@ -13,6 +13,7 @@ import ph.kana.reor.model.Attachment;
 import ph.kana.reor.model.Document;
 import ph.kana.reor.model.Receipt;
 import ph.kana.reor.model.Warranty;
+import ph.kana.reor.util.FileUtil;
 
 
 public class ReceiptService {
@@ -40,16 +41,12 @@ public class ReceiptService {
 
 	private Set<Attachment> transformFilesToAttachments(Document document, Set<File> files) {
 		Set<Attachment> attachments = new HashSet();
-		files.stream()
-			.map(this::uploadFile)
+		files.parallelStream()
+			.map(FileUtil::upload)
 			.map(file -> buildAttachment(document, file))
 			.forEach(attachments::add);
 
 		return attachments;
-	}
-
-	private File uploadFile(File file) {
-		return new File("");
 	}
 
 	private Attachment buildAttachment(Document document, File file) {
