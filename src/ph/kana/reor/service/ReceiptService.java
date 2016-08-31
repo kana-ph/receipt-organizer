@@ -41,14 +41,21 @@ public class ReceiptService {
 	private Set<Attachment> transformFilesToAttachments(Document document, Set<File> files) {
 		Set<Attachment> attachments = new HashSet();
 		files.stream()
-			.map((file) -> {
-				Attachment attachment = new Attachment();
-				attachment.setDocument(document);
-				attachment.setPath(file.getPath()); // TODO change to actual upload
-				return attachment;
-			})
+			.map(this::uploadFile)
+			.map(file -> buildAttachment(document, file))
 			.forEach(attachments::add);
 
 		return attachments;
+	}
+
+	private File uploadFile(File file) {
+		return new File("");
+	}
+
+	private Attachment buildAttachment(Document document, File file) {
+		Attachment attachment = new Attachment();
+		attachment.setDocument(document);
+		attachment.setPath(file.getPath());
+		return attachment;
 	}
 }
