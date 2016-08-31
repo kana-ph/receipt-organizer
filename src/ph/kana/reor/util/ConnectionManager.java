@@ -15,7 +15,7 @@ public final class ConnectionManager {
 
 	private ConnectionManager() {}
 
-	private static final String CONNECTION_STRING = "jdbc:derby:db/reor;create=true"; // TODO externalize
+	private static final String CONNECTION_STRING = "jdbc:derby:db/reor;create=true";
 
 	public static Connection openConnection() throws SQLException {
 		return DriverManager.getConnection(CONNECTION_STRING);
