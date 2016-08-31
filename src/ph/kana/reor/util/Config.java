@@ -9,17 +9,25 @@ import java.io.OutputStream;
 import java.util.Properties;
 
 
-public class Config {
+public enum Config {
 
-	private Config() {}
+	STORAGE_DIR;
+
+	private final String key;
+
+	Config() {
+		this.key = name()
+			.toLowerCase()
+			.replace("_", "-");
+	}
 
 	private final static Properties CONFIG = loadConfig();
 
-	public static String get(String key) {
+	public String getValue() {
 		return CONFIG.get(key).toString();
 	}
 
-	public static void set(String key, String value) {
+	public void setValue(String value) {
 		CONFIG.setProperty(key, value);
 		storeConfig();
 	}

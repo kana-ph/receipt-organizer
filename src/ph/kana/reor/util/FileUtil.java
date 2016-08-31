@@ -23,7 +23,7 @@ public class FileUtil {
 	}
 
 	private static File createTagetFile(File file) {
-		String storageDir = Config.get("storage-dir");
+		String storageDir = Config.STORAGE_DIR.getValue();
 		String subDir = hashName(2);
 		String name = hashName(4);
 		String extension = fetchExtension(file.getName());
