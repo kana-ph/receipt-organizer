@@ -1,6 +1,7 @@
 package ph.kana.reor.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -34,25 +35,22 @@ public class ReceiptService {
 			receipt.setCategory(categoryService.fetchCategory(category));
 
 			return receiptDao.save(receipt);
-		} catch (DataAccessException e) {
+		} catch (DataAccessException | IOException e) {
 			throw new ServiceException(e);
 		}
 	}
 
-	private Set<Attachment> transformFilesToAttachments(Document document, Set<File> files) {
+	private Set<Attachment> transformFilesToAttachments(Document document, Set<File> files) throws IOException {
 		Set<Attachment> attachments = new HashSet();
-		files.parallelStream()
-			.map(FileUtil::upload)
-			.map(file -> buildAttachment(document, file))
-			.forEach(attachments::add);
+		for (File file : files) {
+			File uploadedFile = FileUtil.upload(file);
+
+			Attachment attachment = new Attachment();
+			attachment.setDocument(document);
+			attachment.setPath(uploadedFile.getPath());
+			attachments.add(attachment);
+		}
 
 		return attachments;
-	}
-
-	private Attachment buildAttachment(Document document, File file) {
-		Attachment attachment = new Attachment();
-		attachment.setDocument(document);
-		attachment.setPath(file.getPath());
-		return attachment;
 	}
 }

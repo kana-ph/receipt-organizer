@@ -10,16 +10,11 @@ public class FileUtil {
 
 	private final static char[] HEX_ARRAY = "0123456789abcdef".toCharArray();
 
-	public static File upload(File file) {
+	public static File upload(File file) throws IOException {
 		File target = createTagetFile(file);
 
-		try {
-			Files.copy(file.toPath(), target.toPath());
-			return target;
-		} catch (IOException e) {
-			e.printStackTrace(System.err);
-			return null;
-		}
+		Files.copy(file.toPath(), target.toPath());
+		return target;
 	}
 
 	private static File createTagetFile(File file) {
