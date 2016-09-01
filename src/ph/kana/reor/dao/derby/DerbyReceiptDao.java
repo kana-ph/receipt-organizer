@@ -108,8 +108,13 @@ public class DerbyReceiptDao extends ReceiptDao {
 		return fetchInsertId(statement);
 	}
 
-	private void saveAttachments(Document document) {
+	private void saveAttachments(Document document) throws DataAccessException {
 		Set<Attachment> attachments = document.getAttachments();
+
+		for (Attachment attachment : attachments) {
+			attachmentDao.save(attachment);
+		}
+
 	}
 
 	private Long saveWarranty(Receipt receipt) throws DataAccessException {
