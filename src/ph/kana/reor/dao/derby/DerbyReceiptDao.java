@@ -5,7 +5,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import java.sql.Types;
 import java.util.Set;
@@ -33,6 +32,8 @@ public class DerbyReceiptDao extends ReceiptDao {
 
 			Long warrantyId = saveWarranty(receipt);
 			attachWarrantyToReceipt(receipt, warrantyId, connection);
+
+			saveAttachments(receipt);
 
 			return receiptId;
 		});
@@ -107,6 +108,10 @@ public class DerbyReceiptDao extends ReceiptDao {
 		return fetchInsertId(statement);
 	}
 
+	private void saveAttachments(Document document) {
+		Set<Attachment> attachments = document.getAttachments();
+	}
+
 	private Long saveWarranty(Receipt receipt) throws DataAccessException {
 		Warranty warranty = receipt.getWarranty();
 
@@ -115,11 +120,6 @@ public class DerbyReceiptDao extends ReceiptDao {
 			return warranty.getId();
 		}
 		return null;
-	}
-
-	private Long fetchInsertId(Statement statement) throws SQLException {
-		ResultSet idResultSet = statement.getGeneratedKeys();
-		return idResultSet.next()? idResultSet.getLong(1) : null;
 	}
 
 	private void attachWarrantyToReceipt(Receipt receipt, Long warrantyId, Connection connection) throws SQLException {

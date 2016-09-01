@@ -3,6 +3,7 @@ package ph.kana.reor.dao;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import ph.kana.reor.exception.DataAccessException;
@@ -28,6 +29,11 @@ abstract class AbstractDao<T extends Model> {
 			model.setId(id);
 			return model;
 		});
+	}
+
+	protected Long fetchInsertId(Statement statement) throws SQLException {
+		ResultSet idResultSet = statement.getGeneratedKeys();
+		return idResultSet.next()? idResultSet.getLong(1) : null;
 	}
 
 	private <R> R executeSqlStatement(CheckedFunction<Connection, R> sqlFunction) throws DataAccessException {
