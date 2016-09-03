@@ -5,7 +5,6 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import ph.kana.reor.controller.common.AbstractWindowController;
 import ph.kana.reor.util.Config;
@@ -14,7 +13,9 @@ import ph.kana.reor.util.DialogsUtil;
 public class HomeController extends AbstractWindowController implements Initializable {
 
 	@FXML private Accordion toolbox;
-	@FXML private AnchorPane rootPane;
+	@FXML private Pane rootPane;
+
+	@FXML private Pane storageDirectoryPrompt;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -35,8 +36,12 @@ public class HomeController extends AbstractWindowController implements Initiali
 	private void ensureStorageDirecotryConfig() {
 		String dir = Config.STORAGE_DIR.getValue();
 		if (dir == null) {
-			
+			showStorageDirectoryPrompt();
 		}
+	}
+
+	private void showStorageDirectoryPrompt() {
+		storageDirectoryPrompt.setVisible(true);
 	}
 
 }
