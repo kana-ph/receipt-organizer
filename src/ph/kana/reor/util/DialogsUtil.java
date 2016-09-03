@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -48,7 +49,9 @@ public class DialogsUtil {
 		fileChooser.getExtensionFilters().addAll(fetchValidAttachmentFilter());
 
 		List<File> files = fileChooser.showOpenMultipleDialog(parent);
-		return (files != null)? files : Collections.EMPTY_LIST;
+		return Optional
+			.ofNullable(files)
+			.orElse(Collections.EMPTY_LIST);
 	}
 
 	public static File showStorageDirectoryChooser(Stage parent) {

@@ -1,6 +1,5 @@
 package ph.kana.reor.controller;
 
-import java.io.File;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -37,10 +36,8 @@ public class HomeController extends AbstractWindowController implements Initiali
 
 	@FXML
 	public void saveStorageDirClick() {
-		File storageDirectory = DialogsUtil.showStorageDirectoryChooser(getWindow());
-
 		Optional
-			.ofNullable(storageDirectory)
+			.ofNullable(DialogsUtil.showStorageDirectoryChooser(getWindow()))
 			.ifPresent(directory -> {
 				Config.STORAGE_DIR.setValue(directory.getAbsolutePath());
 				storageDirectoryPrompt.setVisible(false);
@@ -48,9 +45,8 @@ public class HomeController extends AbstractWindowController implements Initiali
 	}
 
 	private void ensureStorageDirecotryConfig() {
-		String dir = Config.STORAGE_DIR.getValue();
-		if (dir == null) {
-			storageDirectoryPrompt.setVisible(true);
-		}
+		Optional
+			.ofNullable(Config.STORAGE_DIR.getValue())
+			.ifPresent(dir -> storageDirectoryPrompt.setVisible(true) );
 	}
 }
