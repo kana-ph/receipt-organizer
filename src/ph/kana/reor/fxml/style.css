@@ -29,6 +29,10 @@
 	-fx-font-size: 10px;
 }
 
+.modal-overlay {
+	-fx-background-color: rgba(0, 0, 0, 0.75);
+}
+
 .toolbox {
 	-fx-border-color: #808080;
 }
@@ -40,4 +44,8 @@
 
 .toolbox-vbox {
 	-fx-alignment: CENTER;
+}
+
+.white-bg {
+	-fx-background-color: white;
 }
