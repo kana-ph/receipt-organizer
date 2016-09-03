@@ -2,6 +2,7 @@ package ph.kana.reor.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,6 +41,8 @@ public enum Config {
 
 		try (InputStream inputStream = new FileInputStream(fetchConfigFile())) {
 			config.load(inputStream);
+		} catch (FileNotFoundException e) {
+			System.err.println("File not found: " + e.getMessage());
 		} catch (IOException e) {
 			e.printStackTrace(System.err);
 		}
@@ -57,7 +60,11 @@ public enum Config {
 
 	private static void storeConfig() {
 		try (OutputStream outputStream = new FileOutputStream(fetchConfigFile())) {
-			CONFIG.store(outputStream, "");
+			String comments = new StringBuilder()
+				.append("Config file for receipt-organizer\n")
+				.append("https://github.com/kana0011/receipt-organizer \n")
+				.toString();
+			CONFIG.store(outputStream, comments);
 		} catch (IOException e) {
 			e.printStackTrace(System.err);
 		}

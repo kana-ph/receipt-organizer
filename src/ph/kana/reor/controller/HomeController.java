@@ -1,6 +1,8 @@
 package ph.kana.reor.controller;
 
+import java.io.File;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -33,15 +35,22 @@ public class HomeController extends AbstractWindowController implements Initiali
 		DialogsUtil.openDialog(getWindow(), "Add Receipt", "AddReceiptDialog");
 	}
 
+	@FXML
+	public void saveStorageDirClick() {
+		File storageDirectory = DialogsUtil.showStorageDirectoryChooser(getWindow());
+
+		Optional
+			.ofNullable(storageDirectory)
+			.ifPresent(directory -> {
+				Config.STORAGE_DIR.setValue(directory.getAbsolutePath());
+				storageDirectoryPrompt.setVisible(false);
+			});
+	}
+
 	private void ensureStorageDirecotryConfig() {
 		String dir = Config.STORAGE_DIR.getValue();
 		if (dir == null) {
-			showStorageDirectoryPrompt();
+			storageDirectoryPrompt.setVisible(true);
 		}
 	}
-
-	private void showStorageDirectoryPrompt() {
-		storageDirectoryPrompt.setVisible(true);
-	}
-
 }

@@ -9,6 +9,7 @@ import java.util.List;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -48,6 +49,14 @@ public class DialogsUtil {
 
 		List<File> files = fileChooser.showOpenMultipleDialog(parent);
 		return (files != null)? files : Collections.EMPTY_LIST;
+	}
+
+	public static File showStorageDirectoryChooser(Stage parent) {
+		DirectoryChooser directoryChooser = new DirectoryChooser();
+		directoryChooser.setTitle("Select Storage Location");
+		directoryChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Pictures"));
+
+		return directoryChooser.showDialog(parent);
 	}
 
 	private static List<FileChooser.ExtensionFilter> fetchValidAttachmentFilter() {
