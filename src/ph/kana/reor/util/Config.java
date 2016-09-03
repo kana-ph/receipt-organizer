@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Optional;
 import java.util.Properties;
 
 
@@ -24,7 +25,9 @@ public enum Config {
 	private final static Properties CONFIG = loadConfig();
 
 	public String getValue() {
-		return CONFIG.get(key).toString();
+		return Optional
+			.ofNullable((String) CONFIG.get(key))
+			.orElse(null);
 	}
 
 	public void setValue(String value) {
