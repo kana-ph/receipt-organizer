@@ -1,5 +1,7 @@
 package ph.kana.reor.model;
 
+import java.util.Optional;
+
 public class Category extends Model {
 	private String value;
 
@@ -8,8 +10,8 @@ public class Category extends Model {
 	}
 
 	public void setValue(String value) {
-		if (value != null) {
-			this.value = value.toUpperCase();
-		}
+		Optional
+			.ofNullable(value)
+			.ifPresent(v -> this.value = v);
 	}
 }

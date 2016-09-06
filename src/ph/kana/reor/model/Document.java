@@ -2,6 +2,7 @@ package ph.kana.reor.model;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public abstract class Document extends Model {
@@ -36,7 +37,9 @@ public abstract class Document extends Model {
 	}
 
 	public Set getAttachments() {
-		return (attachments == null)? (new HashSet()) : attachments;
+		return Optional
+			.ofNullable(attachments)
+			.orElse(new HashSet());
 	}
 
 	public void setAttachments(Set attachments) {
