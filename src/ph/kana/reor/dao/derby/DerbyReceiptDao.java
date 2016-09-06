@@ -69,6 +69,7 @@ public class DerbyReceiptDao extends ReceiptDao {
 		if (warrantyId !=  null) {
 			Warranty warranty = warrantyDao.findByIdAndDocument(warrantyId, receipt);
 			warranty.setDocument(receipt);
+			return warranty;
 		}
 		return null;
 	}
