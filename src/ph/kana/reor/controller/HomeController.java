@@ -45,8 +45,8 @@ public class HomeController extends AbstractWindowController implements Initiali
 	}
 
 	private void ensureStorageDirecotryConfig() {
-		Optional
-			.ofNullable(Config.STORAGE_DIR.getValue())
-			.ifPresent(dir -> storageDirectoryPrompt.setVisible(true) );
+		if (null == Config.STORAGE_DIR.getValue()) {
+			storageDirectoryPrompt.setVisible(true);
+		}
 	}
 }
