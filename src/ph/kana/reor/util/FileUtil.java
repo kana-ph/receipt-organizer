@@ -17,14 +17,20 @@ public class FileUtil {
 		return target;
 	}
 
-	private static File createTagetFile(File file) {
+	private static File createTagetFile(File file) throws IOException {
 		String storageDir = Config.STORAGE_DIR.getValue();
 		String subDir = hashName(2);
 		String name = hashName(4);
 		String extension = fetchExtension(file.getName());
 
 		String filename = String.format("%s/%s/%s%s", storageDir, subDir, name, extension);
-		return new File(filename);
+		File targetFile = new File(filename);
+		File targetDirectory = targetFile.getParentFile();
+
+		if (!targetDirectory.exists()) {
+			targetDirectory.mkdir();
+		}
+		return targetFile;
 	}
 
 	private static String hashName(int hexDigits) {
