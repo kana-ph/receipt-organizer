@@ -124,7 +124,7 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 		lockButtons(false);
 	}
 
-	protected Warranty fetchWarranty() {
+	protected Warranty buildWarranty() {
 		if (warrantyCheckbox.isSelected()) {
 			Warranty warranty = new Warranty();
 			if (!lifetimeWarrantyCheckbox.isSelected()) {

@@ -42,7 +42,7 @@ public class AddReceiptDialogController extends AbstractReceiptDialogController 
 		LocalDate receiptDate = receiptDatePicker.getValue();
 		Set<File> attachments = new HashSet(attachmentList.getItems());
 		String description = descriptionTextArea.getText();
-		Warranty warranty = fetchWarranty();
+		Warranty warranty = buildWarranty();
 		String category = categoryComboBox.getValue();
 
 		receiptService.createReceipt(title, amount, receiptDate, attachments, description, warranty, category);
