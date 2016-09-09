@@ -28,14 +28,7 @@ public class DerbyReceiptDao extends ReceiptDao {
 	public Receipt save(Receipt receipt) throws DataAccessException {
 		return execute(receipt, connection -> {
 			Long documentId = saveDocument(receipt, connection);
-			Long receiptId = saveReceipt(receipt, documentId, connection);
-
-			Long warrantyId = saveWarranty(receipt);
-			attachWarrantyToReceipt(receipt, warrantyId, connection);
-
-			saveAttachments(receipt);
-
-			return receiptId;
+			return saveReceipt(receipt, documentId, connection);
 		});
 	}
 
@@ -105,37 +98,6 @@ public class DerbyReceiptDao extends ReceiptDao {
 		}
 
 		statement.executeUpdate();
-
 		return fetchInsertId(statement);
-	}
-
-	private void saveAttachments(Document document) throws DataAccessException {
-		Set<Attachment> attachments = document.getAttachments();
-
-		for (Attachment attachment : attachments) {
-			attachmentDao.save(attachment);
-		}
-
-	}
-
-	private Long saveWarranty(Receipt receipt) throws DataAccessException {
-		Warranty warranty = receipt.getWarranty();
-
-		if (warranty != null) {
-			warranty = warrantyDao.save(warranty);
-			return warranty.getId();
-		}
-		return null;
-	}
-
-	private void attachWarrantyToReceipt(Receipt receipt, Long warrantyId, Connection connection) throws SQLException {
-		if (warrantyId != null) {
-			String sql = "UPDATE receipt SET warranty_id = ? WHERE id = ?";
-			PreparedStatement statement = connection.prepareStatement(sql);
-
-			statement.setLong(1, warrantyId);
-			statement.setLong(2, receipt.getId());
-			statement.executeUpdate();
-		}
 	}
 }
