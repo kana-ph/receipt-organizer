@@ -32,7 +32,7 @@ public class DefaultReceiptService implements ReceiptService {
 			receipt.setCategory(categoryService.fetchCategory(category));
 
 			return receiptDao.save(receipt);
-		} catch (DataAccessException e) {
+		} catch (DataAccessException e) { // todo add vfix for missedfk
 			throw new ServiceException(e);
 		}
 	}
