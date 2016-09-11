@@ -65,4 +65,4 @@ ALTER TABLE receipt
 
 ALTER TABLE warranty
 	ADD FOREIGN KEY(document_id)
-	REFERENCES warranty(id);
+	REFERENCES document(id);
