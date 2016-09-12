@@ -17,7 +17,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import ph.kana.reor.exception.ServiceException;
+import ph.kana.reor.model.Category;
 import ph.kana.reor.model.Warranty;
+import ph.kana.reor.service.CategoryService;
 import ph.kana.reor.service.ReceiptService;
 import ph.kana.reor.type.MessageType;
 import ph.kana.reor.util.DialogsUtil;
@@ -50,11 +53,13 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 	@FXML protected AnchorPane rootPane;
 	@FXML protected HBox warrantyBox;
 
+	protected CategoryService categoryService = new CategoryService();
 	protected ReceiptService receiptService = new ReceiptService();
 
 	@Override
 	protected void initializeForm() {
 		amountTextField.setTextFormatter(fetchBigDecimalTextFormatter());
+		loadCategories();
 	}
 
 	@FXML
@@ -133,6 +138,21 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 			return warranty;
 		} else {
 			return null;
+		}
+	}
+
+	protected void loadCategories() {
+		List<String> categories = categoryComboBox.itemsProperty().get();
+		categories.clear();
+
+		try {
+			categoryService.fetchAllCategories()
+				.stream()
+				.map(Category::getValue)
+				.forEach(categories::add);
+		} catch(ServiceException e) {
+			showMessage(formMessageLabel, "Unable to load categories: " + e.getMessage(), MessageType.ERROR);
+			e.printStackTrace(System.err);
 		}
 	}
 
