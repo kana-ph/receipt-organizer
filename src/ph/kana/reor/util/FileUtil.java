@@ -19,17 +19,22 @@ public class FileUtil {
 
 	private static File createTagetFile(File file) throws IOException {
 		String storageDir = Config.STORAGE_DIR.getValue();
-		String subDir = hashName(2);
-		String name = hashName(4);
-		String extension = fetchExtension(file.getName());
+		File targetFile;
 
-		String filename = String.format("%s/%s/%s%s", storageDir, subDir, name, extension);
-		File targetFile = new File(filename);
+		do {
+			String subDir = hashName(2);
+			String name = hashName(4);
+			String extension = fetchExtension(file.getName());
+
+			String filename = String.format("%s/%s/%s%s", storageDir, subDir, name, extension);
+			targetFile = new File(filename);
+		} while (targetFile.exists());
+
 		File targetDirectory = targetFile.getParentFile();
-
 		if (!targetDirectory.exists()) {
 			targetDirectory.mkdir();
 		}
+
 		return targetFile;
 	}
 
