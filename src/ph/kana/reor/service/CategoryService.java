@@ -1,6 +1,6 @@
 package ph.kana.reor.service;
 
-import java.util.Set;
+import java.util.List;
 import ph.kana.reor.dao.CategoryDao;
 import ph.kana.reor.dao.derby.DerbyCategoryDao;
 import ph.kana.reor.exception.DataAccessException;
@@ -11,7 +11,7 @@ public class CategoryService {
 
 	private final CategoryDao categoryDao = new DerbyCategoryDao();
 
-	public Set<Category> fetchAllCategories() throws ServiceException {
+	public List<Category> fetchAllCategories() throws ServiceException {
 		try {
 			return categoryDao.findAll();
 		} catch (DataAccessException e) {
