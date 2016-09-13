@@ -27,7 +27,7 @@
           <TitledPane text="Search" />
         </panes>
       </Accordion>
-      <VBox fx:id="viewPane" layoutX="175.0" layoutY="50.0" prefHeight="200.0" prefWidth="200.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="175.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox fx:id="viewPane" alignment="TOP_CENTER" layoutX="175.0" layoutY="50.0" prefHeight="200.0" prefWidth="200.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="175.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding></VBox>
