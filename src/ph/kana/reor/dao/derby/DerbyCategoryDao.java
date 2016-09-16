@@ -14,7 +14,7 @@ import ph.kana.reor.util.function.CheckedFunction;
 public class DerbyCategoryDao extends CategoryDao {
 
 	@Override
-	public List<Category> findAll() throws DataAccessException {
+	public List<Category> all() throws DataAccessException {
 		String sql = "SELECT id, value FROM category";
 
 		return executeQuery(connection -> {

@@ -13,7 +13,7 @@ public class CategoryService {
 
 	public List<Category> fetchAllCategories() throws ServiceException {
 		try {
-			return categoryDao.findAll();
+			return categoryDao.all();
 		} catch (DataAccessException e) {
 			throw new ServiceException(e);
 		}

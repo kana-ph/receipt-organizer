@@ -5,7 +5,7 @@ import ph.kana.reor.exception.DataAccessException;
 import ph.kana.reor.model.Category;
 
 public abstract class CategoryDao extends AbstractDao<Category> {
-	public abstract List<Category> findAll() throws DataAccessException;
+	public abstract List<Category> all() throws DataAccessException;
 
 	public abstract Category findById(Long id) throws DataAccessException;
 
