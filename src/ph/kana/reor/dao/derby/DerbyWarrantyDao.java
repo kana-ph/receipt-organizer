@@ -35,7 +35,9 @@ public class DerbyWarrantyDao extends WarrantyDao {
 		String sql = "INSERT INTO warranty(expiration, document_id) VALUES (?, ?)";
 		return execute(warranty, connection -> {
 			PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			LocalDate expiration = warranty.getExpiration();
+			LocalDate expiration = warranty
+				.getExpiration()
+				.orElse(null);
 
 			statement.setDate(1, (expiration == null)? null : Date.valueOf(expiration));
 			statement.setLong(2, warranty.getDocument().getId());

@@ -1,18 +1,19 @@
 package ph.kana.reor.model;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 public class Warranty extends Model {
-	private LocalDate expiration;
+	private Optional<LocalDate> expiration;
 
 	private Document document;
 
-	public LocalDate getExpiration() {
+	public Optional<LocalDate> getExpiration() {
 		return expiration;
 	}
 
 	public void setExpiration(LocalDate expiration) {
-		this.expiration = expiration;
+		this.expiration = Optional.ofNullable(expiration);
 	}
 
 	public Document getDocument() {

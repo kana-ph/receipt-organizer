@@ -35,14 +35,13 @@ public class ReceiptService {
 			receipt.setTitle(title);
 			receipt.setAmount(amount);
 			receipt.setDate(receiptDate);
-			receipt.setAttachments(transformFilesToAttachments(receipt, attachments));
 			receipt.setDescription(description);
 			receipt.setWarranty(warranty);
 			receipt.setCategory(categoryService.fetchCategory(category));
 
 			receipt = receiptDao.save(receipt);
 			saveWarranty(receipt);
-			saveAttachments(receipt);
+			saveAttachments(receipt, attachments);
 
 			return receipt;
 		} catch (DataAccessException | IOException e) {
@@ -65,7 +64,9 @@ public class ReceiptService {
 	}
 
 	private void saveWarranty(Receipt receipt) throws DataAccessException {
-		Warranty warranty = receipt.getWarranty();
+		Warranty warranty = receipt
+			.getWarranty()
+			.orElse(null);
 
 		if (warranty != null) {
 			warranty.setDocument(receipt);
@@ -73,8 +74,8 @@ public class ReceiptService {
 		}
 	}
 
-	private void saveAttachments(Receipt receipt) throws DataAccessException {
-		Set<Attachment> attachments = receipt.getAttachments();
+	private void saveAttachments(Receipt receipt, Set<File> attachmentFiles) throws DataAccessException, IOException {
+		Set<Attachment> attachments = transformFilesToAttachments(receipt, attachmentFiles);
 
 		for (Attachment attachment : attachments) {
 			attachmentDao.save(attachment);

@@ -7,20 +7,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import java.sql.Types;
-import java.util.Set;
-import ph.kana.reor.dao.AttachmentDao;
 import ph.kana.reor.dao.CategoryDao;
 import ph.kana.reor.dao.ReceiptDao;
 import ph.kana.reor.dao.WarrantyDao;
 import ph.kana.reor.exception.DataAccessException;
-import ph.kana.reor.model.Attachment;
 import ph.kana.reor.model.Category;
 import ph.kana.reor.model.Document;
 import ph.kana.reor.model.Receipt;
 import ph.kana.reor.model.Warranty;
 
 public class DerbyReceiptDao extends ReceiptDao {
-	private final AttachmentDao attachmentDao = new DerbyAttachmentDao();
 	private final CategoryDao categoryDao = new DerbyCategoryDao();
 	private final WarrantyDao warrantyDao = new DerbyWarrantyDao();
 
@@ -40,7 +36,6 @@ public class DerbyReceiptDao extends ReceiptDao {
 			receipt.setTitle(resultSet.getString("title"));
 			receipt.setAmount(resultSet.getBigDecimal("amount"));
 			receipt.setDate(resultSet.getDate("document_date").toLocalDate());
-			receipt.setAttachments(fetchAttachments(receipt));
 			receipt.setDescription(resultSet.getString("description"));
 			receipt.setWarranty(fetchWarranty(receipt, resultSet.getLong("warranty_id")));
 			receipt.setCategory(fetchCategory(resultSet.getLong("category_id")));
@@ -49,13 +44,6 @@ public class DerbyReceiptDao extends ReceiptDao {
 		} catch (SQLException e) {
 			throw new DataAccessException(e);
 		}
-	}
-
-	private Set<Attachment> fetchAttachments(Receipt receipt) throws DataAccessException {
-		Set<Attachment> attachments = attachmentDao.findAllByDocument(receipt);
-		attachments.stream()
-			.forEach(attachment -> attachment.setDocument(receipt));
-		return attachments;
 	}
 
 	private Warranty fetchWarranty(Receipt receipt, Long warrantyId) throws DataAccessException {

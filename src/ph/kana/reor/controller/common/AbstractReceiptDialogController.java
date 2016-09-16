@@ -132,9 +132,11 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 	protected Warranty buildWarranty() {
 		if (warrantyCheckbox.isSelected()) {
 			Warranty warranty = new Warranty();
-			if (!lifetimeWarrantyCheckbox.isSelected()) {
-				warranty.setExpiration(warrantyDatePicker.getValue());
-			}
+
+			LocalDate expiryDate = lifetimeWarrantyCheckbox.isSelected()?
+				null : warrantyDatePicker.getValue();
+			warranty.setExpiration(expiryDate);
+
 			return warranty;
 		} else {
 			return null;
