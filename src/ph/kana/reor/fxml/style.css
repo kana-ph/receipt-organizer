@@ -1,3 +1,7 @@
+.empty-list-message {
+	-fx-font-size: 24px;
+}
+
 .form-control-buttons {
 	-fx-pref-height: 50px;
 	-fx-alignment: CENTER_RIGHT;

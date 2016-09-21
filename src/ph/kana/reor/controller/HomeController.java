@@ -7,10 +7,12 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import ph.kana.reor.controller.common.AbstractWindowController;
 import ph.kana.reor.model.Document;
 import ph.kana.reor.service.DocumentService;
+import ph.kana.reor.type.EmptyListMessage;
 import ph.kana.reor.util.Config;
 import ph.kana.reor.util.DialogsUtil;
 
@@ -20,6 +22,9 @@ public class HomeController extends AbstractWindowController implements Initiali
 	@FXML private Pane rootPane;
 
 	@FXML private Pane storageDirectoryPrompt;
+
+	@FXML private Pane emptyListPane;
+	@FXML private Label emptyListMessageLabel;
 
 	private final DocumentService documentService = new DocumentService();
 
@@ -60,12 +65,23 @@ public class HomeController extends AbstractWindowController implements Initiali
 	private void asyncLoadDocuments() {
 		new Thread(() -> {
 			List<Document> document = documentService.fetchAll();
-			document.stream()
-				.forEachOrdered(this::renderDocument);
+
+			if (document.isEmpty()) {
+				reportEmptyList(EmptyListMessage.NOTHING_YET);
+			} else {
+				emptyListPane.setVisible(false);
+				document.stream()
+					.forEachOrdered(this::renderDocument);
+			}
 		}).start();
 	}
 
 	private void renderDocument(Document document) {
 
+	}
+
+	private void reportEmptyList(EmptyListMessage message) {
+		emptyListMessageLabel.setText(message.getMessage());
+		emptyListPane.setVisible(true);
 	}
 }
