@@ -9,8 +9,8 @@ import ph.kana.reor.util.ConnectionManager;
 
 public class ReceiptOrganizerJavaFx extends Application {
 
-	private static final double APP_WIDTH = 600.00;
-	private static final double APP_HEIGHT = 500.0;
+	private static final double APP_WIDTH = 720.00;
+	private static final double APP_HEIGHT = 600.0;
 
 	@Override
 	public void start(Stage stage) throws Exception {
