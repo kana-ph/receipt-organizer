@@ -10,6 +10,8 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import ph.kana.reor.controller.common.AbstractWindowController;
+import ph.kana.reor.controller.dashboard.DocumentDashboardRenderer;
+import ph.kana.reor.controller.dashboard.DocumentDashboardRendererFactory;
 import ph.kana.reor.model.Document;
 import ph.kana.reor.service.DocumentService;
 import ph.kana.reor.type.EmptyListMessage;
@@ -20,6 +22,8 @@ public class HomeController extends AbstractWindowController implements Initiali
 
 	@FXML private Accordion toolbox;
 	@FXML private Pane rootPane;
+
+	@FXML private Pane viewPane;
 
 	@FXML private Pane storageDirectoryPrompt;
 
@@ -77,7 +81,11 @@ public class HomeController extends AbstractWindowController implements Initiali
 	}
 
 	private void renderDocument(Document document) {
-
+		DocumentDashboardRenderer renderer =
+			DocumentDashboardRendererFactory.buildInstance(document);
+		Pane documentPane = renderer.render();
+		viewPane.getChildren()
+			.add(documentPane);
 	}
 
 	private void reportEmptyList(EmptyListMessage message) {
