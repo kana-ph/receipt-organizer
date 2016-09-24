@@ -10,8 +10,7 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import ph.kana.reor.controller.common.AbstractWindowController;
-import ph.kana.reor.controller.dashboard.DocumentDashboardRenderer;
-import ph.kana.reor.controller.dashboard.DocumentDashboardRendererFactory;
+import ph.kana.reor.util.DashboardDocumentRenderer;
 import ph.kana.reor.model.Document;
 import ph.kana.reor.service.DocumentService;
 import ph.kana.reor.type.EmptyListMessage;
@@ -81,9 +80,8 @@ public class HomeController extends AbstractWindowController implements Initiali
 	}
 
 	private void renderDocument(Document document) {
-		DocumentDashboardRenderer renderer =
-			DocumentDashboardRendererFactory.buildInstance(document);
-		Pane documentPane = renderer.render();
+		Pane documentPane = DashboardDocumentRenderer
+			.buildDocumentPane(document);
 		viewPane.getChildren()
 			.add(documentPane);
 	}
