@@ -10,11 +10,11 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import ph.kana.reor.controller.common.AbstractWindowController;
-import ph.kana.reor.util.DashboardDocumentRenderer;
 import ph.kana.reor.model.Document;
 import ph.kana.reor.service.DocumentService;
 import ph.kana.reor.type.EmptyListMessage;
 import ph.kana.reor.util.Config;
+import ph.kana.reor.util.DashboardDocumentRenderer;
 import ph.kana.reor.util.DialogsUtil;
 
 public class HomeController extends AbstractWindowController implements Initializable {
