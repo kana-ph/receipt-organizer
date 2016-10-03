@@ -25,10 +25,9 @@ public enum Config {
 
 	private final static Properties CONFIG = loadConfig();
 
-	public String getValue() {  //TODO Change type to Optional
+	public Optional<String> getValue() {
 		return Optional
-			.ofNullable((String) CONFIG.get(key))
-			.orElse(null);
+			.ofNullable((String) CONFIG.get(key));
 	}
 
 	public void setValue(String value) {

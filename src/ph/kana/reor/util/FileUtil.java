@@ -18,7 +18,9 @@ public class FileUtil {
 	}
 
 	private static File createTagetFile(File file) throws IOException {
-		String storageDir = Config.STORAGE_DIR.getValue();
+		String storageDir = Config.STORAGE_DIR
+			.getValue()
+			.orElse(null);
 		File targetFile;
 
 		do {
