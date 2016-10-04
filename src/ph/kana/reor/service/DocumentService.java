@@ -6,6 +6,8 @@ import ph.kana.reor.model.Document;
 
 public class DocumentService {
 
+	private final DocumentDao documentDao = new DerbyDocumentDao();
+
 	public List<Document> fetchAll() {
 		// TODO fetch all from each dao. Sort by date
 		return Collections.EMPTY_LIST;
