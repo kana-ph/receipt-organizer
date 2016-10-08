@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import java.sql.Types;
 import java.util.List;
+import java.util.Optional;
 import ph.kana.reor.dao.CategoryDao;
 import ph.kana.reor.dao.ReceiptDao;
 import ph.kana.reor.dao.WarrantyDao;
@@ -55,7 +56,7 @@ public class DerbyReceiptDao extends ReceiptDao {
 			Receipt receipt = new Receipt();
 			receipt.setId(resultSet.getLong("id"));
 			receipt.setAmount(resultSet.getBigDecimal("amount"));
-			receipt.setWarranty(fetchWarranty(receipt, resultSet.getLong("warranty_id")));
+			receipt.setWarranty(fetchWarranty(receipt));
 			receipt.setCategory(fetchCategory(resultSet.getLong("category_id")));
 
 			return receipt;
@@ -64,13 +65,12 @@ public class DerbyReceiptDao extends ReceiptDao {
 		}
 	}
 
-	private Warranty fetchWarranty(Receipt receipt, Long warrantyId) throws DataAccessException {
-		if (warrantyId !=  null) {
-			Warranty warranty = warrantyDao.findByIdAndDocument(warrantyId, receipt);
-			warranty.setDocument(receipt);
-			return warranty;
-		}
-		return null;
+	private Warranty fetchWarranty(Receipt receipt) throws DataAccessException {
+		Optional<Warranty> warranty = Optional
+			.ofNullable(warrantyDao.findByDocument(receipt));
+		warranty.ifPresent(w -> w.setDocument(receipt));
+		return warranty
+			.orElse(null);
 	}
 
 	private Category fetchCategory(Long categoryId) throws DataAccessException {

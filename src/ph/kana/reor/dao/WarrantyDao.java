@@ -6,7 +6,7 @@ import ph.kana.reor.model.Warranty;
 
 public abstract class WarrantyDao extends AbstractDao<Warranty> {
 
-	public abstract Warranty findByIdAndDocument(Long id, Document document) throws DataAccessException;
+	public abstract Warranty findByDocument(Document document) throws DataAccessException;
 
 	public abstract Warranty save(Warranty warranty) throws DataAccessException;
 }
