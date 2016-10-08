@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import java.sql.Types;
+import java.util.List;
 import ph.kana.reor.dao.CategoryDao;
 import ph.kana.reor.dao.ReceiptDao;
 import ph.kana.reor.dao.WarrantyDao;
@@ -21,6 +22,26 @@ public class DerbyReceiptDao extends ReceiptDao {
 	private final WarrantyDao warrantyDao = new DerbyWarrantyDao();
 
 	@Override
+	public Receipt fetchWithStub(Document document) throws DataAccessException {
+		String sql = "SELECT id, amount, warranty_id, category_id FROM receipt WHERE id = ?";
+
+		List<Receipt> receipts = executeQuery(connection -> {
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setLong(1, document.getId());
+			return statement.executeQuery();
+		});
+		if (receipts.isEmpty()) {
+			return null;
+		}
+		Receipt receipt = receipts.get(0);
+		receipt.setId(document.getId());
+		receipt.setTitle(document.getTitle());
+		receipt.setDate(document.getDate());
+		receipt.setDescription(document.getDescription());
+		return receipt;
+	}
+
+	@Override
 	public Receipt save(Receipt receipt) throws DataAccessException {
 		return execute(receipt, connection -> {
 			Long documentId = saveDocument(receipt, connection);
@@ -33,10 +54,7 @@ public class DerbyReceiptDao extends ReceiptDao {
 		try {
 			Receipt receipt = new Receipt();
 			receipt.setId(resultSet.getLong("id"));
-			receipt.setTitle(resultSet.getString("title"));
 			receipt.setAmount(resultSet.getBigDecimal("amount"));
-			receipt.setDate(resultSet.getDate("document_date").toLocalDate());
-			receipt.setDescription(resultSet.getString("description"));
 			receipt.setWarranty(fetchWarranty(receipt, resultSet.getLong("warranty_id")));
 			receipt.setCategory(fetchCategory(resultSet.getLong("category_id")));
 
