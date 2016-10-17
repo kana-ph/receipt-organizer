@@ -33,7 +33,6 @@ CREATE TABLE receipt (
 		PRIMARY KEY
 		NOT NULL,
 	amount DECIMAL(19, 2),
-	warranty_id BIGINT,
 	category_id BIGINT
 );
 
@@ -54,10 +53,6 @@ ALTER TABLE attachment
 ALTER TABLE receipt
 	ADD FOREIGN KEY(id)
 	REFERENCES document(id);
-
-ALTER TABLE receipt
-	ADD FOREIGN KEY(warranty_id)
-	REFERENCES warranty(id);
 
 ALTER TABLE receipt
 	ADD FOREIGN KEY(category_id)
