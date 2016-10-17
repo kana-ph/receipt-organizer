@@ -10,6 +10,7 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import ph.kana.reor.controller.common.AbstractWindowController;
+import ph.kana.reor.exception.ServiceException;
 import ph.kana.reor.model.Document;
 import ph.kana.reor.service.DocumentService;
 import ph.kana.reor.type.EmptyListMessage;
@@ -67,16 +68,25 @@ public class HomeController extends AbstractWindowController implements Initiali
 
 	private void asyncLoadDocuments() {
 		new Thread(() -> {
-			List<Document> document = documentService.fetchAll();
-
-			if (document.isEmpty()) {
-				reportEmptyList(EmptyListMessage.NOTHING_YET);
-			} else {
-				emptyListPane.setVisible(false);
-				document.stream()
-					.forEachOrdered(this::renderDocument);
+			try {
+				loadDocuments();
+			} catch (ServiceException e) {
+				reportEmptyList(EmptyListMessage.ERROR_LOADING);
+				e.printStackTrace(System.err);
 			}
 		}).start();
+	}
+
+	private void loadDocuments() throws ServiceException {
+		List<Document> document = documentService.fetchAll();
+
+		if (document.isEmpty()) {
+			reportEmptyList(EmptyListMessage.NOTHING_YET);
+		} else {
+			emptyListPane.setVisible(false);
+			document.stream()
+				.forEachOrdered(this::renderDocument);
+		}
 	}
 
 	private void renderDocument(Document document) {

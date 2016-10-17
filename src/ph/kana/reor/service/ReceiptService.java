@@ -28,10 +28,6 @@ public class ReceiptService {
 	private final ReceiptDao receiptDao = new DerbyReceiptDao();
 	private final WarrantyDao warrantyDao = new DerbyWarrantyDao();
 
-	public Receipt buildReceipt(Document document) {
-		return null;
-	}
-
 	public Receipt createReceipt(String title, BigDecimal amount, LocalDate receiptDate, Set<File> attachments, String description, Warranty warranty, String category)
 		throws ServiceException {
 		try {
