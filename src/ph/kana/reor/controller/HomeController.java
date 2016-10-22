@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
@@ -67,14 +68,14 @@ public class HomeController extends AbstractWindowController implements Initiali
 	}
 
 	private void asyncLoadDocuments() {
-		new Thread(() -> {
+		Platform.runLater(() -> {
 			try {
 				loadDocuments();
 			} catch (ServiceException e) {
 				reportEmptyList(EmptyListMessage.ERROR_LOADING);
 				e.printStackTrace(System.err);
 			}
-		}).start();
+		});
 	}
 
 	private void loadDocuments() throws ServiceException {
