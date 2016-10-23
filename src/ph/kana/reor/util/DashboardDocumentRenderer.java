@@ -35,6 +35,8 @@ public final class DashboardDocumentRenderer {
 		Pane pane = new AnchorPane();
 		pane.getStyleClass()
 			.add(DOCUMENT_CARD.getName());
+		pane.setPrefWidth(200.0);
+		pane.setPrefHeight(200.0);
 		List<Node> nodes = pane.getChildren();
 
 		Label title = new Label(receipt.getTitle());
@@ -94,7 +96,7 @@ public final class DashboardDocumentRenderer {
 
 		Label optionsLink = new Label("Options");
 		nodes.add(optionsLink);
-		addStyleClasses(optionsLink, OPTIONS_LINK);
+		addStyleClasses(optionsLink, OPTION_LINK);
 		assignAnchors(optionsLink, null, 15.0, 10.0, null);
 
 		return pane;
@@ -120,8 +122,7 @@ public final class DashboardDocumentRenderer {
 	}
 
 	private static String formatAmount(BigDecimal amount) {
-		BigDecimal scaledAmount = amount.setScale(2);
-		return String.format("%c %f", '\u20b1', scaledAmount);
+		return String.format("%c %.2f", '\u20b1', amount);
 	}
 
 	private static Map<String, String> collectWarrantyDisplayData(Warranty warranty) {
