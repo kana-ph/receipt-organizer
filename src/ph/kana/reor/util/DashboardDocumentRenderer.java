@@ -35,8 +35,8 @@ public final class DashboardDocumentRenderer {
 		Pane pane = new AnchorPane();
 		pane.getStyleClass()
 			.add(DOCUMENT_CARD.getName());
-		pane.setPrefWidth(200.0);
 		pane.setPrefHeight(200.0);
+		pane.setMinHeight(200.0);
 		List<Node> nodes = pane.getChildren();
 
 		Label title = new Label(receipt.getTitle());
@@ -76,7 +76,7 @@ public final class DashboardDocumentRenderer {
 			Label warrantyStatus = new Label(status);
 			nodes.add(warrantyStatus);
 			addStyleClasses(warrantyStatus, status.equals("(ACTIVE)")? WARRANTY_ACTIVE : WARRANTY_INACTIVE);
-			assignAnchors(warrantyValue, 150.0, null, null, 195.0);
+			assignAnchors(warrantyStatus, 150.0, null, null, 195.0);
 		}
 
 		Label categoryKey = new Label("Category:");
