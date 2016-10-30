@@ -15,10 +15,6 @@ public abstract class DocumentRenderer<T extends Document> {
 
 	private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
 
-	protected DocumentRenderer(T document) {
-		this.document = document;
-	}
-
 	public static DocumentRenderer getInstance(Document document) {
 		if (document instanceof Receipt) {
 			return new ReceiptRenderer((Receipt) document);
@@ -30,6 +26,19 @@ public abstract class DocumentRenderer<T extends Document> {
 	protected final T document;
 
 	public abstract Pane buildDocumentPane();
+
+	protected DocumentRenderer(T document) {
+		this.document = document;
+	}
+
+	protected Pane createDocumentCard() {
+		Pane pane = new AnchorPane();
+		addStyleClasses(pane, DashboardClass.DOCUMENT_CARD);
+		pane.setPrefHeight(200.0);
+		pane.setMinHeight(200.0);
+
+		return pane;
+	}
 
 	protected void assignAnchors(Node node, Double top, Double right, Double bottom, Double left) {
 		AnchorPane.setTopAnchor(node, top);

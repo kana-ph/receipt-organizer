@@ -8,7 +8,6 @@ import java.util.Map;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import ph.kana.reor.model.Receipt;
 import ph.kana.reor.model.Warranty;
@@ -22,11 +21,7 @@ public class ReceiptRenderer extends DocumentRenderer<Receipt> {
 
 	@Override
 	public Pane buildDocumentPane() {
-		Pane pane = new AnchorPane();
-		pane.getStyleClass()
-			.add(DashboardClass.DOCUMENT_CARD.getName());
-		pane.setPrefHeight(200.0);
-		pane.setMinHeight(200.0);
+		Pane pane = createDocumentCard();
 		List<Node> nodes = pane.getChildren();
 
 		Label title = new Label(document.getTitle());
