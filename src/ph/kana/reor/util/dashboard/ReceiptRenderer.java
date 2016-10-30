@@ -79,10 +79,7 @@ public class ReceiptRenderer extends DocumentRenderer<Receipt> {
 		addStyleClasses(amount, DashboardClass.AMOUNT);
 		assignAnchors(amount, 20.0, 15.0, null, null);
 
-		Label optionsLink = new Label("Options");
-		nodes.add(optionsLink);
-		addStyleClasses(optionsLink, DashboardClass.OPTION_LINK);
-		assignAnchors(optionsLink, null, 15.0, 10.0, null);
+		renderControls(nodes);
 
 		return pane;
 	}

@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import ph.kana.reor.model.Document;
@@ -38,6 +39,13 @@ public abstract class DocumentRenderer<T extends Document> {
 		pane.setMinHeight(200.0);
 
 		return pane;
+	}
+
+	protected void renderControls(List<Node> parentNodes) {
+		Label detailsLink = new Label("Details");
+		parentNodes.add(detailsLink);
+		addStyleClasses(detailsLink, DashboardClass.OPTION_LINK);
+		assignAnchors(detailsLink, null, 15.0, 10.0, null);
 	}
 
 	protected void assignAnchors(Node node, Double top, Double right, Double bottom, Double left) {
