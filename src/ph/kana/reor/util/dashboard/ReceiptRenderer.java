@@ -1,9 +1,7 @@
-package ph.kana.reor.util;
+package ph.kana.reor.util.dashboard;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,60 +10,52 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import ph.kana.reor.model.Document;
 import ph.kana.reor.model.Receipt;
 import ph.kana.reor.model.Warranty;
 import ph.kana.reor.type.DashboardClass;
-import static ph.kana.reor.type.DashboardClass.*;
 
-public final class DashboardDocumentRenderer {
+public class ReceiptRenderer extends DocumentRenderer<Receipt> {
 
-	private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
-
-	private DashboardDocumentRenderer() {}
-
-	public static Pane buildDocumentPane(Document document) {
-		if (document instanceof Receipt) {
-			return buildReceiptPane((Receipt) document);
-		}
-		throw new IllegalArgumentException("Unknown Document type: " + document.getClass());
+	protected ReceiptRenderer(Receipt receipt) {
+		super(receipt);
 	}
 
-	private static Pane buildReceiptPane(Receipt receipt) {
+	@Override
+	public Pane buildDocumentPane() {
 		Pane pane = new AnchorPane();
 		pane.getStyleClass()
-			.add(DOCUMENT_CARD.getName());
+			.add(DashboardClass.DOCUMENT_CARD.getName());
 		pane.setPrefHeight(200.0);
 		pane.setMinHeight(200.0);
 		List<Node> nodes = pane.getChildren();
 
-		Label title = new Label(receipt.getTitle());
+		Label title = new Label(document.getTitle());
 		nodes.add(title);
-		addStyleClasses(title, TITLE);
+		addStyleClasses(title, DashboardClass.TITLE);
 		assignAnchors(title, 15.0, null, null, 15.0);
 
 		Label receiptDateKey = new Label("Receipt Date:");
 		nodes.add(receiptDateKey);
-		addStyleClasses(receiptDateKey, FIELD_NAME);
+		addStyleClasses(receiptDateKey, DashboardClass.FIELD_NAME);
 		assignAnchors(receiptDateKey, 50.0, null, null, 15.0);
 
-		Label receiptDateValue = new Label(formatDate(receipt.getDate()));
+		Label receiptDateValue = new Label(formatDate(document.getDate()));
 		nodes.add(receiptDateValue);
 		assignAnchors(receiptDateValue, 120.0, null, null, 15.0);
 
-		TextArea description = new TextArea(receipt.getDescription());
+		TextArea description = new TextArea(document.getDescription());
 		nodes.add(description);
 		description.setWrapText(true);
 		description.setEditable(false);
-		addStyleClasses(description, DESCRIPTION_BOX);
+		addStyleClasses(description, DashboardClass.DESCRIPTION_BOX);
 		assignAnchors(description, 75.0, 15.0, 60.0, 5.0);
 
 		Label warrantyKey = new Label("Warranty:");
 		nodes.add(warrantyKey);
-		addStyleClasses(warrantyKey, FIELD_NAME);
+		addStyleClasses(warrantyKey, DashboardClass.FIELD_NAME);
 		assignAnchors(warrantyKey, 150.0, null, null, 15.0);
 
-		Map<String, String> warrantyData = collectWarrantyDisplayData(receipt.getWarranty().orElse(null));
+		Map<String, String> warrantyData = collectWarrantyDisplayData(document.getWarranty().orElse(null));
 
 		Label warrantyValue = new Label(warrantyData.get("expiration"));
 		nodes.add(warrantyValue);
@@ -75,57 +65,38 @@ public final class DashboardDocumentRenderer {
 		if (status != null) {
 			Label warrantyStatus = new Label(status);
 			nodes.add(warrantyStatus);
-			addStyleClasses(warrantyStatus, status.equals("(ACTIVE)")? WARRANTY_ACTIVE : WARRANTY_INACTIVE);
+			addStyleClasses(warrantyStatus, status.equals("(ACTIVE)")? DashboardClass.WARRANTY_ACTIVE : DashboardClass.WARRANTY_INACTIVE);
 			assignAnchors(warrantyStatus, 150.0, null, null, 195.0);
 		}
 
 		Label categoryKey = new Label("Category:");
 		nodes.add(categoryKey);
-		addStyleClasses(warrantyKey, FIELD_NAME);
+		addStyleClasses(warrantyKey, DashboardClass.FIELD_NAME);
 		assignAnchors(categoryKey, null, null, 10.0, 15.0);
 
-		Label categoryValue = new Label(receipt.getCategory().getValue());
+		Label categoryValue = new Label(document.getCategory().getValue());
 		nodes.add(categoryValue);
-		addStyleClasses(categoryValue, CATEGORY);
+		addStyleClasses(categoryValue, DashboardClass.CATEGORY);
 		assignAnchors(categoryValue, null, null, 10.0, 100.0);
 
-		Label amount = new Label(formatAmount(receipt.getAmount()));
+		Label amount = new Label(formatAmount(document.getAmount()));
 		nodes.add(amount);
-		addStyleClasses(amount, AMOUNT);
+		addStyleClasses(amount, DashboardClass.AMOUNT);
 		assignAnchors(amount, 20.0, 15.0, null, null);
 
 		Label optionsLink = new Label("Options");
 		nodes.add(optionsLink);
-		addStyleClasses(optionsLink, OPTION_LINK);
+		addStyleClasses(optionsLink, DashboardClass.OPTION_LINK);
 		assignAnchors(optionsLink, null, 15.0, 10.0, null);
 
 		return pane;
 	}
 
-	private static void assignAnchors(Node node, Double top, Double right, Double bottom, Double left) {
-		AnchorPane.setTopAnchor(node, top);
-		AnchorPane.setRightAnchor(node, right);
-		AnchorPane.setBottomAnchor(node, bottom);
-		AnchorPane.setLeftAnchor(node, left);
-	}
-
-	private static void addStyleClasses(Node node, DashboardClass... dashboardClasses) {
-		List<String> styleClasses = node.getStyleClass();
-		Arrays.asList(dashboardClasses)
-			.stream()
-			.map(DashboardClass::getName)
-			.forEachOrdered(styleClasses::add);
-	}
-
-	private static String formatDate(LocalDate date) {
-		return date.format(DATE_FORMAT);
-	}
-
-	private static String formatAmount(BigDecimal amount) {
+	private String formatAmount(BigDecimal amount) {
 		return String.format("%c %.2f", '\u20b1', amount);
 	}
 
-	private static Map<String, String> collectWarrantyDisplayData(Warranty warranty) {
+	private Map<String, String> collectWarrantyDisplayData(Warranty warranty) {
 		Map<String, String> data = new HashMap<>(2);
 		if (warranty != null) {
 			LocalDate expirationDate = warranty

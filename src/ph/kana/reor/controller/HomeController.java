@@ -16,8 +16,8 @@ import ph.kana.reor.model.Document;
 import ph.kana.reor.service.DocumentService;
 import ph.kana.reor.type.EmptyListMessage;
 import ph.kana.reor.util.Config;
-import ph.kana.reor.util.DashboardDocumentRenderer;
 import ph.kana.reor.util.DialogsUtil;
+import ph.kana.reor.util.dashboard.DocumentRenderer;
 
 public class HomeController extends AbstractWindowController implements Initializable {
 
@@ -91,8 +91,8 @@ public class HomeController extends AbstractWindowController implements Initiali
 	}
 
 	private void renderDocument(Document document) {
-		Pane documentPane = DashboardDocumentRenderer
-			.buildDocumentPane(document);
+		DocumentRenderer renderer = DocumentRenderer.getInstance(document);
+		Pane documentPane = renderer.buildDocumentPane();
 		viewPane.getChildren()
 			.add(documentPane);
 	}
