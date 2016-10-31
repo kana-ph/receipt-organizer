@@ -3,11 +3,14 @@ package ph.kana.reor.util.dashboard;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import ph.kana.reor.model.Receipt;
 import ph.kana.reor.model.Warranty;
@@ -79,7 +82,10 @@ public class ReceiptRenderer extends DocumentRenderer<Receipt> {
 		addStyleClasses(amount, DashboardClass.AMOUNT);
 		assignAnchors(amount, 20.0, 15.0, null, null);
 
-		renderControls(nodes);
+		LinkedHashMap<String, EventHandler<MouseEvent>> controls = new LinkedHashMap();
+		controls.put("Edit", event -> {});
+		controls.put("Details", event -> {});
+		renderControls(nodes, controls);
 
 		return pane;
 	}
