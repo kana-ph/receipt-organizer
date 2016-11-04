@@ -16,7 +16,7 @@ import ph.kana.reor.model.Receipt;
 import ph.kana.reor.model.Warranty;
 import ph.kana.reor.type.DashboardClass;
 
-public class ReceiptRenderer extends DocumentRenderer<Receipt> {
+class ReceiptRenderer extends DocumentRenderer<Receipt> {
 
 	protected ReceiptRenderer(Receipt receipt) {
 		super(receipt);
