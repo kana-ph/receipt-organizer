@@ -82,9 +82,9 @@ class ReceiptRenderer extends DocumentRenderer<Receipt> {
 		addStyleClasses(amount, DashboardClass.AMOUNT);
 		assignAnchors(amount, 20.0, 15.0, null, null);
 
-		LinkedHashMap<String, EventHandler<MouseEvent>> controls = new LinkedHashMap();
-		controls.put("Edit", event -> {});
-		controls.put("Details", event -> {});
+		LinkedHashMap<Label, Double> controls = new LinkedHashMap();
+		controls.put(createControlLink("Edit", this::editLinkClicked), 30.0);
+		controls.put(createControlLink("Details", this::detailLinkClicked), 10.0);
 		renderControls(nodes, controls);
 
 		return pane;
@@ -114,5 +114,20 @@ class ReceiptRenderer extends DocumentRenderer<Receipt> {
 			data.put("status", null);
 		}
 		return data;
+	}
+
+	private Label createControlLink(String text, EventHandler<MouseEvent> clickEvent) {
+		Label label = new Label(text);
+		label.addEventFilter(MouseEvent.MOUSE_CLICKED, clickEvent);
+
+		return label;
+	}
+
+	private void editLinkClicked(MouseEvent event) {
+
+	}
+
+	private void detailLinkClicked(MouseEvent event) {
+
 	}
 }

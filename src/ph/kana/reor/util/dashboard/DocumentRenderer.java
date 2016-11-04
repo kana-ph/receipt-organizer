@@ -2,15 +2,11 @@ package ph.kana.reor.util.dashboard;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import ph.kana.reor.model.Document;
@@ -46,21 +42,11 @@ public abstract class DocumentRenderer<T extends Document> {
 		return pane;
 	}
 
-	protected void renderControls(List<Node> parentNodes, LinkedHashMap<String, EventHandler<MouseEvent>> controls) {
-		List<String> keys = new ArrayList(controls.keySet());
-		Collections.reverse(keys);
-
-		double bottomAnchor = 10.0;
-		for (String key : keys) {
-			Label controlLink = new Label(key);
-			parentNodes.add(controlLink);
-			addStyleClasses(controlLink, DashboardClass.OPTION_LINK);
-			assignAnchors(controlLink, null, 15.0, bottomAnchor, null);
-			bottomAnchor += 20.0;
-
-			EventHandler<MouseEvent> clickEvent = controls.get(key);
-			controlLink.addEventFilter(MouseEvent.MOUSE_CLICKED, clickEvent);
-		}
+	protected void renderControls(List<Node> parentNodes, LinkedHashMap<Label, Double> controls) {
+		controls.keySet().stream()
+			.peek(parentNodes::add)
+			.peek(label -> addStyleClasses(label, DashboardClass.OPTION_LINK))
+			.forEach(label -> assignAnchors(label, null, 15.0, controls.get(label), null));
 	}
 
 	protected void assignAnchors(Node node, Double top, Double right, Double bottom, Double left) {
