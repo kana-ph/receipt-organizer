@@ -1,6 +1,7 @@
 package ph.kana.reor;
 
 import javafx.application.Application;
+import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,6 +13,11 @@ public class ReceiptOrganizerJavaFx extends Application {
 
 	private static final double APP_WIDTH = 720.00;
 	private static final double APP_HEIGHT = 600.0;
+
+	public static void main(String[] args) {
+		ConnectionManager.prepareDatabase();
+		launch(args);
+	}
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -37,10 +43,4 @@ public class ReceiptOrganizerJavaFx extends Application {
 		stage.setScene(scene);
 		stage.show();
 	}
-
-	public static void main(String[] args) {
-		ConnectionManager.prepareDatabase();
-		launch(args);
-	}
-
 }
