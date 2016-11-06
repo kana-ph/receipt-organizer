@@ -39,7 +39,7 @@ class ReceiptRenderer extends DocumentRenderer<Receipt> {
 
 		Label receiptDateValue = new Label(formatDate(document.getDate()));
 		nodes.add(receiptDateValue);
-		assignAnchors(receiptDateValue, 120.0, null, null, 15.0);
+		assignAnchors(receiptDateValue, 50.0, null, null, 120.0);
 
 		TextArea description = new TextArea(document.getDescription());
 		nodes.add(description);
