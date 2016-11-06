@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ph.kana.reor.util.ConnectionManager;
+import ph.kana.reor.util.DesktopUtil;
 
 public class ReceiptOrganizerJavaFx extends Application {
 
@@ -14,6 +15,11 @@ public class ReceiptOrganizerJavaFx extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		setupStage(stage);
+		DesktopUtil.initialize(this);
+	}
+
+	private void setupStage(Stage stage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("/ph/kana/reor/fxml/Home.fxml"));
 
 		Scene scene = new Scene(root);
