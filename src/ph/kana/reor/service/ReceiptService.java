@@ -18,10 +18,10 @@ import ph.kana.reor.model.Attachment;
 import ph.kana.reor.model.Document;
 import ph.kana.reor.model.Receipt;
 import ph.kana.reor.model.Warranty;
-import ph.kana.reor.util.FileUtil;
 
 
 public class ReceiptService {
+	private final AttachmentService attachmentService = new AttachmentService();
 	private final CategoryService categoryService = new CategoryService();
 
 	private final AttachmentDao attachmentDao = new DerbyAttachmentDao();
@@ -49,17 +49,12 @@ public class ReceiptService {
 		}
 	}
 
-	private Set<Attachment> transformFilesToAttachments(Document document, Set<File> files) throws IOException {
+	private Set<Attachment> transformFilesToAttachments(Document document, Set<File> files) {
 		Set<Attachment> attachments = new HashSet();
-		for (File file : files) {
-			File uploadedFile = FileUtil.upload(file);
-
-			Attachment attachment = new Attachment();
-			attachment.setDocument(document);
-			attachment.setFileName(file.getName());
-			attachment.setPath(uploadedFile.getPath());
-			attachments.add(attachment);
-		}
+		files.stream()
+			.map(attachmentService::buildInstance)
+			.peek(a -> a.setDocument(document))
+			.forEach(attachments::add);
 
 		return attachments;
 	}
