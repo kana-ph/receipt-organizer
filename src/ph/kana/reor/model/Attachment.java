@@ -2,6 +2,7 @@ package ph.kana.reor.model;
 
 public class Attachment extends Model {
 	private String path;
+	private String fileName;
 
 	private Document document;
 
@@ -11,6 +12,14 @@ public class Attachment extends Model {
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
 	public Document getDocument() {

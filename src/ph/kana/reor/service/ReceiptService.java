@@ -56,6 +56,7 @@ public class ReceiptService {
 
 			Attachment attachment = new Attachment();
 			attachment.setDocument(document);
+			attachment.setFileName(file.getName());
 			attachment.setPath(uploadedFile.getPath());
 			attachments.add(attachment);
 		}

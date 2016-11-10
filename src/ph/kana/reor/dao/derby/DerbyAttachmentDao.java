@@ -19,7 +19,7 @@ public class DerbyAttachmentDao extends AttachmentDao {
 		if (document == null || document.getId() == null) {
 			return new HashSet();
 		} else {
-			String sql = "SELECT id, path FROM attachment WHERE document_id = ?";
+			String sql = "SELECT id, path, file_name FROM attachment WHERE document_id = ?";
 			List<Attachment> results = executeQuery(connection -> {
 				PreparedStatement statement = connection.prepareStatement(sql);
 				statement.setLong(1, document.getId());
@@ -31,12 +31,13 @@ public class DerbyAttachmentDao extends AttachmentDao {
 
 	@Override
 	public Attachment save(Attachment attachment) throws DataAccessException {
-		String sql = "INSERT INTO attachment(path, document_id) VALUES (?, ?)";
+		String sql = "INSERT INTO attachment(path, file_name, document_id) VALUES (?, ?, ?)";
 
 		execute(attachment, connection -> {
 			PreparedStatement statement = connection.prepareStatement(sql, RETURN_GENERATED_KEYS);
 			statement.setString(1, attachment.getPath());
-			statement.setLong(2, attachment.getDocument().getId());
+			statement.setString(2, attachment.getFileName());
+			statement.setLong(3, attachment.getDocument().getId());
 			statement.executeUpdate();
 
 			return fetchInsertId(statement);
@@ -49,6 +50,7 @@ public class DerbyAttachmentDao extends AttachmentDao {
 		try {
 			Attachment attachment =  new Attachment();
 			attachment.setId(resultSet.getLong("id"));
+			attachment.setFileName(resultSet.getString("file_name"));
 			attachment.setPath(resultSet.getString("path"));
 
 			return attachment;
