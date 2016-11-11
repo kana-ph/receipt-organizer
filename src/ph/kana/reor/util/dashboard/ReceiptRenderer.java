@@ -15,6 +15,8 @@ import javafx.scene.layout.Pane;
 import ph.kana.reor.model.Receipt;
 import ph.kana.reor.model.Warranty;
 import ph.kana.reor.type.DashboardClass;
+import ph.kana.reor.util.DateUtil;
+import ph.kana.reor.util.DesktopUtil;
 
 class ReceiptRenderer extends DocumentRenderer<Receipt> {
 
@@ -37,7 +39,7 @@ class ReceiptRenderer extends DocumentRenderer<Receipt> {
 		addStyleClasses(receiptDateKey, DashboardClass.FIELD_NAME);
 		assignAnchors(receiptDateKey, 50.0, null, null, 15.0);
 
-		Label receiptDateValue = new Label(formatDate(document.getDate()));
+		Label receiptDateValue = new Label(DateUtil.format(document.getDate()));
 		nodes.add(receiptDateValue);
 		assignAnchors(receiptDateValue, 50.0, null, null, 120.0);
 
@@ -84,7 +86,7 @@ class ReceiptRenderer extends DocumentRenderer<Receipt> {
 
 		LinkedHashMap<Label, Double> controls = new LinkedHashMap();
 		controls.put(createControlLink("Edit", this::editLinkClicked), 30.0);
-		controls.put(createControlLink("Details", this::detailLinkClicked), 10.0);
+		controls.put(createControlLink("View Attachment", this::attachmentsLinkClicked), 10.0);
 		renderControls(nodes, controls);
 
 		return pane;
@@ -103,7 +105,7 @@ class ReceiptRenderer extends DocumentRenderer<Receipt> {
 			if (expirationDate != null) {
 				boolean expired = expirationDate
 					.isAfter(LocalDate.now());
-				data.put("expiration", formatDate(expirationDate));
+				data.put("expiration", DateUtil.format(expirationDate));
 				data.put("status", expired? "(EXPIRED)" : "(ACTIVE)");
 			} else {
 				data.put("expiration", "LIFETIME");
@@ -127,7 +129,8 @@ class ReceiptRenderer extends DocumentRenderer<Receipt> {
 
 	}
 
-	private void detailLinkClicked(MouseEvent event) {
-
+	private void attachmentsLinkClicked(MouseEvent event) {
+		DesktopUtil util = DesktopUtil.getInstance();
+		util.openFile(null);
 	}
 }
