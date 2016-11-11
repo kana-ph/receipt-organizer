@@ -1,7 +1,5 @@
 package ph.kana.reor.util.dashboard;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,8 +12,6 @@ import ph.kana.reor.model.Receipt;
 import ph.kana.reor.type.DashboardClass;
 
 public abstract class DocumentRenderer<T extends Document> {
-
-	private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
 
 	public static DocumentRenderer getInstance(Document document) {
 		if (document instanceof Receipt) {
@@ -62,9 +58,5 @@ public abstract class DocumentRenderer<T extends Document> {
 			.stream()
 			.map(DashboardClass::getName)
 			.forEachOrdered(styleClasses::add);
-	}
-
-	protected String formatDate(LocalDate date) {
-		return date.format(DATE_FORMAT);
 	}
 }
