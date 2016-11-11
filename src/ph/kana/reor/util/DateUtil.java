@@ -11,6 +11,8 @@ public final class DateUtil {
 		return date.format(DATE_FORMAT);
 	}
 
+	// TODO add old date <=> new date converter
+
 	private DateUtil() {}
 
 }
