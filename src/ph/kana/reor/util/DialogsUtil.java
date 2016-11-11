@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.DirectoryChooser;
@@ -15,15 +16,20 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import ph.kana.reor.controller.common.DocumentStatefulController;
+import ph.kana.reor.model.Document;
 
 public class DialogsUtil {
 
-	public static void openDialog(Stage parent, String title, String fxmlName) {
+	public static void openDialog(Stage parent, String title, String fxmlName, Document document) {
 		String fxmlLocation = String.format("/ph/kana/reor/fxml/%s.fxml", fxmlName);
 
 		try {
 			URL fxmlResource = DialogsUtil.class.getResource(fxmlLocation);
-			Parent root = FXMLLoader.load(fxmlResource);
+			FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
+			fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+			Parent root = (Parent) fxmlLoader.load(fxmlResource.openStream());
+
 			Scene scene = new Scene(root);
 
 			Stage dialog = new Stage();
@@ -36,10 +42,19 @@ public class DialogsUtil {
 			dialog.sizeToScene();
 			dialog.setResizable(false);
 
+			if (document != null) {
+				DocumentStatefulController controller = (DocumentStatefulController) fxmlLoader.getController();
+				controller.accept(document);
+			}
+
 			dialog.show();
 		} catch (IOException e) {
 			e.printStackTrace(System.err);
 		}
+	}
+
+	public static void openDialog(Stage parent, String title, String fxmlName) {
+		openDialog(parent, title, fxmlName, null);
 	}
 
 	public static List<File> showAttachmentsFileChooser(Stage parent) {
