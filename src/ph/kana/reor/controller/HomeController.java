@@ -91,7 +91,7 @@ public class HomeController extends AbstractWindowController implements Initiali
 	}
 
 	private void renderDocument(Document document) {
-		DocumentRenderer renderer = DocumentRenderer.getInstance(document);
+		DocumentRenderer renderer = DocumentRenderer.getInstance(getWindow(), document);
 		Pane documentPane = renderer.buildDocumentPane();
 		viewPane.getChildren()
 			.add(documentPane);

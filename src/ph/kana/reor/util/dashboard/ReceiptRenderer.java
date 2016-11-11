@@ -12,16 +12,17 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import ph.kana.reor.model.Receipt;
 import ph.kana.reor.model.Warranty;
 import ph.kana.reor.type.DashboardClass;
 import ph.kana.reor.util.DateUtil;
-import ph.kana.reor.util.DesktopUtil;
+import ph.kana.reor.util.DialogsUtil;
 
 class ReceiptRenderer extends DocumentRenderer<Receipt> {
 
-	protected ReceiptRenderer(Receipt receipt) {
-		super(receipt);
+	protected ReceiptRenderer(Stage window, Receipt receipt) {
+		super(window, receipt);
 	}
 
 	@Override
@@ -130,7 +131,6 @@ class ReceiptRenderer extends DocumentRenderer<Receipt> {
 	}
 
 	private void attachmentsLinkClicked(MouseEvent event) {
-		DesktopUtil util = DesktopUtil.getInstance();
-		util.openFile(null);
+		DialogsUtil.openDialog(window, "Attachments", "ShowAttachments", document);
 	}
 }

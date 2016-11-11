@@ -7,25 +7,28 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import ph.kana.reor.model.Document;
 import ph.kana.reor.model.Receipt;
 import ph.kana.reor.type.DashboardClass;
 
 public abstract class DocumentRenderer<T extends Document> {
 
-	public static DocumentRenderer getInstance(Document document) {
+	public static DocumentRenderer getInstance(Stage window, Document document) {
 		if (document instanceof Receipt) {
-			return new ReceiptRenderer((Receipt) document);
+			return new ReceiptRenderer(window, (Receipt) document);
 		} else {
 			throw new IllegalArgumentException("Unknown Document type: " + document.getClass());
 		}
 	}
 
+	protected final Stage window;
 	protected final T document;
 
 	public abstract Pane buildDocumentPane();
 
-	protected DocumentRenderer(T document) {
+	protected DocumentRenderer(Stage window, T document) {
+		this.window = window;
 		this.document = document;
 	}
 
