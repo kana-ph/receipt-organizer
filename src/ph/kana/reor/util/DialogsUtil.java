@@ -79,8 +79,8 @@ public class DialogsUtil {
 
 	private static List<FileChooser.ExtensionFilter> fetchValidAttachmentFilter() {
 		FileChooser.ExtensionFilter[] filters = {
-			new FileChooser.ExtensionFilter("All Accepted Types", "*.jpg", "*.jpeg", "*.png", "*.gif", "*.bmp","*.pdf", "*.doc", "*.docx", "*.xls", "*.xlsx", "*.odt", "*.rtf" ),
-			new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.jpeg", "*.png", "*.gif", "*.bmp"),
+			new FileChooser.ExtensionFilter("All Accepted Types", "*.jpg", "*.jpeg", "*.png", "*.gif", "*.pdf", "*.doc", "*.docx", "*.xls", "*.xlsx", "*.odt", "*.rtf" ),
+			new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.jpeg", "*.png", "*.gif"),
 			new FileChooser.ExtensionFilter("Document Files", "*.pdf", "*.doc", "*.docx", "*.xls", "*.xlsx", "*.odt", "*.rtf")
 		};
 		return Arrays.asList(filters);
