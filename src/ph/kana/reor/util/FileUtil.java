@@ -4,9 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class FileUtil {
+
+	public final static List<String> ACCEPTED_IMAGES = Collections.unmodifiableList(Arrays.asList("jpg", "jpeg", "png", "gif"));
+	public final static List<String> ACCEPTED_DOCS   = Collections.unmodifiableList(Arrays.asList("pdf", "doc", "docx", "xls", "xlsx", "odt", "rtf"));
 
 	private final static char[] HEX_ARRAY = "0123456789abcdef".toCharArray();
 
