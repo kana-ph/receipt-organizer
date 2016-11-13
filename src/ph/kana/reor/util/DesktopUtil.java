@@ -18,22 +18,9 @@ public final class DesktopUtil {
 		}
 	}
 
-	public static DesktopUtil getInstance() {
-		if (INSTANCE == null) {
-			throw new UnsupportedOperationException("Uninitialized instance");
-		}
-		return INSTANCE;
-	}
-
-	private final HostServicesDelegate HOST;
-
-	private DesktopUtil(Application app) {
-		HOST = HostServicesDelegate.getInstance(app);
-	}
-
-	public void openFile(File file) {
+	public static void openFile(File file) {
 		String path = file.getAbsolutePath();
-		HOST.showDocument(path);
+		INSTANCE.hostService.showDocument(path);
 	}
 
 	public Image extractFileThumbnail(File file) { // TODO actually extract thumbnails
@@ -52,5 +39,11 @@ public final class DesktopUtil {
 
 		InputStream imageStream = DesktopUtil.class.getResourceAsStream(imagePath);
 		return new Image(imageStream);
+	}
+
+	private final HostServicesDelegate hostService;
+
+	private DesktopUtil(Application app) {
+		hostService = HostServicesDelegate.getInstance(app);
 	}
 }
