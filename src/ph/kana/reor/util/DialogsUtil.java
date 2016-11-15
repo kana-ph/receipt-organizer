@@ -22,30 +22,16 @@ import ph.kana.reor.model.Document;
 public class DialogsUtil {
 
 	public static void openDialog(Stage parent, String title, String fxmlName, Document document) {
-		String fxmlLocation = String.format("/ph/kana/reor/fxml/%s.fxml", fxmlName);
-
 		try {
-			URL fxmlResource = DialogsUtil.class.getResource(fxmlLocation);
+			URL fxmlResource = fetchFxmlResource(fxmlName);
 			FXMLLoader fxmlLoader = new FXMLLoader(fxmlResource);
 			fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
 			Parent root = (Parent) fxmlLoader.load(fxmlResource.openStream());
 
-			Scene scene = new Scene(root);
+			Stage dialog = createDialog(root, parent, title);
 
-			Stage dialog = new Stage();
-			dialog.initStyle(StageStyle.UNIFIED);
-			dialog.initModality(Modality.APPLICATION_MODAL);
-			dialog.initOwner(parent);
-
-			dialog.setTitle(title);
-			dialog.setScene(scene);
-			dialog.sizeToScene();
-			dialog.setResizable(false);
-
-			if (document != null) {
-				DocumentStatefulController controller = (DocumentStatefulController) fxmlLoader.getController();
-				controller.accept(document);
-			}
+			DocumentStatefulController controller = (DocumentStatefulController) fxmlLoader.getController();
+			controller.accept(document);
 
 			dialog.show();
 		} catch (IOException e) {
@@ -54,7 +40,13 @@ public class DialogsUtil {
 	}
 
 	public static void openDialog(Stage parent, String title, String fxmlName) {
-		openDialog(parent, title, fxmlName, null);
+		try {
+			URL fxmlResource = fetchFxmlResource(fxmlName);
+			createDialog(FXMLLoader.load(fxmlResource), parent, title)
+				.show();
+		} catch (IOException e) {
+			e.printStackTrace(System.err);
+		}
 	}
 
 	public static List<File> showAttachmentsFileChooser(Stage parent) {
@@ -75,6 +67,27 @@ public class DialogsUtil {
 		directoryChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Pictures"));
 
 		return directoryChooser.showDialog(parent);
+	}
+
+	private static URL fetchFxmlResource(String fxmlName) {
+		String fxmlLocation = String.format("/ph/kana/reor/fxml/%s.fxml", fxmlName);
+		return DialogsUtil.class.getResource(fxmlLocation);
+	}
+
+	private static Stage createDialog(Parent root, Stage parentWindow, String title) {
+		Scene scene = new Scene(root);
+
+		Stage dialog = new Stage();
+		dialog.initStyle(StageStyle.UNIFIED);
+		dialog.initModality(Modality.APPLICATION_MODAL);
+		dialog.initOwner(parentWindow);
+
+		dialog.setTitle(title);
+		dialog.setScene(scene);
+		dialog.sizeToScene();
+		dialog.setResizable(false);
+
+		return dialog;
 	}
 
 	private static List<FileChooser.ExtensionFilter> fetchValidAttachmentFilter() {
