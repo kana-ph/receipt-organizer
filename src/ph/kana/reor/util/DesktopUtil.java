@@ -23,7 +23,7 @@ public final class DesktopUtil {
 		INSTANCE.hostService.showDocument(path);
 	}
 
-	public Image extractFileThumbnail(File file) { // TODO actually extract thumbnails
+	public static Image extractFileThumbnail(File file) { // TODO actually extract thumbnails
 		String fileName = file.getName();
 		int extensionIndex = fileName.lastIndexOf('.') + 1;
 		String extension = fileName.substring(extensionIndex);
