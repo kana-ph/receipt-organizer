@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import ph.kana.reor.controller.common.AbstractWindowController;
 import ph.kana.reor.controller.common.DocumentStatefulController;
@@ -31,7 +32,10 @@ public class ShowAttachmentsController extends AbstractWindowController implemen
 		dateLabel.setText(DateUtil.format(document.getDate()));
 
 		List<Attachment> attachments = Collections.EMPTY_LIST; // TODO query atachments of document
-		renderThumbnails(attachments);
+
+		attachments.stream()
+			.map(this::createThumbnail)
+			.forEachOrdered(thumbnailPane.getChildren()::add);
 	}
 
 	@Override
@@ -39,7 +43,18 @@ public class ShowAttachmentsController extends AbstractWindowController implemen
 		return rootPane;
 	}
 
-	private void renderThumbnails(List<Attachment> attachments) {
+	private Label createThumbnail(Attachment attachment) {
+		Label thumbnailLabel = new Label(attachment.getFileName());
+		thumbnailLabel.setGraphic(extractThumbnail(attachment));
+		addOpenFileEvent(thumbnailLabel, attachment);
+		return thumbnailLabel;
+	}
+
+	private ImageView extractThumbnail(Attachment attachment) {
+		return null;
+	}
+
+	private void addOpenFileEvent(Label label, Attachment attachment) {
 
 	}
 
