@@ -1,16 +1,21 @@
 package ph.kana.reor.controller;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import ph.kana.reor.controller.common.AbstractWindowController;
 import ph.kana.reor.controller.common.DocumentStatefulController;
 import ph.kana.reor.model.Attachment;
 import ph.kana.reor.model.Document;
 import ph.kana.reor.util.DateUtil;
+import ph.kana.reor.util.DesktopUtil;
 
 public class ShowAttachmentsController extends AbstractWindowController implements DocumentStatefulController<Document> {
 
@@ -45,17 +50,28 @@ public class ShowAttachmentsController extends AbstractWindowController implemen
 
 	private Label createThumbnail(Attachment attachment) {
 		Label thumbnailLabel = new Label(attachment.getFileName());
-		thumbnailLabel.setGraphic(extractThumbnail(attachment));
-		addOpenFileEvent(thumbnailLabel, attachment);
+
+		ImageView thumbnailImage = extractThumbnailImage(attachment);
+		thumbnailLabel.setGraphic(thumbnailImage);
+
+		EventHandler<MouseEvent> openFile = createOpenFileEvent(attachment);
+		thumbnailLabel.addEventFilter(MouseEvent.MOUSE_CLICKED, openFile);
+
 		return thumbnailLabel;
 	}
 
-	private ImageView extractThumbnail(Attachment attachment) {
-		return null;
+	private ImageView extractThumbnailImage(Attachment attachment) {
+		File attachmentFile = new File(attachment.getPath());
+		Image iconImage = DesktopUtil.extractFileThumbnail(attachmentFile);
+
+		return new ImageView(iconImage);
 	}
 
-	private void addOpenFileEvent(Label label, Attachment attachment) {
-
+	private EventHandler<MouseEvent> createOpenFileEvent(Attachment attachment) {
+		return mouseEvent -> {
+			File imageFile = new File(attachment.getPath());
+			DesktopUtil.openFile(imageFile);
+		};
 	}
 
 }
