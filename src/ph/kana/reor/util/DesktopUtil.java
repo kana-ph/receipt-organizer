@@ -1,31 +1,22 @@
 package ph.kana.reor.util;
 
-import com.sun.javafx.application.HostServicesDelegate;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import javafx.application.Application;
 import javafx.scene.image.Image;
 import static ph.kana.reor.util.FileUtil.ACCEPTED_DOCS;
 import static ph.kana.reor.util.FileUtil.ACCEPTED_IMAGES;
 
 public final class DesktopUtil {
 
-	private static DesktopUtil INSTANCE = null;
+	private static final Desktop DESKTOP = Desktop.getDesktop();
 
-	public static void initialize(Application app) {
-		if (INSTANCE == null) {
-			INSTANCE = new DesktopUtil(app);
-		}
-	}
-
-	public static void openFile(File file) throws IOException {
+	public static void openFile(File file) {
 		if (Desktop.isDesktopSupported()) {
 			new Thread(() -> {
 				try {
-					Desktop desktop = Desktop.getDesktop();
-					desktop.open(file);
+					DESKTOP.open(file);
 				} catch (IOException e) {
 					e.printStackTrace(System.err);
 				}
@@ -49,11 +40,5 @@ public final class DesktopUtil {
 
 		InputStream imageStream = DesktopUtil.class.getResourceAsStream(imagePath);
 		return new Image(imageStream);
-	}
-
-	private final HostServicesDelegate hostService;
-
-	private DesktopUtil(Application app) {
-		hostService = HostServicesDelegate.getInstance(app);
 	}
 }
