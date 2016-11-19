@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Set;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -52,12 +53,16 @@ public class ShowAttachmentsController extends AbstractWindowController implemen
 
 	private Label createThumbnail(Attachment attachment) {
 		Label thumbnailLabel = new Label(attachment.getFileName());
+		thumbnailLabel.setCursor(Cursor.HAND);
 
 		ImageView thumbnailImage = extractThumbnailImage(attachment);
 		thumbnailLabel.setGraphic(thumbnailImage);
 
 		EventHandler<MouseEvent> openFile = createOpenFileEvent(attachment);
 		thumbnailLabel.addEventFilter(MouseEvent.MOUSE_CLICKED, openFile);
+
+		thumbnailLabel.addEventFilter(MouseEvent.MOUSE_ENTERED, this::addTextUnderline);
+		thumbnailLabel.addEventFilter(MouseEvent.MOUSE_EXITED, this::removeTextUnderline);
 
 		return thumbnailLabel;
 	}
@@ -74,6 +79,16 @@ public class ShowAttachmentsController extends AbstractWindowController implemen
 			File imageFile = new File(attachment.getPath());
 			DesktopUtil.openFile(imageFile);
 		};
+	}
+
+	private void addTextUnderline(MouseEvent mouseEvent) {
+		Label label = (Label) mouseEvent.getSource();
+		label.setUnderline(true);
+	}
+
+	private void removeTextUnderline(MouseEvent mouseEvent) {
+		Label label = (Label) mouseEvent.getSource();
+		label.setUnderline(false);
 	}
 
 }
