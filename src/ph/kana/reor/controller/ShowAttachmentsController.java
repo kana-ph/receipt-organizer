@@ -1,8 +1,7 @@
 package ph.kana.reor.controller;
 
 import java.io.File;
-import java.util.Collections;
-import java.util.List;
+import java.util.Set;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -14,6 +13,7 @@ import ph.kana.reor.controller.common.AbstractWindowController;
 import ph.kana.reor.controller.common.DocumentStatefulController;
 import ph.kana.reor.model.Attachment;
 import ph.kana.reor.model.Document;
+import ph.kana.reor.service.AttachmentService;
 import ph.kana.reor.util.DateUtil;
 import ph.kana.reor.util.DesktopUtil;
 
@@ -26,6 +26,8 @@ public class ShowAttachmentsController extends AbstractWindowController implemen
 
 	@FXML private Pane thumbnailPane;
 
+	private final AttachmentService attachmentService = new AttachmentService();
+
 	@FXML
 	public void closeDialog() {
 
@@ -36,7 +38,7 @@ public class ShowAttachmentsController extends AbstractWindowController implemen
 		titleLabel.setText(document.getTitle());
 		dateLabel.setText(DateUtil.format(document.getDate()));
 
-		List<Attachment> attachments = Collections.EMPTY_LIST; // TODO query atachments of document
+		Set<Attachment> attachments = attachmentService.fetchAllByDocument(document);
 
 		attachments.stream()
 			.map(this::createThumbnail)
