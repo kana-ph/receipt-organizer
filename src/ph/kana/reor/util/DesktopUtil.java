@@ -1,7 +1,9 @@
 package ph.kana.reor.util;
 
 import com.sun.javafx.application.HostServicesDelegate;
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import javafx.application.Application;
 import javafx.scene.image.Image;
@@ -18,9 +20,17 @@ public final class DesktopUtil {
 		}
 	}
 
-	public static void openFile(File file) {
-		String path = file.getAbsolutePath();
-		INSTANCE.hostService.showDocument(path);
+	public static void openFile(File file) throws IOException {
+		if (Desktop.isDesktopSupported()) {
+			new Thread(() -> {
+				try {
+					Desktop desktop = Desktop.getDesktop();
+					desktop.open(file);
+				} catch (IOException e) {
+					e.printStackTrace(System.err);
+				}
+			}).start();
+		}
 	}
 
 	public static Image extractFileThumbnail(File file) { // TODO actually extract thumbnails
