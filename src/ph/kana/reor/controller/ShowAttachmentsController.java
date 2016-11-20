@@ -41,9 +41,13 @@ public class ShowAttachmentsController extends AbstractWindowController implemen
 
 		Set<Attachment> attachments = attachmentService.fetchAllByDocument(document);
 
-		attachments.stream()
-			.map(this::createThumbnail)
-			.forEachOrdered(thumbnailPane.getChildren()::add);
+		if (attachments.isEmpty()) {
+			thumbnailPane.getChildren().add(new Label("No Attachments for this Document."));
+		} else {
+			attachments.stream()
+				.map(this::createThumbnail)
+				.forEachOrdered(thumbnailPane.getChildren()::add);
+		}
 	}
 
 	@Override
