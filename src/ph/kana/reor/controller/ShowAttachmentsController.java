@@ -31,7 +31,7 @@ public class ShowAttachmentsController extends AbstractWindowController implemen
 
 	@FXML
 	public void closeDialog() {
-
+		getWindow().close();
 	}
 
 	@Override
