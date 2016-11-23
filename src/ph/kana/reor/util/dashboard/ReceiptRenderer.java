@@ -87,7 +87,7 @@ class ReceiptRenderer extends DocumentRenderer<Receipt> {
 
 		LinkedHashMap<Label, Double> controls = new LinkedHashMap();
 		controls.put(createControlLink("Edit", this::editLinkClicked), 30.0);
-		controls.put(createControlLink("View Attachment", this::attachmentsLinkClicked), 10.0);
+		controls.put(createAttachmentsControlLink(), 10.0);
 		renderControls(nodes, controls);
 
 		return pane;
@@ -121,9 +121,24 @@ class ReceiptRenderer extends DocumentRenderer<Receipt> {
 
 	private Label createControlLink(String text, EventHandler<MouseEvent> clickEvent) {
 		Label label = new Label(text);
-		label.addEventFilter(MouseEvent.MOUSE_CLICKED, clickEvent);
+		if (clickEvent != null) {
+			label.addEventFilter(MouseEvent.MOUSE_CLICKED, clickEvent);
+			addStyleClasses(label, DashboardClass.OPTION_LINK);
+		}
 
 		return label;
+	}
+
+	private Label createAttachmentsControlLink() {
+		int attachmentCount = countAttachments();
+
+		if (attachmentCount < 1) {
+			return createControlLink("View Attachments (0)", null);
+		} else {
+			String text = String.format("View Attachments (%d)", attachmentCount);
+			Label label = createControlLink(text, this::attachmentsLinkClicked);
+			return label;
+		}
 	}
 
 	private void editLinkClicked(MouseEvent event) {

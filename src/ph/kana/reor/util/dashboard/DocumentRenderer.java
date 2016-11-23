@@ -8,8 +8,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import ph.kana.reor.exception.ServiceException;
 import ph.kana.reor.model.Document;
 import ph.kana.reor.model.Receipt;
+import ph.kana.reor.service.AttachmentService;
 import ph.kana.reor.type.DashboardClass;
 
 public abstract class DocumentRenderer<T extends Document> {
@@ -24,6 +26,8 @@ public abstract class DocumentRenderer<T extends Document> {
 
 	protected final Stage window;
 	protected final T document;
+
+	private final AttachmentService attachmentService = new AttachmentService();
 
 	public abstract Pane buildDocumentPane();
 
@@ -44,7 +48,6 @@ public abstract class DocumentRenderer<T extends Document> {
 	protected void renderControls(List<Node> parentNodes, LinkedHashMap<Label, Double> controls) {
 		controls.keySet().stream()
 			.peek(parentNodes::add)
-			.peek(label -> addStyleClasses(label, DashboardClass.OPTION_LINK))
 			.forEach(label -> assignAnchors(label, null, 15.0, controls.get(label), null));
 	}
 
@@ -61,5 +64,9 @@ public abstract class DocumentRenderer<T extends Document> {
 			.stream()
 			.map(DashboardClass::getName)
 			.forEachOrdered(styleClasses::add);
+	}
+
+	protected int countAttachments() throws ServiceException {
+		return attachmentService.countAllByDocument(document);
 	}
 }
