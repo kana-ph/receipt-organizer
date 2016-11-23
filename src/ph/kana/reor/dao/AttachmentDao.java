@@ -10,4 +10,6 @@ public abstract class AttachmentDao extends AbstractDao<Attachment> {
 	public abstract Set<Attachment> findAllByDocument(Document document) throws DataAccessException;
 
 	public abstract Attachment save(Attachment attachment) throws DataAccessException;
+
+	public abstract int countAllByDocument(Document document) throws DataAccessException;
 }

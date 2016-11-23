@@ -46,6 +46,20 @@ public class DerbyAttachmentDao extends AttachmentDao {
 	}
 
 	@Override
+	public int countAllByDocument(Document document) throws DataAccessException {
+		if (document == null || document.getId() == null) {
+			return 0;
+		} else {
+			String sql = "SELECT count(*) FROM attachment WHERE document_id = ?";
+			return executeCount(connection -> {
+				PreparedStatement statement = connection.prepareStatement(sql);
+				statement.setLong(1, document.getId());
+				return statement.executeQuery();
+			});
+		}
+	}
+
+	@Override
 	protected Attachment map(ResultSet resultSet) throws DataAccessException {
 		try {
 			Attachment attachment =  new Attachment();

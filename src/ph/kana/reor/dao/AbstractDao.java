@@ -31,6 +31,14 @@ abstract class AbstractDao<T extends Model> {
 		});
 	}
 
+	public int executeCount(CheckedFunction<Connection, ResultSet> action) throws DataAccessException {
+		return executeSqlStatement(connection -> {
+			ResultSet resultSet = action.apply(connection);
+			return resultSet.next()?
+				resultSet.getInt(1) : 0;
+		});
+	}
+
 	protected Long fetchInsertId(Statement statement) throws SQLException {
 		ResultSet idResultSet = statement.getGeneratedKeys();
 		return idResultSet.next()? idResultSet.getLong(1) : null;

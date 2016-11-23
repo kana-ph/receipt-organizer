@@ -36,4 +36,12 @@ public class AttachmentService {
 			throw new ServiceException(e);
 		}
 	}
+
+	public int countAllByDocument(Document document) throws ServiceException {
+		try {
+			return attachmentDao.countAllByDocument(document);
+		} catch (DataAccessException e) {
+			throw new ServiceException(e);
+		}
+	}
 }
