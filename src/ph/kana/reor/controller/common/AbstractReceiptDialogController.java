@@ -17,6 +17,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import ph.kana.reor.exception.ServiceException;
 import ph.kana.reor.model.Category;
 import ph.kana.reor.model.Warranty;
@@ -118,6 +119,11 @@ public abstract class AbstractReceiptDialogController extends AbstractFormContro
 		descriptionMessageLabel.setText("");
 		warrantyMessageLabel.setText("");
 		categoryMessageLabel.setText("");
+	}
+
+	@Override
+	protected Pane getRootPane() {
+		return rootPane;
 	}
 
 	protected void save(CheckedRunnable saveLogic) {

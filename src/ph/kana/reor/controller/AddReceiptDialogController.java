@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import javafx.fxml.FXML;
-import javafx.scene.layout.Pane;
 import ph.kana.reor.controller.common.AbstractReceiptDialogController;
 import ph.kana.reor.exception.ServiceException;
 import ph.kana.reor.model.Warranty;
@@ -18,11 +17,6 @@ public class AddReceiptDialogController extends AbstractReceiptDialogController 
 	public void initializeForm() {
 		super.initializeForm();
 		clearForm();
-	}
-
-	@Override
-	protected Pane getRootPane() {
-		return rootPane;
 	}
 
 	@FXML
