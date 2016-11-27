@@ -15,7 +15,8 @@ public class EditReceiptDialogController
 		amountTextField.setText(document.getAmount().toString());
 		receiptDatePicker.setValue(document.getDate());
 		descriptionTextArea.setText(document.getDescription());
-
+		// TODO Warranty
+		// TODO files
 	}
 
 	@FXML
