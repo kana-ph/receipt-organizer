@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import ph.kana.reor.controller.common.AbstractReceiptDialogController;
 import ph.kana.reor.controller.common.DocumentStatefulController;
 import ph.kana.reor.model.Receipt;
+import ph.kana.reor.type.MessageType;
 
 public class EditReceiptDialogController
 	extends AbstractReceiptDialogController implements DocumentStatefulController<Receipt> {
@@ -19,6 +20,15 @@ public class EditReceiptDialogController
 
 	@FXML
 	public void saveButtonClick() {
+		save(() -> {
+			updateReceipt();
+
+			clearMessages();
+			showMessage(formMessageLabel, "Successfully Updated!", MessageType.SUCCESS);
+		});
+	}
+
+	private void updateReceipt() {
 
 	}
 
