@@ -25,7 +25,7 @@ public class DerbyReceiptDao extends ReceiptDao {
 
 	@Override
 	public List<Receipt> fetchAll() throws DataAccessException {
-		String sql = "SELECT d.id, d.title, d.document_date, d.description, r.amount, r.warranty_id, r.category_id "
+		String sql = "SELECT d.id, d.title, d.document_date, d.description, r.amount, r.category_id "
 			+ "FROM document AS d INNER JOIN receipt AS r ON d.id = r.id ";
 		return executeQuery(connection -> {
 			Statement statement = connection.createStatement();
